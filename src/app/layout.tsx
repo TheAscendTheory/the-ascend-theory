@@ -1,6 +1,7 @@
 import "./globals.css";
 import SiteShell from "./components/SiteShell";
 import PremiumFooter from "./components/PremiumFooter";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata = {
   title: "The Ascend Theory | Systems. Markets. Mindset.",
@@ -63,6 +64,8 @@ export default function RootLayout({
           {children}
           <PremiumFooter />
         </SiteShell>
+
+        <Analytics />
       </body>
     </html>
   );
