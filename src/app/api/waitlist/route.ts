@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     }
 
     await resend.emails.send({
-      from: "The Ascend Theory <hello@ascendtheoryglobal.com>",
+      from: "The Ascend Theory <contact@theascendtheory.com>",
       to: email,
       subject: "Welcome to The Ascend Theory",
       html: `
