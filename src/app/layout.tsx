@@ -1,9 +1,5 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
-
-const inter = Inter({
-  subsets: ["latin"],
-});
+import SiteShell from "./components/SiteShell";
 
 export const metadata = {
   title: "The Ascend Theory",
@@ -16,9 +12,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={inter.className}>
-        {children}
+    <html lang="en">
+      <body>
+        <SiteShell>{children}</SiteShell>
       </body>
     </html>
   );

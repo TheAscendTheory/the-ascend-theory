@@ -2,10 +2,8 @@
 
 import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [formStatus, setFormStatus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +16,9 @@ export default function Home() {
     try {
       const response = await fetch("/api/waitlist", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ email }),
       });
 
@@ -30,7 +30,9 @@ export default function Home() {
         return;
       }
 
-      setFormStatus(data.message);
+      setFormStatus(
+        data.message || "Welcome email sent. You are on the Ascenders list."
+      );
       setEmail("");
     } catch {
       setFormStatus("Connection failed.");
@@ -60,49 +62,14 @@ export default function Home() {
     "Digital Resources",
   ];
 
- const navLinks = [
-  ["About", "/about"],
-  ["Media", "/media"],
-  ["Resources", "/resources"],
-  ["Community", "/community"],
-  ["Contact", "/contact"],
-];
-
   return (
     <>
-      <main className="site">
-        <div className="background">
-          <div className="glow glowOne" />
-          <div className="glow glowTwo" />
-          <div className="gridBg" />
+      <main className="homeSite">
+        <div className="homeBackground">
+          <div className="homeGlow homeGlowOne" />
+          <div className="homeGlow homeGlowTwo" />
+          <div className="homeGridBg" />
         </div>
-
-        <nav className="nav">
-          <div className="brand">
-            <img src="/logo.png" alt="The Ascend Theory logo" className="navLogo" />
-            <span>The Ascend Theory</span>
-          </div>
-
-          <div className="desktopLinks">
-            {navLinks.map(([label, href]) => (
-              <a key={label} href={href}>{label}</a>
-            ))}
-          </div>
-
-          <button className="menuBtn" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </nav>
-
-        {menuOpen && (
-          <div className="mobileMenu">
-            {navLinks.map(([label, href]) => (
-              <a key={label} href={href} onClick={() => setMenuOpen(false)}>
-                {label}
-              </a>
-            ))}
-          </div>
-        )}
 
         <section className="hero">
           <motion.img
@@ -114,27 +81,56 @@ export default function Home() {
             className="heroLogo"
           />
 
-          <motion.p className="eyebrow">A New Operating Standard</motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="eyebrow"
+          >
+            A New Operating Standard
+          </motion.p>
 
           <motion.h1
             initial={{ opacity: 0, y: 35 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.25 }}
           >
             THE ASCEND THEORY
           </motion.h1>
 
-          <h2>Systems. Markets. Mindset.</h2>
+          <motion.h2
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+          >
+            Systems. Markets. Mindset.
+          </motion.h2>
 
-          <p className="heroText">
-            A media and education ecosystem built for people developing financial
-            intelligence, discipline, self-mastery, and a higher operating standard.
-          </p>
+          <motion.p
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="heroText"
+          >
+            A media and education ecosystem built for people developing
+            financial intelligence, discipline, self-mastery, and a higher
+            operating standard.
+          </motion.p>
 
-          <div className="buttons">
-            <a href="#contact" className="primary">Join the Movement</a>
-            <a href="#theory" className="secondary">Explore the Theory</a>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55 }}
+            className="buttons"
+          >
+            <a href="#contact" className="primary">
+              Join the Movement
+            </a>
+
+            <a href="/about" className="secondary">
+              Explore the Theory
+            </a>
+          </motion.div>
         </section>
 
         <section className="missionStrip">
@@ -153,11 +149,13 @@ export default function Home() {
 
         <section id="theory" className="section">
           <p className="eyebrow">The Theory</p>
+
           <h2>What Is The Ascend Theory?</h2>
+
           <p>
-            The Ascend Theory is a modern education and media platform built around
-            financial literacy, market awareness, personal discipline, systems thinking,
-            technology, and self-development.
+            The Ascend Theory is a modern education and media platform built
+            around financial literacy, market awareness, personal discipline,
+            systems thinking, technology, and self-development.
           </p>
         </section>
 
@@ -176,6 +174,7 @@ export default function Home() {
 
         <section id="pillars" className="section">
           <p className="eyebrow">Core Pillars</p>
+
           <h2>The Foundation</h2>
 
           <div className="gridCards">
@@ -190,11 +189,17 @@ export default function Home() {
 
         <section id="ecosystem" className="ecosystem">
           <p className="eyebrow">Ecosystem</p>
-          <h2>More Than Content.<br />A Movement.</h2>
+
+          <h2>
+            More Than Content.
+            <br />
+            A Movement.
+          </h2>
+
           <p>
             The Ascend Theory is expanding into media, education, community,
-            digital resources, financial literacy, youth programs, live sessions,
-            podcasts, and market breakdowns.
+            digital resources, financial literacy, youth programs, live
+            sessions, podcasts, and market breakdowns.
           </p>
 
           <div className="ecosystemGrid">
@@ -206,7 +211,9 @@ export default function Home() {
 
         <section id="contact" className="section">
           <p className="eyebrow">Join Early</p>
+
           <h2>Be Part of the Foundation.</h2>
+
           <p>Join the early list and move with the first Ascenders.</p>
 
           <form onSubmit={handleWaitlistSubmit} className="form">
@@ -255,35 +262,35 @@ export default function Home() {
           text-decoration: none;
         }
 
-        .site {
+        .homeSite {
           position: relative;
           min-height: 100vh;
           background: #030303;
           overflow: hidden;
         }
 
-        .background {
+        .homeBackground {
           position: fixed;
           inset: 0;
           pointer-events: none;
           z-index: 0;
         }
 
-        .glow {
+        .homeGlow {
           position: absolute;
           border-radius: 999px;
           filter: blur(120px);
           background: rgba(234, 179, 8, 0.16);
         }
 
-        .glowOne {
+        .homeGlowOne {
           width: 420px;
           height: 420px;
           top: -80px;
           right: 10%;
         }
 
-        .glowTwo {
+        .homeGlowTwo {
           width: 360px;
           height: 360px;
           bottom: 20%;
@@ -291,7 +298,7 @@ export default function Home() {
           opacity: 0.45;
         }
 
-        .gridBg {
+        .homeGridBg {
           position: absolute;
           inset: 0;
           background-image:
@@ -299,70 +306,6 @@ export default function Home() {
             linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
           background-size: 80px 80px;
           opacity: 0.5;
-        }
-
-        .nav {
-          position: sticky;
-          top: 0;
-          z-index: 50;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 20px 6%;
-          background: rgba(0,0,0,0.75);
-          backdrop-filter: blur(18px);
-          border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .brand {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          text-transform: uppercase;
-          letter-spacing: 0.24em;
-          font-size: 13px;
-          font-weight: 700;
-        }
-
-        .navLogo {
-          width: 48px;
-          height: 48px;
-          object-fit: contain;
-        }
-
-        .desktopLinks {
-          display: flex;
-          gap: 30px;
-          color: rgba(255,255,255,0.65);
-          font-size: 14px;
-        }
-
-        .desktopLinks a:hover {
-          color: #eab308;
-        }
-
-        .menuBtn {
-          display: none;
-          background: transparent;
-          color: white;
-          border: 1px solid rgba(255,255,255,0.15);
-          border-radius: 999px;
-          padding: 10px;
-        }
-
-        .mobileMenu {
-          position: fixed;
-          top: 82px;
-          left: 16px;
-          right: 16px;
-          z-index: 40;
-          background: rgba(0,0,0,0.96);
-          border: 1px solid rgba(255,255,255,0.12);
-          border-radius: 24px;
-          padding: 20px;
-          display: flex;
-          flex-direction: column;
-          gap: 18px;
         }
 
         .hero {
@@ -380,7 +323,7 @@ export default function Home() {
           height: 180px;
           object-fit: contain;
           margin-bottom: 34px;
-          filter: drop-shadow(0 0 45px rgba(234,179,8,0.25));
+          filter: drop-shadow(0 0 45px rgba(234, 179, 8, 0.25));
         }
 
         .eyebrow {
@@ -409,7 +352,7 @@ export default function Home() {
         .section p,
         .ecosystem p {
           max-width: 800px;
-          color: rgba(255,255,255,0.7);
+          color: rgba(255, 255, 255, 0.7);
           font-size: 18px;
           line-height: 1.75;
         }
@@ -438,7 +381,7 @@ export default function Home() {
         }
 
         .secondary {
-          border: 1px solid rgba(255,255,255,0.2);
+          border: 1px solid rgba(255, 255, 255, 0.2);
           color: white;
         }
 
@@ -449,19 +392,19 @@ export default function Home() {
         }
 
         .secondary:hover {
-          background: rgba(255,255,255,0.08);
+          background: rgba(255, 255, 255, 0.08);
         }
 
         .missionStrip {
           position: relative;
           z-index: 5;
           padding: 60px 6%;
-          border-top: 1px solid rgba(255,255,255,0.1);
-          border-bottom: 1px solid rgba(255,255,255,0.1);
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           gap: 28px;
-          background: rgba(255,255,255,0.02);
+          background: rgba(255, 255, 255, 0.02);
         }
 
         .missionStrip p {
@@ -499,8 +442,8 @@ export default function Home() {
         .card {
           border-radius: 28px;
           padding: 32px;
-          border: 1px solid rgba(234,179,8,0.22);
-          background: rgba(234,179,8,0.045);
+          border: 1px solid rgba(234, 179, 8, 0.22);
+          background: rgba(234, 179, 8, 0.045);
         }
 
         .goldCard h3,
@@ -512,7 +455,7 @@ export default function Home() {
 
         .goldCard p,
         .card p {
-          color: rgba(255,255,255,0.68);
+          color: rgba(255, 255, 255, 0.68);
           line-height: 1.7;
         }
 
@@ -523,15 +466,15 @@ export default function Home() {
         }
 
         .card {
-          border-color: rgba(255,255,255,0.1);
-          background: rgba(255,255,255,0.045);
+          border-color: rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.045);
           transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
         .card:hover,
         .goldCard:hover {
           transform: translateY(-8px);
-          border-color: rgba(234,179,8,0.55);
+          border-color: rgba(234, 179, 8, 0.55);
         }
 
         .ecosystem {
@@ -540,8 +483,12 @@ export default function Home() {
           margin: 70px 6%;
           padding: 75px;
           border-radius: 42px;
-          border: 1px solid rgba(234,179,8,0.22);
-          background: linear-gradient(135deg, rgba(234,179,8,0.12), rgba(255,255,255,0.035));
+          border: 1px solid rgba(234, 179, 8, 0.22);
+          background: linear-gradient(
+            135deg,
+            rgba(234, 179, 8, 0.12),
+            rgba(255, 255, 255, 0.035)
+          );
           backdrop-filter: blur(16px);
         }
 
@@ -553,11 +500,11 @@ export default function Home() {
         }
 
         .ecosystemGrid div {
-          border: 1px solid rgba(255,255,255,0.1);
+          border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 18px;
           padding: 18px;
-          background: rgba(0,0,0,0.35);
-          color: rgba(255,255,255,0.75);
+          background: rgba(0, 0, 0, 0.35);
+          color: rgba(255, 255, 255, 0.75);
         }
 
         .form {
@@ -571,8 +518,8 @@ export default function Home() {
           flex: 1;
           padding: 16px 20px;
           border-radius: 999px;
-          border: 1px solid rgba(255,255,255,0.15);
-          background: rgba(255,255,255,0.06);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          background: rgba(255, 255, 255, 0.06);
           color: white;
           outline: none;
         }
@@ -586,8 +533,8 @@ export default function Home() {
           position: relative;
           z-index: 5;
           padding: 60px 6%;
-          border-top: 1px solid rgba(255,255,255,0.1);
-          color: rgba(255,255,255,0.5);
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          color: rgba(255, 255, 255, 0.5);
         }
 
         footer h3 {
@@ -596,24 +543,6 @@ export default function Home() {
         }
 
         @media (max-width: 850px) {
-          .desktopLinks {
-            display: none;
-          }
-
-          .menuBtn {
-            display: block;
-          }
-
-          .brand span {
-            font-size: 11px;
-            letter-spacing: 0.16em;
-          }
-
-          .navLogo {
-            width: 42px;
-            height: 42px;
-          }
-
           .heroLogo {
             width: 145px;
             height: 145px;

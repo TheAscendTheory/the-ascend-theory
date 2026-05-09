@@ -1,0 +1,91 @@
+.globalNav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 6%;
+  background: rgba(0, 0, 0, 0.86);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brandLink {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.brandLink img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.desktopNav {
+  display: flex;
+  gap: 26px;
+}
+
+.desktopNav a,
+.mobileNav a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.desktopNav a:hover,
+.mobileNav a:hover {
+  color: #eab308;
+}
+
+.menuButton {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: white;
+  border-radius: 999px;
+  padding: 10px;
+}
+
+.mobileNav {
+  position: fixed;
+  top: 80px;
+  left: 16px;
+  right: 16px;
+  z-index: 998;
+  background: rgba(0, 0, 0, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+@media (max-width: 850px) {
+  .desktopNav {
+    display: none;
+  }
+
+  .menuButton {
+    display: block;
+  }
+
+  .brandLink span {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+
+  .brandLink img {
+    width: 38px;
+    height: 38px;
+  }
+}
