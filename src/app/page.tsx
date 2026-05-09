@@ -10,6 +10,7 @@ export default function Home() {
 
   async function handleWaitlistSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     setLoading(true);
     setFormStatus("");
 
@@ -33,6 +34,7 @@ export default function Home() {
       setFormStatus(
         data.message || "Welcome email sent. You are on the Ascenders list."
       );
+
       setEmail("");
     } catch {
       setFormStatus("Connection failed.");
@@ -42,12 +44,30 @@ export default function Home() {
   }
 
   const pillars = [
-    ["Systems", "Build structure, routines, discipline, leverage, and personal operating systems."],
-    ["Markets", "Understand money, trading, investing, economics, and global financial movement."],
-    ["Mindset", "Develop emotional control, patience, ambition, and long-term thinking."],
-    ["Technology", "Use AI, digital tools, automation, and modern skills to move faster."],
-    ["Culture", "Build a global identity around growth, intelligence, execution, and ascension."],
-    ["Execution", "Turn vision into real output, measurable progress, and visible proof."],
+    [
+      "Systems",
+      "Build structure, routines, discipline, leverage, and personal operating systems.",
+    ],
+    [
+      "Markets",
+      "Understand money, trading, investing, economics, and global financial movement.",
+    ],
+    [
+      "Mindset",
+      "Develop emotional control, patience, ambition, and long-term thinking.",
+    ],
+    [
+      "Technology",
+      "Use AI, digital tools, automation, and modern skills to move faster.",
+    ],
+    [
+      "Culture",
+      "Build a global identity around growth, intelligence, execution, and ascension.",
+    ],
+    [
+      "Execution",
+      "Turn vision into real output, measurable progress, and visible proof.",
+    ],
   ];
 
   const ecosystem = [
@@ -159,11 +179,63 @@ export default function Home() {
           </p>
         </section>
 
+        <section className="grantSection">
+          <p className="eyebrow">Impact Direction</p>
+
+          <h2>
+            Built For Education,
+            <br />
+            Media, And Community Impact.
+          </h2>
+
+          <p>
+            The Ascend Theory is positioned as a modern youth-focused and
+            community-driven media education platform designed to improve
+            financial literacy, discipline, digital awareness, market
+            understanding, and personal development.
+          </p>
+
+          <div className="grantGrid">
+            {[
+              [
+                "Audience",
+                "Students, young adults, creators, traders, builders, and ambitious learners.",
+              ],
+              [
+                "Impact",
+                "Financial literacy, digital skills, self-development, discipline, and long-term thinking.",
+              ],
+              [
+                "Infrastructure",
+                "Live website, branded domain, professional email, waitlist database, and automated welcome system.",
+              ],
+              [
+                "Expansion",
+                "Workshops, seminars, podcasts, video education, community programs, and digital resources.",
+              ],
+            ].map(([title, text]) => (
+              <div key={title}>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="cardsSection">
           {[
-            ["Media", "Short-form, long-form, podcasts, interviews, and market breakdowns."],
-            ["Education", "Financial literacy, digital skills, discipline, and self-development resources."],
-            ["Community", "A global identity for builders, students, creators, traders, and ambitious learners."],
+            [
+              "Media",
+              "Short-form, long-form, podcasts, interviews, and market breakdowns.",
+            ],
+            [
+              "Education",
+              "Financial literacy, digital skills, discipline, and self-development resources.",
+            ],
+            [
+              "Community",
+              "A global identity for builders, students, creators, traders, and ambitious learners.",
+            ],
           ].map(([title, text]) => (
             <div className="goldCard" key={title}>
               <h3>{title}</h3>
@@ -192,8 +264,7 @@ export default function Home() {
 
           <h2>
             More Than Content.
-            <br />
-            A Movement.
+            <br />A Movement.
           </h2>
 
           <p>
@@ -232,12 +303,6 @@ export default function Home() {
 
           {formStatus && <p className="status">{formStatus}</p>}
         </section>
-
-        <footer>
-          <h3>The Ascend Theory</h3>
-          <p>Systems. Markets. Mindset.</p>
-          <small>© 2026 The Ascend Theory. All rights reserved.</small>
-        </footer>
       </main>
 
       <style jsx global>{`
@@ -423,10 +488,56 @@ export default function Home() {
         }
 
         .section h2,
-        .ecosystem h2 {
+        .ecosystem h2,
+        .grantSection h2 {
           font-size: clamp(42px, 6vw, 78px);
           line-height: 1;
           margin: 0 0 28px;
+        }
+
+        .grantSection {
+          position: relative;
+          z-index: 5;
+          padding: 100px 6%;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          border-bottom: 1px solid rgba(255,255,255,0.08);
+          background: linear-gradient(
+            135deg,
+            rgba(234,179,8,0.08),
+            rgba(255,255,255,0.025)
+          );
+        }
+
+        .grantSection > p {
+          max-width: 900px;
+          color: rgba(255,255,255,0.72);
+          font-size: 19px;
+          line-height: 1.8;
+        }
+
+        .grantGrid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 18px;
+          margin-top: 50px;
+        }
+
+        .grantGrid div {
+          border: 1px solid rgba(234,179,8,0.2);
+          background: rgba(0,0,0,0.28);
+          border-radius: 24px;
+          padding: 26px;
+        }
+
+        .grantGrid h3 {
+          color: #eab308;
+          margin-top: 0;
+          font-size: 22px;
+        }
+
+        .grantGrid p {
+          color: rgba(255,255,255,0.68);
+          line-height: 1.7;
         }
 
         .cardsSection {
@@ -468,13 +579,6 @@ export default function Home() {
         .card {
           border-color: rgba(255, 255, 255, 0.1);
           background: rgba(255, 255, 255, 0.045);
-          transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .card:hover,
-        .goldCard:hover {
-          transform: translateY(-8px);
-          border-color: rgba(234, 179, 8, 0.55);
         }
 
         .ecosystem {
@@ -489,7 +593,6 @@ export default function Home() {
             rgba(234, 179, 8, 0.12),
             rgba(255, 255, 255, 0.035)
           );
-          backdrop-filter: blur(16px);
         }
 
         .ecosystemGrid {
@@ -529,19 +632,6 @@ export default function Home() {
           margin-top: 20px;
         }
 
-        footer {
-          position: relative;
-          z-index: 5;
-          padding: 60px 6%;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-          color: rgba(255, 255, 255, 0.5);
-        }
-
-        footer h3 {
-          color: white;
-          font-size: 26px;
-        }
-
         @media (max-width: 850px) {
           .heroLogo {
             width: 145px;
@@ -551,7 +641,8 @@ export default function Home() {
           .missionStrip,
           .cardsSection,
           .gridCards,
-          .ecosystemGrid {
+          .ecosystemGrid,
+          .grantGrid {
             grid-template-columns: 1fr;
           }
 

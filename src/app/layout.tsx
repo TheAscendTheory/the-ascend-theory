@@ -1,5 +1,6 @@
 import "./globals.css";
 import SiteShell from "./components/SiteShell";
+import PremiumFooter from "./components/PremiumFooter";
 
 export const metadata = {
   title: "The Ascend Theory",
@@ -14,7 +15,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SiteShell>{children}</SiteShell>
+        <SiteShell>
+          {children}
+          <PremiumFooter />
+        </SiteShell>
       </body>
     </html>
   );
