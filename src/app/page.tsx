@@ -60,12 +60,13 @@ export default function Home() {
     "Digital Resources",
   ];
 
-  const navLinks = [
-    ["Theory", "#theory"],
-    ["Pillars", "#pillars"],
-    ["Ecosystem", "#ecosystem"],
-    ["Join", "#contact"],
-  ];
+ const navLinks = [
+  ["About", "/about"],
+  ["Media", "/media"],
+  ["Resources", "/resources"],
+  ["Community", "/community"],
+  ["Contact", "/contact"],
+];
 
   return (
     <>
