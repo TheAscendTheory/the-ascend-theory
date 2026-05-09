@@ -6,38 +6,48 @@ export const metadata = {
   title: "The Ascend Theory | Systems. Markets. Mindset.",
   description:
     "A media and education ecosystem built around financial literacy, systems thinking, markets, discipline, technology, and self-development.",
+
   keywords: [
     "The Ascend Theory",
     "financial literacy",
-    "media ecosystem",
-    "self development",
     "markets",
-    "discipline",
-    "education",
+    "self development",
     "systems thinking",
+    "education",
+    "discipline",
+    "technology",
   ],
+
   openGraph: {
     title: "The Ascend Theory",
     description:
       "Systems. Markets. Mindset. A media and education ecosystem for ambitious builders.",
     url: "https://theascendtheory.com",
     siteName: "The Ascend Theory",
+
     images: [
       {
-        url: "/logo.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "The Ascend Theory",
       },
     ],
+
+    locale: "en_US",
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
     title: "The Ascend Theory",
     description:
       "Systems. Markets. Mindset. A media and education ecosystem for ambitious builders.",
-    images: ["/logo.png"],
+    images: ["/og-image.png"],
+  },
+
+  icons: {
+    icon: "/logo.png",
   },
 };
 
