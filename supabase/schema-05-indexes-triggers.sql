@@ -1,0 +1,2 @@
+-- No indexes or triggers are required yet.
+-- Run this file last so the setup order stays consistent.

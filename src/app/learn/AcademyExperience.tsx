@@ -214,9 +214,9 @@ export default function AcademyExperience() {
       );
       const { data: entitlementRows } = await supabase
         .from("ascend_media_entitlements")
-        .select("access_level")
+        .select("entitlement")
         .eq("user_id", userId)
-        .eq("access_level", "subscriber")
+        .in("entitlement", ["subscription", "admin"])
         .limit(1);
 
       setProgress((current) => ({

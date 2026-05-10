@@ -1,0 +1,17 @@
+alter table public.ascend_user_trades enable row level security;
+alter table public.ascend_demo_accounts enable row level security;
+alter table public.ascend_demo_positions enable row level security;
+alter table public.ascenders_waitlist enable row level security;
+alter table public.ascend_profiles enable row level security;
+alter table public.ascend_friendships enable row level security;
+alter table public.ascend_conversations enable row level security;
+alter table public.ascend_conversation_members enable row level security;
+alter table public.ascend_messages enable row level security;
+alter table public.ascend_notifications enable row level security;
+alter table public.ascend_social_posts enable row level security;
+alter table public.ascend_saved_posts enable row level security;
+alter table public.ascend_stories enable row level security;
+alter table public.ascend_media_items enable row level security;
+alter table public.ascend_media_entitlements enable row level security;
+alter table public.ascend_media_progress enable row level security;
+alter table public.ascend_academy_progress enable row level security;
