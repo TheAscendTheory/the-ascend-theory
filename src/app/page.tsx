@@ -241,6 +241,32 @@ export default function Home() {
         </p>
       </section>
 
+      <section className="homeSection compact">
+        <p className="eyebrow">Markets And Charting</p>
+
+        <h2>A market desk for charting, risk, and review.</h2>
+
+        <p>
+          The Ascend Theory market tools give learners a real workspace for
+          live charts, watchlists, drawing tools, economic events, position
+          sizing, trade journaling, and performance review.
+        </p>
+
+        <div className="homeActions">
+          <a href="/resources/charting" className="primaryButton">
+            Open Charts
+          </a>
+
+          <a href="/resources/demo-trading" className="secondaryButton">
+            Practice Demo Trading
+          </a>
+
+          <a href="/resources/trade-journal" className="secondaryButton">
+            View Journal
+          </a>
+        </div>
+      </section>
+
       <section id="waitlist" className="homeSection">
         <p className="eyebrow">Join Early</p>
 

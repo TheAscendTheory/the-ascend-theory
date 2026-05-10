@@ -13,7 +13,11 @@ const navLinks = [
   { label: "Programs", href: "/programs" },
   { label: "Media", href: "/media" },
   { label: "Resources", href: "/resources" },
+  { label: "Charts", href: "/resources/charting" },
+  { label: "Journal", href: "/resources/trade-journal" },
   { label: "Community", href: "/community" },
+  { label: "Shop", href: "/shop" },
+  { label: "Account", href: "/account" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -32,6 +36,10 @@ export default function SiteShell({
   function isActiveLink(href: string) {
     if (href === "/") {
       return pathname === "/";
+    }
+
+    if (href === "/resources") {
+      return pathname === "/resources";
     }
 
     return pathname.startsWith(href);

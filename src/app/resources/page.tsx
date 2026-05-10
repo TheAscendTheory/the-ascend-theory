@@ -42,6 +42,39 @@ const upcomingResources = [
   "Discipline And Execution Tracker",
 ];
 
+const marketTools = [
+  {
+    title: "Market Dashboard",
+    text: "Use the market hub to move between charts, calendar events, risk planning, journaling, and alerts.",
+    href: "/resources/market-dashboard",
+  },
+  {
+    title: "Charts",
+    text: "Use a dedicated live charting desk with watchlists, indicators, macro references, and drawing tools.",
+    href: "/resources/charting",
+  },
+  {
+    title: "Economic Calendar",
+    text: "Track scheduled market-moving events, central bank decisions, inflation reports, employment data, and major economic releases.",
+    href: "/resources/economic-calendar",
+  },
+  {
+    title: "Risk Calculator",
+    text: "Estimate dollar risk, position size, position value, potential reward, and risk-to-reward before taking a trade.",
+    href: "/resources/risk-calculator",
+  },
+  {
+    title: "Demo Trading",
+    text: "Practice with simulated money, open and close demo positions, and send closed trades into the journal.",
+    href: "/resources/demo-trading",
+  },
+  {
+    title: "Trade Journal",
+    text: "Log trades and track win rate, profit factor, profitability, net P/L, and average R.",
+    href: "/resources/trade-journal",
+  },
+];
+
 export default function ResourcesPage() {
   return (
     <main className="resourcesPage">
@@ -79,6 +112,27 @@ export default function ResourcesPage() {
             <p>{resource.text}</p>
           </article>
         ))}
+      </section>
+
+      <section className="resourceCallout">
+        <p className="eyebrow">Market Tools</p>
+
+        <h2>Plan the trade before the trade exists.</h2>
+
+        <p>
+          These tools are built for awareness and discipline: know what events
+          are coming, define risk before execution, and treat market education
+          as a system instead of a reaction.
+        </p>
+
+        <div className="resourceLibraryGrid">
+          {marketTools.map((tool) => (
+            <a key={tool.title} href={tool.href}>
+              <strong>{tool.title}</strong>
+              <span>{tool.text}</span>
+            </a>
+          ))}
+        </div>
       </section>
 
       <section className="resourceCallout">
