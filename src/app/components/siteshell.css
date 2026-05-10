@@ -1,91 +1,145 @@
 .globalNav {
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 1000;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 18px 6%;
-  background: rgba(0, 0, 0, 0.86);
-  backdrop-filter: blur(18px);
+  justify-content: space-between;
+  min-height: 76px;
+  padding: 16px 6%;
+  background: rgba(3, 3, 3, 0.88);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .brandLink {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+  min-width: 0;
   color: white;
-  text-decoration: none;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .brandLink img {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.brandLink span {
+  white-space: nowrap;
 }
 
 .desktopNav {
   display: flex;
-  gap: 26px;
+  align-items: center;
+  gap: clamp(14px, 2vw, 24px);
 }
 
 .desktopNav a,
 .mobileNav a {
   color: rgba(255, 255, 255, 0.7);
-  text-decoration: none;
   font-size: 14px;
+  transition: color 0.2s ease;
 }
 
 .desktopNav a:hover,
-.mobileNav a:hover {
+.mobileNav a:hover,
+.desktopNav a.activeNavLink,
+.mobileNav a.activeNavLink {
   color: #eab308;
+}
+
+.desktopNav a.activeNavLink {
+  font-weight: 800;
 }
 
 .menuButton {
   display: none;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  place-items: center;
+  width: 44px;
+  height: 44px;
   color: white;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
-  padding: 10px;
+  cursor: pointer;
+}
+
+.menuButton:hover {
+  color: #eab308;
+  border-color: rgba(234, 179, 8, 0.42);
+  background: rgba(234, 179, 8, 0.08);
 }
 
 .mobileNav {
   position: fixed;
-  top: 80px;
+  top: 88px;
   left: 16px;
   right: 16px;
-  z-index: 998;
-  background: rgba(0, 0, 0, 0.96);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  padding: 22px;
+  z-index: 999;
   display: flex;
   flex-direction: column;
   gap: 18px;
+  padding: 22px;
+  background: rgba(3, 3, 3, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.46);
 }
 
-@media (max-width: 850px) {
+.mobileNav a {
+  padding: 4px 0;
+}
+
+@media (max-width: 1020px) {
+  .desktopNav {
+    gap: 14px;
+  }
+
+  .desktopNav a {
+    font-size: 13px;
+  }
+
+  .brandLink {
+    letter-spacing: 0.12em;
+  }
+}
+
+@media (max-width: 900px) {
+  .globalNav {
+    min-height: 72px;
+    padding: 14px 22px;
+  }
+
   .desktopNav {
     display: none;
   }
 
   .menuButton {
-    display: block;
+    display: grid;
   }
 
   .brandLink span {
     font-size: 10px;
-    letter-spacing: 0.14em;
   }
 
   .brandLink img {
     width: 38px;
     height: 38px;
+  }
+}
+
+@media (max-width: 380px) {
+  .brandLink span {
+    max-width: 145px;
+    white-space: normal;
+    line-height: 1.3;
   }
 }

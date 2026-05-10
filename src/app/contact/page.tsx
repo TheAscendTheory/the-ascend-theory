@@ -1,111 +1,186 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Contact The Ascend Theory for business inquiries, media opportunities, partnerships, sponsorships, support, and institutional conversations.",
+};
+
+const contactChannels = [
+  {
+    title: "General Contact",
+    email: "contact@theascendtheory.com",
+    text: "Business inquiries, collaborations, ecosystem development, and general communication.",
+  },
+  {
+    title: "Media",
+    email: "media@theascendtheory.com",
+    text: "Media opportunities, interviews, podcasts, press, creator collaborations, and platform features.",
+  },
+  {
+    title: "Support",
+    email: "support@theascendtheory.com",
+    text: "Questions, resource support, access help, community assistance, and general support.",
+  },
+  {
+    title: "Founder",
+    email: "founder@theascendtheory.com",
+    text: "Founder-level partnerships, strategic opportunities, sponsorships, and direct business communication.",
+  },
+];
+
+const partnershipAreas = [
+  "Schools and colleges",
+  "Youth organizations",
+  "Nonprofits",
+  "Community programs",
+  "Financial literacy initiatives",
+  "Media collaborations",
+  "Creator partnerships",
+  "Sponsors and brands",
+];
+
+const socialLinks = [
+  {
+    label: "Discord",
+    href: "https://discord.gg/sRkBrb2n",
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@TheAscendTheoryGlobal",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/theascendtheoryglobal/",
+  },
+  {
+    label: "X",
+    href: "https://x.com/AscendTheoryHQ",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/tapiwa-geza-70838a409/",
+  },
+  {
+    label: "TikTok",
+    href: "https://www.tiktok.com/@theascendtheoryglobal",
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/profile.php?id=61589229221663",
+  },
+];
+
 export default function ContactPage() {
   return (
-    <main style={{
-      minHeight: "100vh",
-      background: "radial-gradient(circle at top right, rgba(234,179,8,0.14), transparent 35%), #030303",
-      color: "white",
-      padding: "120px 8%"
-    }}>
-      <p style={{
-        color: "#eab308",
-        letterSpacing: "0.42em",
-        textTransform: "uppercase",
-        fontSize: 12,
-        marginBottom: 24
-      }}>
-        Contact
-      </p>
+    <main className="contactPage">
+      <section className="contactHero">
+        <p className="eyebrow">Contact</p>
 
-      <h1 style={{
-        fontSize: "clamp(56px,9vw,130px)",
-        lineHeight: 0.9,
-        letterSpacing: "-0.07em",
-        margin: 0,
-        maxWidth: 1100
-      }}>
-        CONNECT WITH THE THEORY.
-      </h1>
+        <h1>CONNECT WITH THE THEORY.</h1>
 
-      <p style={{
-        maxWidth: 900,
-        color: "rgba(255,255,255,0.72)",
-        fontSize: 20,
-        lineHeight: 1.8,
-        marginTop: 44
-      }}>
-        Business inquiries, partnerships, collaborations, media opportunities,
-        and ecosystem development.
-      </p>
+        <p>
+          Business inquiries, partnerships, collaborations, media opportunities,
+          support, institutional conversations, and ecosystem development.
+        </p>
 
-      <section style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-        gap: 22,
-        marginTop: 70
-      }}>
-        <div style={{
-          border: "1px solid rgba(234,179,8,0.22)",
-          background: "rgba(234,179,8,0.045)",
-          borderRadius: 28,
-          padding: 32
-        }}>
-          <h2 style={{
-            color: "#eab308",
-            marginTop: 0
-          }}>
-            Email
-          </h2>
+        <div className="pageCtaActions">
+          <a
+            href="mailto:founder@theascendtheory.com"
+            className="pageCtaPrimary"
+          >
+            Email Founder
+          </a>
 
-          <p style={{
-            color: "rgba(255,255,255,0.72)",
-            fontSize: 18
-          }}>
-            contact@theascendtheory.com
-          </p>
+          <a
+            href="https://discord.gg/sRkBrb2n"
+            target="_blank"
+            rel="noreferrer"
+            className="pageCtaSecondary"
+          >
+            Join Discord
+          </a>
         </div>
+      </section>
 
-        <div style={{
-          border: "1px solid rgba(234,179,8,0.22)",
-          background: "rgba(234,179,8,0.045)",
-          borderRadius: 28,
-          padding: 32
-        }}>
-          <h2 style={{
-            color: "#eab308",
-            marginTop: 0
-          }}>
-            Future Channels
-          </h2>
+      <section className="contactGrid" aria-label="Contact channels">
+        {contactChannels.map((channel) => (
+          <article key={channel.email} className="contactCard">
+            <h2>{channel.title}</h2>
 
-          <p style={{
-            color: "rgba(255,255,255,0.72)",
-            lineHeight: 1.7
-          }}>
-            YouTube, podcasts, livestreams, educational platforms,
-            social media ecosystems, and community initiatives.
-          </p>
+            <a className="contactEmail" href={`mailto:${channel.email}`}>
+              {channel.email}
+            </a>
+
+            <p>{channel.text}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="contactPartnerships">
+        <p className="eyebrow">Partnerships</p>
+
+        <h2>Built for education, media, and community collaboration.</h2>
+
+        <p>
+          The Ascend Theory is open to conversations with institutions,
+          organizations, creators, sponsors, and community leaders interested in
+          financial literacy, market awareness, digital skills, youth education,
+          and systems-based personal development.
+        </p>
+
+        <div className="partnershipGrid">
+          {partnershipAreas.map((area) => (
+            <div key={area}>{area}</div>
+          ))}
         </div>
+      </section>
 
-        <div style={{
-          border: "1px solid rgba(234,179,8,0.22)",
-          background: "rgba(234,179,8,0.045)",
-          borderRadius: 28,
-          padding: 32
-        }}>
-          <h2 style={{
-            color: "#eab308",
-            marginTop: 0
-          }}>
-            Mission
-          </h2>
+      <section className="contactPartnerships">
+        <p className="eyebrow">Social Ecosystem</p>
 
-          <p style={{
-            color: "rgba(255,255,255,0.72)",
-            lineHeight: 1.7
-          }}>
-            Building a global ecosystem focused on systems, markets,
-            discipline, technology, financial literacy, and ascension.
-          </p>
+        <h2>Follow the build across the live channels.</h2>
+
+        <p>
+          The Ascend Theory is now active across media, social, professional,
+          and community platforms. Follow the public channels or join the
+          Discord to stay connected as the ecosystem develops.
+        </p>
+
+        <div className="socialLinkGrid">
+          {socialLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="pageCta">
+        <h2>Start the right conversation.</h2>
+
+        <p>
+          For schools, nonprofits, sponsors, media partners, creators, and
+          organizations interested in financial literacy, youth education,
+          digital skills, and community impact.
+        </p>
+
+        <div className="pageCtaActions">
+          <a
+            href="mailto:founder@theascendtheory.com"
+            className="pageCtaPrimary"
+          >
+            Email Founder
+          </a>
+
+          <a href="/programs" className="pageCtaSecondary">
+            View Programs
+          </a>
         </div>
       </section>
     </main>

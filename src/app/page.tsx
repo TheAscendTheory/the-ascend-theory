@@ -3,16 +3,79 @@
 import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
 
+const impactCards = [
+  {
+    title: "Media",
+    text: "Original content built around financial literacy, markets, discipline, technology, systems, and self-development.",
+  },
+  {
+    title: "Programs",
+    text: "Workshops, youth education initiatives, market awareness sessions, AI literacy, and systems-based learning.",
+  },
+  {
+    title: "Resources",
+    text: "Guides, templates, frameworks, and practical tools for money, digital skills, discipline, and execution.",
+  },
+];
+
+const pillars = [
+  "Financial Literacy",
+  "Market Awareness",
+  "Systems Thinking",
+  "Digital Skills",
+  "Discipline",
+  "Execution",
+];
+
+const programs = [
+  "Financial literacy workshops",
+  "Youth education initiatives",
+  "Market awareness sessions",
+  "AI and digital skills",
+  "Systems training",
+  "Community learning",
+];
+
+const socialLinks = [
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@TheAscendTheoryGlobal",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/theascendtheoryglobal/",
+  },
+  {
+    label: "X",
+    href: "https://x.com/AscendTheoryHQ",
+  },
+  {
+    label: "TikTok",
+    href: "https://www.tiktok.com/@theascendtheoryglobal",
+  },
+  {
+    label: "Discord",
+    href: "https://discord.gg/sRkBrb2n",
+  },
+];
+
 export default function Home() {
   const [email, setEmail] = useState("");
   const [formStatus, setFormStatus] = useState("");
+  const [formSuccess, setFormSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function handleWaitlistSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    if (!email.trim()) {
+      setFormStatus("Please enter your email address.");
+      return;
+    }
+
     setLoading(true);
     setFormStatus("");
+    setFormSuccess(false);
 
     try {
       const response = await fetch("/api/waitlist", {
@@ -20,642 +83,235 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: email.trim() }),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        setFormStatus(data.error || "Something went wrong.");
-        setLoading(false);
+        setFormStatus(data.error || "Something went wrong. Please try again.");
         return;
       }
 
-      setFormStatus(
-        data.message || "Welcome email sent. You are on the Ascenders list."
-      );
-
+      setFormStatus(data.message || "You are on the Ascenders list.");
+      setFormSuccess(true);
       setEmail("");
     } catch {
-      setFormStatus("Connection failed.");
+      setFormStatus("Connection failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
-  const pillars = [
-    [
-      "Systems",
-      "Build structure, routines, discipline, leverage, and personal operating systems.",
-    ],
-    [
-      "Markets",
-      "Understand money, trading, investing, economics, and global financial movement.",
-    ],
-    [
-      "Mindset",
-      "Develop emotional control, patience, ambition, and long-term thinking.",
-    ],
-    [
-      "Technology",
-      "Use AI, digital tools, automation, and modern skills to move faster.",
-    ],
-    [
-      "Culture",
-      "Build a global identity around growth, intelligence, execution, and ascension.",
-    ],
-    [
-      "Execution",
-      "Turn vision into real output, measurable progress, and visible proof.",
-    ],
-  ];
-
-  const ecosystem = [
-    "YouTube Media",
-    "Newsletter",
-    "Courses",
-    "Live Sessions",
-    "Community",
-    "Youth Financial Literacy",
-    "Podcasts",
-    "Market Breakdowns",
-    "Digital Resources",
-  ];
-
   return (
-    <>
-      <main className="homeSite">
-        <div className="homeBackground">
-          <div className="homeGlow homeGlowOne" />
-          <div className="homeGlow homeGlowTwo" />
-          <div className="homeGridBg" />
+    <main className="homePage">
+      <div className="homeAtmosphere" aria-hidden="true">
+        <div className="homeGlow homeGlowOne" />
+        <div className="homeGlow homeGlowTwo" />
+        <div className="homeGridBg" />
+      </div>
+
+      <section className="homeHero">
+        <motion.img
+          initial={{ opacity: 0, scale: 0.9, y: 24 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.75 }}
+          src="/logo.PNG"
+          alt="The Ascend Theory"
+          className="homeHeroLogo"
+        />
+
+        <motion.p
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12 }}
+          className="eyebrow"
+        >
+          A New Operating Standard
+        </motion.p>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          THE ASCEND THEORY
+        </motion.h1>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.28 }}
+        >
+          Systems. Markets. Mindset.
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.36 }}
+        >
+          A media and education ecosystem built for people developing financial
+          intelligence, discipline, digital awareness, and a higher operating
+          standard.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.44 }}
+          className="homeActions"
+        >
+          <a href="#waitlist" className="primaryButton">
+            Join the Movement
+          </a>
+
+          <a href="/programs" className="secondaryButton">
+            Explore Programs
+          </a>
+        </motion.div>
+      </section>
+
+      <section className="homeStrip" aria-label="Core pillars">
+        {pillars.map((pillar) => (
+          <div key={pillar}>{pillar}</div>
+        ))}
+      </section>
+
+      <section className="homeSection">
+        <p className="eyebrow">The Direction</p>
+
+        <h2>Built for education, media, and community impact.</h2>
+
+        <p>
+          The Ascend Theory is being developed as a youth-focused and
+          community-driven education platform for financial literacy, market
+          awareness, digital skills, discipline, systems thinking, and personal
+          development.
+        </p>
+
+        <div className="homeCardGrid">
+          {impactCards.map((card) => (
+            <article key={card.title} className="homeCard">
+              <h3>{card.title}</h3>
+              <p>{card.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="homePrograms">
+        <div>
+          <p className="eyebrow">Programs</p>
+
+          <h2>Learning systems designed for real-world execution.</h2>
+
+          <p>
+            From financial literacy to AI skills and systems training, The
+            Ascend Theory is building practical education formats for students,
+            young adults, communities, and ambitious learners.
+          </p>
+
+          <div className="homeActions">
+            <a href="/programs" className="primaryButton">
+              View Programs
+            </a>
+
+            <a href="/contact" className="secondaryButton">
+              Partner With Us
+            </a>
+          </div>
         </div>
 
-        <section className="hero">
-          <motion.img
-            initial={{ opacity: 0, scale: 0.85, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            src="/logo.png"
-            alt="The Ascend Theory symbol"
-            className="heroLogo"
+        <div className="programList">
+          {programs.map((program) => (
+            <div key={program}>{program}</div>
+          ))}
+        </div>
+      </section>
+
+      <section className="homeSection compact">
+        <p className="eyebrow">Core Foundation</p>
+
+        <h2>Not just content. A learning ecosystem.</h2>
+
+        <p>
+          The goal is to connect media, practical education, community,
+          resources, programs, and partnerships into one clear ecosystem.
+        </p>
+      </section>
+
+      <section id="waitlist" className="homeSection">
+        <p className="eyebrow">Join Early</p>
+
+        <h2>Be part of the foundation.</h2>
+
+        <p>
+          Join the early list and receive The Ascender Starter Guide in your
+          welcome email.
+        </p>
+
+        <div className="starterGuideCard">
+          <div>
+            <p className="eyebrow">Free Resource</p>
+            <h3>The Ascender Starter Guide</h3>
+            <p>
+              A practical introduction to financial literacy, market awareness,
+              discipline, systems, AI literacy, and execution.
+            </p>
+          </div>
+
+          <a
+            href="/the-ascender-starter-guide.html"
+            target="_blank"
+            rel="noreferrer"
+            className="secondaryButton"
+          >
+            Preview Guide
+          </a>
+        </div>
+
+        <form onSubmit={handleWaitlistSubmit} className="waitlistForm">
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email address"
+            aria-label="Email address"
           />
 
-          <motion.p
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="eyebrow"
-          >
-            A New Operating Standard
-          </motion.p>
+          <button type="submit" disabled={loading}>
+            {loading ? "Joining..." : "Ascend"}
+          </button>
+        </form>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 35 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-          >
-            THE ASCEND THEORY
-          </motion.h1>
+        {formStatus && <p className="formStatus">{formStatus}</p>}
 
-          <motion.h2
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
+        {formSuccess && (
+          <a
+            href="/the-ascender-starter-guide.html"
+            target="_blank"
+            rel="noreferrer"
+            className="guideSuccessLink"
           >
-            Systems. Markets. Mindset.
-          </motion.h2>
+            Open The Starter Guide
+          </a>
+        )}
 
-          <motion.p
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.45 }}
-            className="heroText"
-          >
-            A media and education ecosystem built for people developing
-            financial intelligence, discipline, self-mastery, and a higher
-            operating standard.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55 }}
-            className="buttons"
-          >
-            <a href="#contact" className="primary">
-              Join the Movement
+        <div className="homeSocialLinks" aria-label="Social links">
+          {socialLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {link.label}
             </a>
-
-            <a href="/about" className="secondary">
-              Explore the Theory
-            </a>
-          </motion.div>
-        </section>
-
-        <section className="missionStrip">
-          {[
-            ["01", "Financial Literacy"],
-            ["02", "Market Awareness"],
-            ["03", "Personal Discipline"],
-            ["04", "Systems Thinking"],
-          ].map(([num, label]) => (
-            <div key={label}>
-              <p>{num}</p>
-              <h3>{label}</h3>
-            </div>
           ))}
-        </section>
-
-        <section id="theory" className="section">
-          <p className="eyebrow">The Theory</p>
-
-          <h2>What Is The Ascend Theory?</h2>
-
-          <p>
-            The Ascend Theory is a modern education and media platform built
-            around financial literacy, market awareness, personal discipline,
-            systems thinking, technology, and self-development.
-          </p>
-        </section>
-
-        <section className="grantSection">
-          <p className="eyebrow">Impact Direction</p>
-
-          <h2>
-            Built For Education,
-            <br />
-            Media, And Community Impact.
-          </h2>
-
-          <p>
-            The Ascend Theory is positioned as a modern youth-focused and
-            community-driven media education platform designed to improve
-            financial literacy, discipline, digital awareness, market
-            understanding, and personal development.
-          </p>
-
-          <div className="grantGrid">
-            {[
-              [
-                "Audience",
-                "Students, young adults, creators, traders, builders, and ambitious learners.",
-              ],
-              [
-                "Impact",
-                "Financial literacy, digital skills, self-development, discipline, and long-term thinking.",
-              ],
-              [
-                "Infrastructure",
-                "Live website, branded domain, professional email, waitlist database, and automated welcome system.",
-              ],
-              [
-                "Expansion",
-                "Workshops, seminars, podcasts, video education, community programs, and digital resources.",
-              ],
-            ].map(([title, text]) => (
-              <div key={title}>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="cardsSection">
-          {[
-            [
-              "Media",
-              "Short-form, long-form, podcasts, interviews, and market breakdowns.",
-            ],
-            [
-              "Education",
-              "Financial literacy, digital skills, discipline, and self-development resources.",
-            ],
-            [
-              "Community",
-              "A global identity for builders, students, creators, traders, and ambitious learners.",
-            ],
-          ].map(([title, text]) => (
-            <div className="goldCard" key={title}>
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </div>
-          ))}
-        </section>
-
-        <section id="pillars" className="section">
-          <p className="eyebrow">Core Pillars</p>
-
-          <h2>The Foundation</h2>
-
-          <div className="gridCards">
-            {pillars.map(([title, text]) => (
-              <div className="card" key={title}>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="ecosystem" className="ecosystem">
-          <p className="eyebrow">Ecosystem</p>
-
-          <h2>
-            More Than Content.
-            <br />A Movement.
-          </h2>
-
-          <p>
-            The Ascend Theory is expanding into media, education, community,
-            digital resources, financial literacy, youth programs, live
-            sessions, podcasts, and market breakdowns.
-          </p>
-
-          <div className="ecosystemGrid">
-            {ecosystem.map((item) => (
-              <div key={item}>{item}</div>
-            ))}
-          </div>
-        </section>
-
-        <section id="contact" className="section">
-          <p className="eyebrow">Join Early</p>
-
-          <h2>Be Part of the Foundation.</h2>
-
-          <p>Join the early list and move with the first Ascenders.</p>
-
-          <form onSubmit={handleWaitlistSubmit} className="form">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email address"
-            />
-
-            <button type="submit" disabled={loading}>
-              {loading ? "Joining..." : "Ascend"}
-            </button>
-          </form>
-
-          {formStatus && <p className="status">{formStatus}</p>}
-        </section>
-      </main>
-
-      <style jsx global>{`
-        * {
-          box-sizing: border-box;
-        }
-
-        html {
-          scroll-behavior: smooth;
-        }
-
-        body {
-          margin: 0;
-          background: #030303;
-          color: white;
-          font-family: Arial, Helvetica, sans-serif;
-          overflow-x: hidden;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .homeSite {
-          position: relative;
-          min-height: 100vh;
-          background: #030303;
-          overflow: hidden;
-        }
-
-        .homeBackground {
-          position: fixed;
-          inset: 0;
-          pointer-events: none;
-          z-index: 0;
-        }
-
-        .homeGlow {
-          position: absolute;
-          border-radius: 999px;
-          filter: blur(120px);
-          background: rgba(234, 179, 8, 0.16);
-        }
-
-        .homeGlowOne {
-          width: 420px;
-          height: 420px;
-          top: -80px;
-          right: 10%;
-        }
-
-        .homeGlowTwo {
-          width: 360px;
-          height: 360px;
-          bottom: 20%;
-          left: -80px;
-          opacity: 0.45;
-        }
-
-        .homeGridBg {
-          position: absolute;
-          inset: 0;
-          background-image:
-            linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-          background-size: 80px 80px;
-          opacity: 0.5;
-        }
-
-        .hero {
-          position: relative;
-          z-index: 5;
-          min-height: 92vh;
-          padding: 90px 6%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-
-        .heroLogo {
-          width: 180px;
-          height: 180px;
-          object-fit: contain;
-          margin-bottom: 34px;
-          filter: drop-shadow(0 0 45px rgba(234, 179, 8, 0.25));
-        }
-
-        .eyebrow {
-          color: #eab308;
-          text-transform: uppercase;
-          letter-spacing: 0.42em;
-          font-size: 12px;
-          margin-bottom: 22px;
-        }
-
-        .hero h1 {
-          font-size: clamp(56px, 10vw, 145px);
-          line-height: 0.9;
-          letter-spacing: -0.08em;
-          margin: 0;
-          max-width: 1150px;
-        }
-
-        .hero h2 {
-          color: #eab308;
-          font-size: clamp(28px, 4vw, 58px);
-          margin: 26px 0 0;
-        }
-
-        .heroText,
-        .section p,
-        .ecosystem p {
-          max-width: 800px;
-          color: rgba(255, 255, 255, 0.7);
-          font-size: 18px;
-          line-height: 1.75;
-        }
-
-        .buttons {
-          display: flex;
-          gap: 16px;
-          flex-wrap: wrap;
-          margin-top: 34px;
-        }
-
-        .primary,
-        .secondary,
-        .form button {
-          padding: 16px 26px;
-          border-radius: 999px;
-          font-weight: 700;
-          transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        .primary,
-        .form button {
-          background: #eab308;
-          color: black;
-          border: none;
-        }
-
-        .secondary {
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: white;
-        }
-
-        .primary:hover,
-        .form button:hover {
-          transform: scale(1.04);
-          background: #facc15;
-        }
-
-        .secondary:hover {
-          background: rgba(255, 255, 255, 0.08);
-        }
-
-        .missionStrip {
-          position: relative;
-          z-index: 5;
-          padding: 60px 6%;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 28px;
-          background: rgba(255, 255, 255, 0.02);
-        }
-
-        .missionStrip p {
-          color: #eab308;
-        }
-
-        .missionStrip h3 {
-          font-size: 24px;
-          margin: 0;
-        }
-
-        .section {
-          position: relative;
-          z-index: 5;
-          padding: 105px 6%;
-        }
-
-        .section h2,
-        .ecosystem h2,
-        .grantSection h2 {
-          font-size: clamp(42px, 6vw, 78px);
-          line-height: 1;
-          margin: 0 0 28px;
-        }
-
-        .grantSection {
-          position: relative;
-          z-index: 5;
-          padding: 100px 6%;
-          border-top: 1px solid rgba(255,255,255,0.08);
-          border-bottom: 1px solid rgba(255,255,255,0.08);
-          background: linear-gradient(
-            135deg,
-            rgba(234,179,8,0.08),
-            rgba(255,255,255,0.025)
-          );
-        }
-
-        .grantSection > p {
-          max-width: 900px;
-          color: rgba(255,255,255,0.72);
-          font-size: 19px;
-          line-height: 1.8;
-        }
-
-        .grantGrid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 18px;
-          margin-top: 50px;
-        }
-
-        .grantGrid div {
-          border: 1px solid rgba(234,179,8,0.2);
-          background: rgba(0,0,0,0.28);
-          border-radius: 24px;
-          padding: 26px;
-        }
-
-        .grantGrid h3 {
-          color: #eab308;
-          margin-top: 0;
-          font-size: 22px;
-        }
-
-        .grantGrid p {
-          color: rgba(255,255,255,0.68);
-          line-height: 1.7;
-        }
-
-        .cardsSection {
-          position: relative;
-          z-index: 5;
-          padding: 70px 6%;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 22px;
-        }
-
-        .goldCard,
-        .card {
-          border-radius: 28px;
-          padding: 32px;
-          border: 1px solid rgba(234, 179, 8, 0.22);
-          background: rgba(234, 179, 8, 0.045);
-        }
-
-        .goldCard h3,
-        .card h3 {
-          color: #eab308;
-          font-size: 28px;
-          margin-top: 0;
-        }
-
-        .goldCard p,
-        .card p {
-          color: rgba(255, 255, 255, 0.68);
-          line-height: 1.7;
-        }
-
-        .gridCards {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 22px;
-        }
-
-        .card {
-          border-color: rgba(255, 255, 255, 0.1);
-          background: rgba(255, 255, 255, 0.045);
-        }
-
-        .ecosystem {
-          position: relative;
-          z-index: 5;
-          margin: 70px 6%;
-          padding: 75px;
-          border-radius: 42px;
-          border: 1px solid rgba(234, 179, 8, 0.22);
-          background: linear-gradient(
-            135deg,
-            rgba(234, 179, 8, 0.12),
-            rgba(255, 255, 255, 0.035)
-          );
-        }
-
-        .ecosystemGrid {
-          margin-top: 40px;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 14px;
-        }
-
-        .ecosystemGrid div {
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 18px;
-          padding: 18px;
-          background: rgba(0, 0, 0, 0.35);
-          color: rgba(255, 255, 255, 0.75);
-        }
-
-        .form {
-          display: flex;
-          gap: 14px;
-          max-width: 620px;
-          margin-top: 30px;
-        }
-
-        .form input {
-          flex: 1;
-          padding: 16px 20px;
-          border-radius: 999px;
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          background: rgba(255, 255, 255, 0.06);
-          color: white;
-          outline: none;
-        }
-
-        .status {
-          color: #eab308 !important;
-          margin-top: 20px;
-        }
-
-        @media (max-width: 850px) {
-          .heroLogo {
-            width: 145px;
-            height: 145px;
-          }
-
-          .missionStrip,
-          .cardsSection,
-          .gridCards,
-          .ecosystemGrid,
-          .grantGrid {
-            grid-template-columns: 1fr;
-          }
-
-          .ecosystem {
-            margin: 50px 20px;
-            padding: 36px 24px;
-          }
-
-          .form {
-            flex-direction: column;
-          }
-        }
-      `}</style>
-    </>
+        </div>
+      </section>
+    </main>
   );
 }
