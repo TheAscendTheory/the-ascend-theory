@@ -46,6 +46,15 @@ const emptyTrade = {
   notes: "",
 };
 
+function readStoredTrades() {
+  try {
+    const savedTrades = window.localStorage.getItem("ascend-trade-journal");
+    return savedTrades ? (JSON.parse(savedTrades) as Trade[]) : [];
+  } catch {
+    return [];
+  }
+}
+
 function toNumber(value: string) {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : 0;
@@ -115,14 +124,16 @@ export default function TradeJournal() {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [form, setForm] = useState(emptyTrade);
   const [userId, setUserId] = useState("");
+  const [storageReady, setStorageReady] = useState(false);
   const [syncStatus, setSyncStatus] = useState("Saved in this browser.");
 
   useEffect(() => {
-    const savedTrades = window.localStorage.getItem("ascend-trade-journal");
+    const restoreTrades = window.setTimeout(() => {
+      setTrades(readStoredTrades());
+      setStorageReady(true);
+    }, 0);
 
-    if (savedTrades) {
-      setTrades(JSON.parse(savedTrades) as Trade[]);
-    }
+    return () => window.clearTimeout(restoreTrades);
   }, []);
 
   useEffect(() => {
@@ -130,18 +141,21 @@ export default function TradeJournal() {
       return;
     }
 
+    const client = supabase;
+
     async function loadCloudTrades() {
       const {
         data: { user },
-      } = await supabase.auth.getUser();
+        error: userError,
+      } = await client.auth.getUser();
 
-      if (!user) {
+      if (userError || !user) {
         return;
       }
 
       setUserId(user.id);
 
-      const { data, error } = await supabase
+      const { data: tradeRows, error: tradeError } = await client
         .from("ascend_user_trades")
         .select(
           "id, trade_date, symbol, direction, entry, exit, stop, size, fees, setup, notes"
@@ -149,12 +163,12 @@ export default function TradeJournal() {
         .order("trade_date", { ascending: false })
         .order("created_at", { ascending: false });
 
-      if (error) {
-        setSyncStatus("Cloud sync is ready, but the journal table is not available yet.");
+      if (tradeError) {
+        setSyncStatus("Saved locally. Apply the Supabase market tools schema to enable profile sync.");
         return;
       }
 
-      setTrades((data as TradeRow[]).map(rowToTrade));
+      setTrades((tradeRows as TradeRow[]).map(rowToTrade));
       setSyncStatus("Synced to your Ascend profile.");
     }
 
@@ -162,7 +176,7 @@ export default function TradeJournal() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = client.auth.onAuthStateChange((_event, session) => {
       if (!session?.user) {
         setUserId("");
         setSyncStatus("Saved in this browser.");
@@ -177,8 +191,12 @@ export default function TradeJournal() {
   }, [supabase]);
 
   useEffect(() => {
+    if (!storageReady) {
+      return;
+    }
+
     window.localStorage.setItem("ascend-trade-journal", JSON.stringify(trades));
-  }, [trades]);
+  }, [storageReady, trades]);
 
   const stats = useMemo(() => {
     const profits = trades.map(tradeProfit);

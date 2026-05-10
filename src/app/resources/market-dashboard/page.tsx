@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import AlertPlanner from "./AlertPlanner";
+import TradingWorkspace from "../charting/TradingWorkspace";
+import TradingViewAdvancedChart from "./TradingViewAdvancedChart";
 
 export const metadata: Metadata = {
   title: "Market Dashboard",
   description:
-    "Use The Ascend Theory market dashboard for live charting, watchlists, drawing tools, risk planning, and economic event awareness.",
+    "Use The Ascend Theory market dashboard for order flow, liquidity, structure, correlation, volatility, risk, execution planning, heatmaps, sessions, and market awareness.",
 };
 
 const workflow = [
@@ -24,36 +26,44 @@ export default function MarketDashboardPage() {
         <h1>MARKET DASHBOARD.</h1>
 
         <p>
-          A practical market hub connecting charting, calendar awareness, risk
-          management, trade journaling, and alert planning into one workflow.
+          A practical market hub connecting order flow, liquidity, structure,
+          macro context, volatility, risk, execution planning, journaling, and
+          session timing into one workflow.
         </p>
 
         <div className="pageCtaActions">
-          <a href="/resources/charting" className="pageCtaPrimary">
-            Open Charts
+          <a href="#live-chart" className="pageCtaPrimary">
+            Open Trading Desk
           </a>
 
-          <a href="/resources/demo-trading" className="pageCtaSecondary">
-            Practice Demo Trading
+          <a href="#workspace-tools" className="pageCtaSecondary">
+            Customize Tools
           </a>
         </div>
       </section>
 
+      <section id="live-chart" className="chartingStage unifiedTradingStage">
+        <TradingViewAdvancedChart />
+      </section>
+
+      <div id="workspace-tools">
+        <TradingWorkspace />
+      </div>
+
       <section className="resourceCallout">
         <p className="eyebrow">Market Stack</p>
 
-        <h2>Chart, plan, size, and review.</h2>
+        <h2>One clean workflow: chart, plan, size, journal.</h2>
 
         <p>
-          The dashboard exists to connect the tools, not hide them. Start with
-          the chart, check the calendar, size the trade, then journal the
-          outcome.
+          The chart stays first. Everything else is optional and collapsible so
+          traders can work minimally or open only the panels they need.
         </p>
 
         <div className="marketToolGrid">
           <a href="/resources/charting">
-            <strong>Charts</strong>
-            <span>Live charts, watchlists, drawing tools, and indicators.</span>
+            <strong>Charting Desk</strong>
+            <span>Live chart with optional watchlist, structure, flow notes, risk, journal, and sessions.</span>
           </a>
 
           <a href="/resources/economic-calendar">
@@ -84,9 +94,9 @@ export default function MarketDashboardPage() {
         <h2>Turn random watching into a written trigger.</h2>
 
         <p>
-          This planner does not send live notifications yet. Use it to define
-          the symbol, level, and reason before setting a live alert in your
-          broker or TradingView account.
+          Use this planner to define the symbol, level, and reason before
+          setting a live alert in your broker, TradingView account, or future
+          notification workflow.
         </p>
 
         <AlertPlanner />

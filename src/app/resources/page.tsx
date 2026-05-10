@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Resources",
@@ -44,8 +45,13 @@ const upcomingResources = [
 
 const marketTools = [
   {
+    title: "Ascend Academy",
+    text: "A staged curriculum with lessons, quizzes, XP, badges, and account levels from first principles to advanced market thinking.",
+    href: "/learn",
+  },
+  {
     title: "Market Dashboard",
-    text: "Use the market hub to move between charts, calendar events, risk planning, journaling, and alerts.",
+    text: "Use the trader workstation for liquidity, order flow, structure, correlation, volatility, exposure, execution planning, heatmaps, sessions, and alerts.",
     href: "/resources/market-dashboard",
   },
   {
@@ -73,6 +79,11 @@ const marketTools = [
     text: "Log trades and track win rate, profit factor, profitability, net P/L, and average R.",
     href: "/resources/trade-journal",
   },
+  {
+    title: "Affiliate Offers",
+    text: "Prop firm codes, platform offers, and partner tools with clear risk notes and transparent disclosure.",
+    href: "/affiliates",
+  },
 ];
 
 export default function ResourcesPage() {
@@ -81,7 +92,7 @@ export default function ResourcesPage() {
       <section className="resourcesHero">
         <p className="eyebrow">Resources</p>
 
-        <h1>TOOLS FOR ASCENSION.</h1>
+        <h1>ASCENDER TOOLKIT.</h1>
 
         <p>
           Educational systems, financial literacy resources, frameworks, market
@@ -99,9 +110,9 @@ export default function ResourcesPage() {
             Open Starter Guide
           </a>
 
-          <a href="/#waitlist" className="pageCtaSecondary">
+          <Link href="/#waitlist" className="pageCtaSecondary">
             Join For Updates
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -127,10 +138,10 @@ export default function ResourcesPage() {
 
         <div className="resourceLibraryGrid">
           {marketTools.map((tool) => (
-            <a key={tool.title} href={tool.href}>
+            <Link key={tool.title} href={tool.href}>
               <strong>{tool.title}</strong>
               <span>{tool.text}</span>
-            </a>
+            </Link>
           ))}
         </div>
       </section>
@@ -172,9 +183,9 @@ export default function ResourcesPage() {
             Open Starter Guide
           </a>
 
-          <a href="/programs" className="pageCtaSecondary">
+          <Link href="/programs" className="pageCtaSecondary">
             Explore Programs
-          </a>
+          </Link>
         </div>
       </section>
     </main>

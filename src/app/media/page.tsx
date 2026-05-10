@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import MediaLibrary from "./MediaLibrary";
 
 export const metadata: Metadata = {
   title: "Media",
@@ -84,22 +85,12 @@ export default function MediaPage() {
         </p>
 
         <div className="pageCtaActions">
-          <a
-            href="https://www.youtube.com/@TheAscendTheoryGlobal"
-            target="_blank"
-            rel="noreferrer"
-            className="pageCtaPrimary"
-          >
-            Watch YouTube
+          <a href="#media-library" className="pageCtaPrimary">
+            Open Player
           </a>
 
-          <a
-            href="https://www.tiktok.com/@theascendtheoryglobal"
-            target="_blank"
-            rel="noreferrer"
-            className="pageCtaSecondary"
-          >
-            Follow TikTok
+          <a href="#media-series" className="pageCtaSecondary">
+            Browse Series
           </a>
         </div>
       </section>
@@ -113,7 +104,9 @@ export default function MediaPage() {
         ))}
       </section>
 
-      <section className="mediaCallout">
+      <MediaLibrary />
+
+      <section id="media-series" className="mediaCallout">
         <p className="eyebrow">Content Series</p>
 
         <h2>Original formats built around education and execution.</h2>

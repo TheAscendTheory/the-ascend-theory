@@ -6,11 +6,12 @@
   align-items: center;
   justify-content: space-between;
   min-height: 76px;
-  padding: 16px 6%;
-  background: rgba(3, 3, 3, 0.88);
+  padding: 14px 6%;
+  background: rgba(3, 3, 3, 0.82);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
 }
 
 .brandLink {
@@ -30,6 +31,8 @@
   height: 42px;
   object-fit: contain;
   flex: 0 0 auto;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.18));
 }
 
 .brandLink span {
@@ -39,25 +42,86 @@
 .desktopNav {
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.4vw, 20px);
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
 }
 
 .desktopNav a,
+.desktopNav button,
 .mobileNav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 13px;
-  transition: color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
 }
 
 .desktopNav a:hover,
+.desktopNav button:hover,
 .mobileNav a:hover,
 .desktopNav a.activeNavLink,
+.desktopNav button.activeNavLink,
 .mobileNav a.activeNavLink {
   color: #eab308;
 }
 
-.desktopNav a.activeNavLink {
+.desktopNav a,
+.desktopNav button {
+  min-height: 36px;
+  padding: 9px 13px;
+  border-radius: 999px;
+}
+
+.desktopNav button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.desktopNav a:hover,
+.desktopNav button:hover,
+.desktopNav a.activeNavLink,
+.desktopNav button.activeNavLink {
+  background: rgba(234, 179, 8, 0.09);
+}
+
+.desktopNav a.activeNavLink,
+.desktopNav button.activeNavLink {
   font-weight: 800;
+}
+
+.moreNavWrap {
+  position: relative;
+}
+
+.moreNavPanel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 1001;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(170px, 1fr));
+  gap: 6px;
+  width: min(430px, calc(100vw - 44px));
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  background: rgba(3, 3, 3, 0.96);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.48);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+.moreNavPanel a {
+  justify-content: flex-start;
+  border-radius: 12px;
+  white-space: nowrap;
 }
 
 .menuButton {
@@ -98,13 +162,27 @@
   padding: 4px 0;
 }
 
+.mobileNavGroup {
+  display: grid;
+  gap: 12px;
+}
+
+.mobileNavGroup p {
+  margin: 0;
+  color: #eab308;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
 @media (max-width: 1020px) {
   .desktopNav {
-    gap: 14px;
+    gap: 6px;
   }
 
   .desktopNav a {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .brandLink {

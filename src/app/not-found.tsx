@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function NotFound() {
   return (
     <main className="notFoundPage">
@@ -12,13 +14,13 @@ export default function NotFound() {
         </p>
 
         <div className="pageCtaActions">
-          <a href="/" className="pageCtaPrimary">
+          <Link href="/" className="pageCtaPrimary">
             Return Home
-          </a>
+          </Link>
 
-          <a href="/programs" className="pageCtaSecondary">
+          <Link href="/programs" className="pageCtaSecondary">
             View Programs
-          </a>
+          </Link>
         </div>
       </section>
     </main>

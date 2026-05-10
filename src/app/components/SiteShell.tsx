@@ -2,23 +2,41 @@
 
 import "./siteshell.css";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
+import AIAssistantDock from "./AIAssistantDock";
+import { MediaLayerProvider } from "./MediaLayer";
 
-const navLinks = [
+const primaryLinks = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Programs", href: "/programs" },
-  { label: "Media", href: "/media" },
+  { label: "Charts", href: "/resources/market-dashboard" },
+  { label: "Economic Calendar", href: "/resources/economic-calendar" },
+  { label: "Academy", href: "/learn" },
+  { label: "News", href: "/news" },
+  { label: "Social", href: "/social" },
+];
+
+const moreLinks = [
   { label: "Resources", href: "/resources" },
-  { label: "Charts", href: "/resources/charting" },
-  { label: "Journal", href: "/resources/trade-journal" },
+  { label: "Risk Calculator", href: "/resources/risk-calculator" },
+  { label: "Demo Trading", href: "/resources/demo-trading" },
+  { label: "Trade Journal", href: "/resources/trade-journal" },
+  { label: "Affiliates", href: "/affiliates" },
+  { label: "Programs", href: "/programs" },
   { label: "Community", href: "/community" },
-  { label: "Shop", href: "/shop" },
+  { label: "Media", href: "/media" },
+  { label: "About", href: "/about" },
   { label: "Account", href: "/account" },
+  { label: "Shop", href: "/shop" },
   { label: "Contact", href: "/contact" },
+];
+
+const mobileGroups = [
+  { title: "Main", links: primaryLinks },
+  { title: "Explore", links: moreLinks },
 ];
 
 export default function SiteShell({
@@ -28,9 +46,11 @@ export default function SiteShell({
 }>) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
 
   function closeMenu() {
     setMenuOpen(false);
+    setMoreOpen(false);
   }
 
   function isActiveLink(href: string) {
@@ -47,14 +67,21 @@ export default function SiteShell({
 
   return (
     <>
+      <MediaLayerProvider>
       <nav className="globalNav" aria-label="Primary navigation">
         <Link href="/" className="brandLink" onClick={closeMenu}>
-          <img src="/logo.PNG" alt="The Ascend Theory" />
+          <Image
+            src="/logo.PNG"
+            alt="The Ascend Theory"
+            width={3543}
+            height={3135}
+            priority
+          />
           <span>The Ascend Theory</span>
         </Link>
 
         <div className="desktopNav">
-          {navLinks.map((link) => (
+          {primaryLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
@@ -63,6 +90,33 @@ export default function SiteShell({
               {link.label}
             </Link>
           ))}
+
+          <div className="moreNavWrap">
+            <button
+              type="button"
+              className={moreLinks.some((link) => isActiveLink(link.href)) ? "activeNavLink" : ""}
+              onClick={() => setMoreOpen((open) => !open)}
+              aria-expanded={moreOpen}
+              aria-controls="more-navigation"
+            >
+              More <ChevronDown size={15} />
+            </button>
+
+            {moreOpen && (
+              <div id="more-navigation" className="moreNavPanel">
+                {moreLinks.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className={isActiveLink(link.href) ? "activeNavLink" : ""}
+                    onClick={closeMenu}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <button
@@ -79,20 +133,27 @@ export default function SiteShell({
 
       {menuOpen && (
         <div id="mobile-navigation" className="mobileNav">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className={isActiveLink(link.href) ? "activeNavLink" : ""}
-              onClick={closeMenu}
-            >
-              {link.label}
-            </Link>
+          {mobileGroups.map((group) => (
+            <div key={group.title} className="mobileNavGroup">
+              <p>{group.title}</p>
+              {group.links.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className={isActiveLink(link.href) ? "activeNavLink" : ""}
+                  onClick={closeMenu}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           ))}
         </div>
       )}
 
       {children}
+      <AIAssistantDock />
+      </MediaLayerProvider>
     </>
   );
 }

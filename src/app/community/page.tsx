@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Community",
@@ -86,14 +87,9 @@ export default function CommunityPage() {
         </p>
 
         <div className="pageCtaActions">
-          <a
-            href="https://discord.gg/sRkBrb2n"
-            target="_blank"
-            rel="noreferrer"
-            className="pageCtaPrimary"
-          >
-            Join Discord
-          </a>
+          <Link href="/social" className="pageCtaPrimary">
+            Open Social
+          </Link>
 
           <a
             href="https://www.youtube.com/@TheAscendTheoryGlobal"
@@ -151,12 +147,13 @@ export default function CommunityPage() {
         <h2>The community now has live channels.</h2>
 
         <p>
-          Join the Discord for the early foundation, then follow the media
-          channels as The Ascend Theory builds across video, social, and
-          professional platforms.
+          Use the in-app social hub for notifications, friend requests, direct
+          messages, stories, highlights, and saved posts. External media
+          channels stay focused on publishing and public discovery.
         </p>
 
         <div className="socialLinkGrid">
+          <Link href="/social">Open Social Hub</Link>
           {socialLinks.map((link) => (
             <a
               key={link.label}
@@ -180,13 +177,13 @@ export default function CommunityPage() {
         </p>
 
         <div className="pageCtaActions">
-          <a href="/#contact" className="pageCtaPrimary">
+          <Link href="/#waitlist" className="pageCtaPrimary">
             Join The Waitlist
-          </a>
+          </Link>
 
-          <a href="/programs" className="pageCtaSecondary">
+          <Link href="/programs" className="pageCtaSecondary">
             Explore Programs
-          </a>
+          </Link>
         </div>
       </section>
     </main>

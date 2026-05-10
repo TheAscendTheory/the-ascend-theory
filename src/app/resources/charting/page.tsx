@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import TradingViewAdvancedChart from "../market-dashboard/TradingViewAdvancedChart";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Charts",
@@ -40,14 +40,21 @@ export default function ChartingPage() {
         </div>
       </section>
 
-      <section className="chartingStage">
-        <TradingViewAdvancedChart />
-      </section>
-
       <section className="resourceCallout">
         <p className="eyebrow">Charting Process</p>
 
-        <h2>Read the market before reacting to it.</h2>
+        <h2>The full charting desk now lives in Market Dashboard.</h2>
+
+        <p>
+          To keep the experience seamless, charts, watchlists, structure,
+          risk, session planning, and journaling are grouped in one workspace.
+        </p>
+
+        <div className="pageCtaActions">
+          <Link href="/resources/market-dashboard" className="pageCtaPrimary">
+            Open Market Dashboard
+          </Link>
+        </div>
 
         <div className="resourceLibraryGrid">
           {chartingPrinciples.map((item) => (

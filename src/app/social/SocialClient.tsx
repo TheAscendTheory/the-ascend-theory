@@ -1,0 +1,786 @@
+"use client";
+
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Bell,
+  Bookmark,
+  Check,
+  MessageCircle,
+  Plus,
+  Search,
+  Send,
+  UserPlus,
+} from "lucide-react";
+import { createBrowserSupabaseClient } from "../lib/supabaseBrowser";
+
+type Profile = {
+  user_id: string;
+  display_name: string;
+  handle: string | null;
+};
+
+type Friendship = {
+  id: string;
+  requester_id: string;
+  addressee_id: string;
+  status: "pending" | "accepted" | "blocked";
+};
+
+type Post = {
+  id: string;
+  user_id: string;
+  body: string;
+  visibility: "public" | "friends" | "private";
+  created_at: string;
+};
+
+type SavedPost = {
+  post_id: string;
+};
+
+type Story = {
+  id: string;
+  user_id: string;
+  caption: string;
+  expires_at: string;
+  kept_on_profile: boolean;
+};
+
+type Message = {
+  id: string;
+  conversation_id: string;
+  sender_id: string;
+  body: string;
+  created_at: string;
+};
+
+type Notification = {
+  id: string;
+  body: string;
+  read_at: string | null;
+};
+
+type Friend = {
+  id: string;
+  userId: string;
+  name: string;
+  handle: string;
+  friendshipId: string;
+  status: "friend" | "request";
+  direction: "incoming" | "outgoing";
+  conversationId?: string;
+};
+
+function profileName(profile: Profile | undefined, fallback = "Ascender") {
+  return profile?.display_name || profile?.handle || fallback;
+}
+
+function profileHandle(profile: Profile | undefined) {
+  return profile?.handle ? `@${profile.handle}` : "@ascender";
+}
+
+function hoursLeft(expiresAt: string) {
+  const diff = new Date(expiresAt).getTime() - Date.now();
+  const hours = Math.max(Math.ceil(diff / 36e5), 0);
+  return hours > 0 ? `${hours}h` : "expired";
+}
+
+export default function SocialClient() {
+  const supabase = useMemo(() => createBrowserSupabaseClient(), []);
+  const [userId, setUserId] = useState("");
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [friendships, setFriendships] = useState<Friendship[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [savedPosts, setSavedPosts] = useState<SavedPost[]>([]);
+  const [stories, setStories] = useState<Story[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [activeFriendId, setActiveFriendId] = useState("");
+  const [activeConversationId, setActiveConversationId] = useState("");
+  const [messageDraft, setMessageDraft] = useState("");
+  const [postDraft, setPostDraft] = useState("");
+  const [storyDraft, setStoryDraft] = useState("");
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const profileMap = useMemo(
+    () => new Map(profiles.map((profile) => [profile.user_id, profile])),
+    [profiles]
+  );
+
+  const friends = useMemo<Friend[]>(() => {
+    if (!userId) {
+      return [];
+    }
+
+    return friendships
+      .map((friendship) => {
+        const otherUserId =
+          friendship.requester_id === userId
+            ? friendship.addressee_id
+            : friendship.requester_id;
+        const otherProfile = profileMap.get(otherUserId);
+
+        return {
+          id: otherUserId,
+          userId: otherUserId,
+          name: profileName(otherProfile),
+          handle: profileHandle(otherProfile),
+          friendshipId: friendship.id,
+          status:
+            friendship.status === "accepted"
+              ? ("friend" as const)
+              : ("request" as const),
+          direction:
+            friendship.addressee_id === userId
+              ? ("incoming" as const)
+              : ("outgoing" as const),
+        };
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [friendships, profileMap, userId]);
+
+  const activeFriend = friends.find((friend) => friend.id === activeFriendId);
+  const friendRequests = friends.filter(
+    (friend) => friend.status === "request" && friend.direction === "incoming"
+  );
+  const savedPostIds = useMemo(
+    () => new Set(savedPosts.map((savedPost) => savedPost.post_id)),
+    [savedPosts]
+  );
+  const savedPostList = posts.filter((post) => savedPostIds.has(post.id));
+  const profileHighlights = stories.filter(
+    (story) => story.user_id === userId && story.kept_on_profile
+  );
+
+  const notificationText = useMemo(() => {
+    const unread = notifications.filter((notification) => !notification.read_at);
+    return unread.length
+      ? unread.map((notification) => notification.body)
+      : [
+          `${friendRequests.length} friend request${friendRequests.length === 1 ? "" : "s"}`,
+          `${savedPostList.length} saved post${savedPostList.length === 1 ? "" : "s"}`,
+          `${stories.filter((story) => !story.kept_on_profile).length} active stories`,
+        ];
+  }, [friendRequests.length, notifications, savedPostList.length, stories]);
+
+  const loadSocialData = useCallback(async () => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      setUserId("");
+      setLoading(false);
+      return;
+    }
+
+    const displayName =
+      String(user.user_metadata.display_name || "") ||
+      user.email?.split("@")[0] ||
+      "Ascender";
+    const handle = String(user.user_metadata.handle || "")
+      .trim()
+      .toLowerCase()
+      .replace(/^@/, "")
+      .replace(/[^a-z0-9_]/g, "");
+
+    await supabase.from("ascend_profiles").upsert({
+      user_id: user.id,
+      display_name: displayName,
+      handle: handle || null,
+      updated_at: new Date().toISOString(),
+    });
+
+    setUserId(user.id);
+
+    const [
+      profilesResult,
+      friendshipsResult,
+      postsResult,
+      savedPostsResult,
+      storiesResult,
+      notificationsResult,
+    ] = await Promise.all([
+      supabase
+        .from("ascend_profiles")
+        .select("user_id, display_name, handle")
+        .order("display_name", { ascending: true }),
+      supabase
+        .from("ascend_friendships")
+        .select("id, requester_id, addressee_id, status")
+        .order("updated_at", { ascending: false }),
+      supabase
+        .from("ascend_social_posts")
+        .select("id, user_id, body, visibility, created_at")
+        .order("created_at", { ascending: false })
+        .limit(40),
+      supabase.from("ascend_saved_posts").select("post_id"),
+      supabase
+        .from("ascend_stories")
+        .select("id, user_id, caption, expires_at, kept_on_profile")
+        .order("created_at", { ascending: false })
+        .limit(40),
+      supabase
+        .from("ascend_notifications")
+        .select("id, body, read_at")
+        .order("created_at", { ascending: false })
+        .limit(20),
+    ]);
+
+    if (profilesResult.data) {
+      setProfiles(profilesResult.data as Profile[]);
+    }
+
+    if (friendshipsResult.data) {
+      const loadedFriendships = friendshipsResult.data as Friendship[];
+      setFriendships(loadedFriendships);
+
+      const firstFriend = loadedFriendships.find(
+        (friendship) => friendship.status === "accepted"
+      );
+      if (firstFriend && !activeFriendId) {
+        setActiveFriendId(
+          firstFriend.requester_id === user.id
+            ? firstFriend.addressee_id
+            : firstFriend.requester_id
+        );
+      }
+    }
+
+    if (postsResult.data) {
+      setPosts(postsResult.data as Post[]);
+    }
+
+    if (savedPostsResult.data) {
+      setSavedPosts(savedPostsResult.data as SavedPost[]);
+    }
+
+    if (storiesResult.data) {
+      setStories(storiesResult.data as Story[]);
+    }
+
+    if (notificationsResult.data) {
+      setNotifications(notificationsResult.data as Notification[]);
+    }
+
+    const firstError =
+      profilesResult.error ||
+      friendshipsResult.error ||
+      postsResult.error ||
+      savedPostsResult.error ||
+      storiesResult.error ||
+      notificationsResult.error;
+
+    setStatus(firstError ? firstError.message : "");
+    setLoading(false);
+  }, [activeFriendId, supabase]);
+
+  useEffect(() => {
+    const loadTimer = window.setTimeout(() => {
+      loadSocialData();
+    }, 0);
+
+    if (!supabase) {
+      return () => window.clearTimeout(loadTimer);
+    }
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
+      loadSocialData();
+    });
+
+    return () => {
+      window.clearTimeout(loadTimer);
+      subscription.unsubscribe();
+    };
+  }, [loadSocialData, supabase]);
+
+  async function openConversation(friend: Friend) {
+    if (!supabase || !userId || friend.status !== "friend") {
+      return "";
+    }
+
+    setActiveFriendId(friend.id);
+
+    const { data, error } = await supabase.rpc("create_direct_conversation", {
+      other_user_id: friend.userId,
+    });
+
+    if (error || !data) {
+      setStatus(error?.message || "Unable to open chat.");
+      return "";
+    }
+
+    const conversationId = String(data);
+    setActiveConversationId(conversationId);
+
+    const { data: messageRows, error: messageError } = await supabase
+      .from("ascend_messages")
+      .select("id, conversation_id, sender_id, body, created_at")
+      .eq("conversation_id", conversationId)
+      .order("created_at", { ascending: true });
+
+    if (messageError) {
+      setStatus(messageError.message);
+    } else {
+      setMessages((messageRows as Message[]) || []);
+      setStatus("");
+    }
+
+    return conversationId;
+  }
+
+  async function sendFriendRequest(profile: Profile) {
+    if (!supabase || !userId) {
+      return;
+    }
+
+    const { error } = await supabase.from("ascend_friendships").insert({
+      requester_id: userId,
+      addressee_id: profile.user_id,
+      status: "pending",
+    });
+
+    if (error) {
+      setStatus(error.code === "23505" ? "Friend request already exists." : error.message);
+      return;
+    }
+
+    await supabase.from("ascend_notifications").insert({
+      user_id: profile.user_id,
+      actor_id: userId,
+      type: "friend_request",
+      body: `${profileName(profile)} received your friend request.`,
+      href: "/social",
+    });
+
+    setStatus(`Friend request sent to ${profileName(profile)}.`);
+    loadSocialData();
+  }
+
+  async function acceptRequest(friend: Friend) {
+    if (!supabase || !userId) {
+      return;
+    }
+
+    const { error } = await supabase
+      .from("ascend_friendships")
+      .update({ status: "accepted", updated_at: new Date().toISOString() })
+      .eq("id", friend.friendshipId);
+
+    if (error) {
+      setStatus(error.message);
+      return;
+    }
+
+    await supabase.from("ascend_notifications").insert({
+      user_id: friend.userId,
+      actor_id: userId,
+      type: "friend_accept",
+      body: "Your friend request was accepted.",
+      href: "/social",
+    });
+
+    loadSocialData();
+  }
+
+  async function addPost(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!supabase || !userId || !postDraft.trim()) {
+      return;
+    }
+
+    const { error } = await supabase.from("ascend_social_posts").insert({
+      user_id: userId,
+      body: postDraft.trim(),
+      visibility: "friends",
+    });
+
+    if (error) {
+      setStatus(error.message);
+      return;
+    }
+
+    setPostDraft("");
+    loadSocialData();
+  }
+
+  async function addStory(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!supabase || !userId || !storyDraft.trim()) {
+      return;
+    }
+
+    const { error } = await supabase.from("ascend_stories").insert({
+      user_id: userId,
+      caption: storyDraft.trim(),
+    });
+
+    if (error) {
+      setStatus(error.message);
+      return;
+    }
+
+    setStoryDraft("");
+    loadSocialData();
+  }
+
+  async function toggleSavedPost(post: Post) {
+    if (!supabase || !userId) {
+      return;
+    }
+
+    const isSaved = savedPostIds.has(post.id);
+    const result = isSaved
+      ? await supabase.from("ascend_saved_posts").delete().eq("post_id", post.id)
+      : await supabase.from("ascend_saved_posts").insert({
+          user_id: userId,
+          post_id: post.id,
+        });
+
+    if (result.error) {
+      setStatus(result.error.message);
+      return;
+    }
+
+    loadSocialData();
+  }
+
+  async function keepStory(story: Story) {
+    if (!supabase || story.user_id !== userId) {
+      return;
+    }
+
+    const { error } = await supabase
+      .from("ascend_stories")
+      .update({ kept_on_profile: true })
+      .eq("id", story.id);
+
+    if (error) {
+      setStatus(error.message);
+      return;
+    }
+
+    loadSocialData();
+  }
+
+  async function sendMessage(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!supabase || !activeFriend || !messageDraft.trim()) {
+      return;
+    }
+
+    const conversationId =
+      activeConversationId || (await openConversation(activeFriend));
+
+    if (!conversationId) {
+      return;
+    }
+
+    const { error } = await supabase.from("ascend_messages").insert({
+      conversation_id: conversationId,
+      sender_id: userId,
+      body: messageDraft.trim(),
+    });
+
+    if (error) {
+      setStatus(error.message);
+      return;
+    }
+
+    setMessageDraft("");
+    openConversation(activeFriend);
+  }
+
+  const involvedUserIds = new Set(friends.map((friend) => friend.userId));
+  const searchResults = profiles
+    .filter((profile) => profile.user_id !== userId)
+    .filter((profile) => !involvedUserIds.has(profile.user_id))
+    .filter((profile) =>
+      `${profile.display_name} ${profile.handle || ""}`
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    )
+    .slice(0, 5);
+
+  const visibleFriends = friends.filter((friend) =>
+    `${friend.name} ${friend.handle}`.toLowerCase().includes(search.toLowerCase())
+  );
+
+  if (!supabase) {
+    return (
+      <section className="socialAuthPanel">
+        <h2>Connect Supabase to activate social.</h2>
+        <p>
+          Add <code>NEXT_PUBLIC_SUPABASE_URL</code>{" "}
+          and{" "}
+          <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to the environment.
+        </p>
+      </section>
+    );
+  }
+
+  if (!userId && !loading) {
+    return (
+      <section className="socialAuthPanel">
+        <h2>Sign in to use Ascenders Social.</h2>
+        <p>
+          Friend requests, messages, notifications, stories, and saved posts are
+          connected to your Ascend profile.
+        </p>
+      </section>
+    );
+  }
+
+  return (
+    <section className="socialShell" aria-label="Ascenders social dashboard">
+      <aside className="socialRail" aria-label="Notifications">
+        <div className="socialPanelHeader">
+          <span>
+            <Bell size={18} />
+            Notifications
+          </span>
+          <strong>{notificationText.length}</strong>
+        </div>
+
+        <div className="notificationList">
+          {notificationText.map((notification) => (
+            <p key={notification}>{notification}</p>
+          ))}
+        </div>
+
+        <div className="socialPanelHeader compactHeader">
+          <span>
+            <UserPlus size={18} />
+            Requests
+          </span>
+        </div>
+
+        <div className="requestList">
+          {friendRequests.length === 0 ? (
+            <p>No pending friend requests.</p>
+          ) : (
+            friendRequests.map((friend) => (
+              <article key={friend.id}>
+                <div>
+                  <strong>{friend.name}</strong>
+                  <span>{friend.handle}</span>
+                </div>
+                <button type="button" onClick={() => acceptRequest(friend)}>
+                  <Check size={16} />
+                </button>
+              </article>
+            ))
+          )}
+        </div>
+
+        <div className="socialPanelHeader compactHeader">
+          <span>Find Friends</span>
+        </div>
+
+        <div className="profileSearchResults">
+          {searchResults.length === 0 ? (
+            <p>Search by name or handle.</p>
+          ) : (
+            searchResults.map((profile) => (
+              <article key={profile.user_id}>
+                <div>
+                  <strong>{profileName(profile)}</strong>
+                  <span>{profileHandle(profile)}</span>
+                </div>
+                <button type="button" onClick={() => sendFriendRequest(profile)}>
+                  <Plus size={16} />
+                </button>
+              </article>
+            ))
+          )}
+        </div>
+      </aside>
+
+      <div className="socialMain">
+        <form onSubmit={addStory} className="socialComposer storyComposer">
+          <input
+            value={storyDraft}
+            onChange={(event) => setStoryDraft(event.target.value)}
+            placeholder="Add a 24-hour story"
+          />
+          <button type="submit">
+            <Plus size={18} />
+          </button>
+        </form>
+
+        <section className="storyStrip" aria-label="Stories">
+          {stories.length === 0 ? (
+            <article className="storyBubble">
+              <strong>No stories yet</strong>
+              <span>Post one to start the 24-hour story lane.</span>
+            </article>
+          ) : (
+            stories.map((story) => {
+              const author = profileMap.get(story.user_id);
+              return (
+                <article key={story.id} className="storyBubble">
+                  <strong>{story.caption || "Story"}</strong>
+                  <span>
+                    {story.user_id === userId ? "You" : profileName(author)} -{" "}
+                    {story.kept_on_profile ? "kept" : hoursLeft(story.expires_at)}
+                  </span>
+                  {story.user_id === userId && !story.kept_on_profile && (
+                    <button type="button" onClick={() => keepStory(story)}>
+                      Keep
+                    </button>
+                  )}
+                </article>
+              );
+            })
+          )}
+        </section>
+
+        <section className="socialGrid">
+          <div className="socialFeed" aria-label="Posts">
+            <div className="socialPanelHeader">
+              <span>Member Posts</span>
+              <strong>{posts.length}</strong>
+            </div>
+
+            <form onSubmit={addPost} className="socialComposer">
+              <input
+                value={postDraft}
+                onChange={(event) => setPostDraft(event.target.value)}
+                placeholder="Share a post with friends"
+              />
+              <button type="submit">
+                <Send size={18} />
+              </button>
+            </form>
+
+            {posts.length === 0 ? (
+              <p className="emptySocialState">No posts yet.</p>
+            ) : (
+              posts.map((post) => {
+                const author = profileMap.get(post.user_id);
+                const saved = savedPostIds.has(post.id);
+                return (
+                  <article key={post.id} className="socialPost">
+                    <div>
+                      <strong>
+                        {post.user_id === userId ? "You" : profileName(author)}
+                      </strong>
+                      <span>{profileHandle(author)}</span>
+                    </div>
+                    <p>{post.body}</p>
+                    <button type="button" onClick={() => toggleSavedPost(post)}>
+                      <Bookmark size={17} fill={saved ? "currentColor" : "none"} />
+                      {saved ? "Saved" : "Save"}
+                    </button>
+                  </article>
+                );
+              })
+            )}
+          </div>
+
+          <aside className="profileShelf" aria-label="Profile saved items">
+            <div className="socialPanelHeader">
+              <span>Profile</span>
+              <strong>{profileHighlights.length}</strong>
+            </div>
+
+            <h3>Story Highlights</h3>
+            <div className="highlightList">
+              {profileHighlights.length === 0 ? (
+                <p>No highlights yet.</p>
+              ) : (
+                profileHighlights.map((story) => (
+                  <span key={story.id}>{story.caption || "Story"}</span>
+                ))
+              )}
+            </div>
+
+            <h3>Saved Posts</h3>
+            <div className="savedPostList">
+              {savedPostList.length === 0 ? (
+                <p>No saved posts yet.</p>
+              ) : (
+                savedPostList.map((post) => <p key={post.id}>{post.body}</p>)
+              )}
+            </div>
+          </aside>
+        </section>
+      </div>
+
+      <aside className="chatDock" aria-label="Direct messages">
+        <div className="chatSearch">
+          <Search size={16} />
+          <input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Find friends"
+          />
+        </div>
+
+        <div className="friendList">
+          {visibleFriends
+            .filter((friend) => friend.status === "friend")
+            .map((friend) => (
+              <button
+                key={friend.id}
+                type="button"
+                className={friend.id === activeFriendId ? "activeFriend" : ""}
+                onClick={() => openConversation(friend)}
+              >
+                <MessageCircle size={16} />
+                <span>{friend.name}</span>
+              </button>
+            ))}
+        </div>
+
+        <div className="chatWindow">
+          <div className="chatHeader">
+            <strong>{activeFriend?.name || "Select a friend"}</strong>
+            <span>{activeFriend?.handle}</span>
+          </div>
+
+          <div className="messageList">
+            {messages.length === 0 ? (
+              <p>No messages yet.</p>
+            ) : (
+              messages.map((message) => (
+                <p
+                  key={message.id}
+                  className={message.sender_id === userId ? "myMessage" : ""}
+                >
+                  {message.body}
+                </p>
+              ))
+            )}
+          </div>
+
+          <form onSubmit={sendMessage} className="chatBar">
+            <input
+              value={messageDraft}
+              onChange={(event) => setMessageDraft(event.target.value)}
+              placeholder="Message a friend"
+              disabled={!activeFriend}
+            />
+            <button type="submit" aria-label="Send message" disabled={!activeFriend}>
+              <Send size={18} />
+            </button>
+          </form>
+        </div>
+
+        {status && <p className="accountStatus">{status}</p>}
+      </aside>
+    </section>
+  );
+}

@@ -65,6 +65,32 @@ const defaultOrder = {
   notes: "",
 };
 
+function readStoredAccount() {
+  try {
+    const savedAccount = window.localStorage.getItem(accountKey);
+    return savedAccount
+      ? (JSON.parse(savedAccount) as typeof defaultAccount)
+      : defaultAccount;
+  } catch {
+    return defaultAccount;
+  }
+}
+
+function readStoredPositions() {
+  try {
+    const savedPositions = window.localStorage.getItem(positionsKey);
+    return savedPositions ? (JSON.parse(savedPositions) as Position[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function makeClosePriceMap(positions: Position[]) {
+  return Object.fromEntries(
+    positions.map((position) => [position.id, String(position.entry)])
+  );
+}
+
 function toNumber(value: string) {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : 0;
@@ -154,36 +180,39 @@ export default function DemoTrading() {
   const [order, setOrder] = useState(defaultOrder);
   const [closePrices, setClosePrices] = useState<Record<string, string>>({});
   const [status, setStatus] = useState("");
+  const [storageReady, setStorageReady] = useState(false);
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    const savedAccount = window.localStorage.getItem(accountKey);
-    const savedPositions = window.localStorage.getItem(positionsKey);
+    const restoreDemoState = window.setTimeout(() => {
+      const storedAccount = readStoredAccount();
+      const storedPositions = readStoredPositions();
 
-    if (savedAccount) {
-      const parsed = JSON.parse(savedAccount) as typeof defaultAccount;
-      setAccount(parsed);
-      setStartingBalanceInput(String(parsed.startingBalance));
-    }
+      setAccount(storedAccount);
+      setStartingBalanceInput(String(storedAccount.startingBalance));
+      setPositions(storedPositions);
+      setClosePrices(makeClosePriceMap(storedPositions));
+      setStorageReady(true);
+    }, 0);
 
-    if (savedPositions) {
-      const parsed = JSON.parse(savedPositions) as Position[];
-      setPositions(parsed);
-      setClosePrices(
-        Object.fromEntries(
-          parsed.map((position) => [position.id, String(position.entry)])
-        )
-      );
-    }
+    return () => window.clearTimeout(restoreDemoState);
   }, []);
 
   useEffect(() => {
+    if (!storageReady) {
+      return;
+    }
+
     window.localStorage.setItem(accountKey, JSON.stringify(account));
-  }, [account]);
+  }, [account, storageReady]);
 
   useEffect(() => {
+    if (!storageReady) {
+      return;
+    }
+
     window.localStorage.setItem(positionsKey, JSON.stringify(positions));
-  }, [positions]);
+  }, [positions, storageReady]);
 
   useEffect(() => {
     if (!supabase) {
@@ -238,7 +267,7 @@ export default function DemoTrading() {
       }
 
       if (accountResult.error || positionsResult.error) {
-        setStatus("Cloud sync is ready, but the demo tables are not available yet.");
+        setStatus("Saved locally. Apply the Supabase market tools schema to enable profile sync.");
       } else {
         setStatus("Demo account synced to your Ascend profile.");
       }

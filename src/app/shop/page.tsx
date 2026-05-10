@@ -54,7 +54,7 @@ export default function ShopPage() {
             rel="noreferrer"
             className="pageCtaPrimary"
           >
-            Open Fourthwall Shop
+            Enter Shop
           </a>
 
           <a href="/community" className="pageCtaSecondary">
