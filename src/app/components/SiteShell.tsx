@@ -17,6 +17,7 @@ const primaryLinks = [
   { label: "Economic Calendar", href: "/resources/economic-calendar" },
   { label: "Academy", href: "/learn" },
   { label: "News", href: "/news" },
+  { label: "Social", href: "/social" },
   { label: "Shop", href: "/shop" },
 ];
 
@@ -29,7 +30,6 @@ const moreLinks = [
   { label: "Programs", href: "/programs" },
   { label: "Community", href: "/community" },
   { label: "Media", href: "/media" },
-  { label: "Social", href: "/social" },
   { label: "About", href: "/about" },
   { label: "Account", href: "/account" },
   { label: "Contact", href: "/contact" },
