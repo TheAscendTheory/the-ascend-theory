@@ -30,8 +30,9 @@ type AcademyProgress = {
 
 type QuizQuestion = {
   question: string;
-  options: string[];
-  answer: string;
+  options?: string[];
+  answer?: string;
+  mode: "choice" | "written";
 };
 
 const storageKey = "ascend-academy-reader-progress";
@@ -59,6 +60,17 @@ function starCount(score: number) {
 }
 
 function buildModuleQuestions(module: CurriculumModule): QuizQuestion[] {
+  if (module.quizQuestions?.length) {
+    return module.quizQuestions;
+  }
+
+  if (module.quizPrompts?.length) {
+    return module.quizPrompts.map((question) => ({
+      question,
+      mode: "written",
+    }));
+  }
+
   const source = [
     ...module.learningObjectives,
     ...module.readingSections,
@@ -79,6 +91,7 @@ function buildModuleQuestions(module: CurriculumModule): QuizQuestion[] {
           "Skip the concept and move to the final badge",
         ],
         answer: "Use the concept in a real decision or written proof artifact",
+        mode: "choice",
       };
     }
 
@@ -91,6 +104,7 @@ function buildModuleQuestions(module: CurriculumModule): QuizQuestion[] {
           "A copied definition with no example",
         ],
         answer: "A completed worksheet, explanation, map, plan, or review",
+        mode: "choice",
       };
     }
 
@@ -103,6 +117,7 @@ function buildModuleQuestions(module: CurriculumModule): QuizQuestion[] {
           "So quizzes become optional decoration",
         ],
         answer: "So later lessons build on proven foundations",
+        mode: "choice",
       };
     }
 
@@ -110,11 +125,19 @@ function buildModuleQuestions(module: CurriculumModule): QuizQuestion[] {
       question: `What score is required to pass ${module.title}?`,
       options: [`${module.passScore}%`, "50%", "100% only"],
       answer: `${module.passScore}%`,
+      mode: "choice",
     };
   });
 }
 
 function buildReadingPassage(module: CurriculumModule) {
+  if (module.lessonText) {
+    return module.lessonText
+      .split(/\n{2,}/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean);
+  }
+
   return [
     `${module.title} begins with one practical promise: the learner should be able to use the idea in real life, not merely repeat a definition. ${module.overview}`,
     `The first layer is understanding the language. ${module.readingSections[0] || module.learningObjectives[0]} This gives the learner a mental handle before numbers, charts, or decisions get more complex.`,
@@ -154,6 +177,7 @@ export default function AcademyExperience() {
   const [status, setStatus] = useState("Progress saves locally. Sign in to sync with Supabase.");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [writtenAnswer, setWrittenAnswer] = useState("");
   const [correctCount, setCorrectCount] = useState(0);
   const [feedback, setFeedback] = useState<"correct" | "incorrect" | null>(null);
   const [hearts, setHearts] = useState(5);
@@ -296,6 +320,7 @@ export default function AcademyExperience() {
   function resetQuizLoop() {
     setQuestionIndex(0);
     setSelectedAnswer("");
+    setWrittenAnswer("");
     setCorrectCount(0);
     setFeedback(null);
     setHearts(5);
@@ -341,7 +366,7 @@ export default function AcademyExperience() {
   }
 
   function answerQuestion(answer: string) {
-    if (!currentQuestion || feedback) return;
+    if (!currentQuestion || feedback || !currentQuestion.answer) return;
 
     const isCorrect = answer === currentQuestion.answer;
     setSelectedAnswer(answer);
@@ -365,6 +390,20 @@ export default function AcademyExperience() {
     }
   }
 
+  function submitWrittenAnswer() {
+    if (!currentQuestion || feedback || writtenAnswer.trim().length < 8) return;
+
+    const nextCombo = combo + 1;
+    setCorrectCount((current) => current + 1);
+    setCombo(nextCombo);
+    setSessionXp((current) => current + 10 + Math.min(nextCombo, 10));
+    setFeedback("correct");
+    setProgress((current) => ({
+      ...current,
+      coins: current.coins + 2 + Math.min(nextCombo, 5),
+    }));
+  }
+
   function nextQuestion() {
     const finalCorrect = correctCount + (feedback === "correct" ? 1 : 0);
     const noHeartsLeft = !subscriberAccess && feedback === "incorrect" && hearts <= 1;
@@ -377,6 +416,7 @@ export default function AcademyExperience() {
 
     setQuestionIndex((current) => current + 1);
     setSelectedAnswer("");
+    setWrittenAnswer("");
     setFeedback(null);
   }
 
@@ -414,7 +454,9 @@ export default function AcademyExperience() {
           <div className="academyModulePath">
             {modules.map((module, index) => {
               const complete = progress.completed.includes(module.id);
-              const locked = index > unlockedIndex && !complete;
+              const progressionLocked = index > unlockedIndex && !complete;
+              const accessLocked = module.access === "subscriber" && !subscriberAccess && !complete;
+              const locked = progressionLocked || accessLocked;
               const active = module.id === activeModule.id;
 
               return (
@@ -428,7 +470,10 @@ export default function AcademyExperience() {
                   <span>{index + 1}</span>
                   <div>
                     <strong>{module.title}</strong>
-                    <em>{module.level} - {module.assessmentQuestions} questions</em>
+                    <em>
+                      {module.rank} - {module.assessmentQuestions} prompts
+                      {accessLocked ? " - subscriber" : ""}
+                    </em>
                   </div>
                   {complete ? <CheckCircle2 size={18} /> : locked ? <Lock size={18} /> : <Play size={18} />}
                 </button>
@@ -443,7 +488,8 @@ export default function AcademyExperience() {
               <p className="eyebrow">{activeModule.trackTitle} / {activeModule.level}</p>
               <h2>{activeModule.title}</h2>
               <span>
-                {activeModule.assessmentQuestions} questions. {activeModule.passScore}% to pass.
+                Rank {activeModule.rank}. {activeModule.assessmentQuestions} mastery prompts.{" "}
+                {activeModule.passScore}% to pass.
               </span>
             </div>
             <strong>{progress.stars[activeModule.id] || 0}/5 stars</strong>
@@ -515,7 +561,7 @@ export default function AcademyExperience() {
 
               <button type="button" onClick={startQuizLoop}>
                 <Star size={17} />
-                Start 1-Minute Sprint
+                Start Mastery Sprint
               </button>
             </div>
           )}
@@ -542,38 +588,64 @@ export default function AcademyExperience() {
               <div className="quizQuestionCard">
                 <p className="eyebrow">Question {questionIndex + 1} of {questions.length}</p>
                 <h3>{currentQuestion.question}</h3>
-                <div className="quizAnswerGrid">
-                  {currentQuestion.options.map((option) => {
-                    const chosen = selectedAnswer === option;
-                    const correct = option === currentQuestion.answer;
-                    const stateClass = feedback
-                      ? correct
-                        ? "isCorrect"
-                        : chosen
-                          ? "isWrong"
-                          : ""
-                      : "";
+                {currentQuestion.mode === "choice" && currentQuestion.options?.length ? (
+                  <div className="quizAnswerGrid">
+                    {currentQuestion.options.map((option) => {
+                      const chosen = selectedAnswer === option;
+                      const correct = option === currentQuestion.answer;
+                      const stateClass = feedback
+                        ? correct
+                          ? "isCorrect"
+                          : chosen
+                            ? "isWrong"
+                            : ""
+                        : "";
 
-                    return (
-                      <button
-                        key={option}
-                        type="button"
-                        className={stateClass}
-                        disabled={Boolean(feedback)}
-                        onClick={() => answerQuestion(option)}
-                      >
-                        {option}
-                      </button>
-                    );
-                  })}
-                </div>
+                      return (
+                        <button
+                          key={option}
+                          type="button"
+                          className={stateClass}
+                          disabled={Boolean(feedback)}
+                          onClick={() => answerQuestion(option)}
+                        >
+                          {option}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="quizWrittenAnswer">
+                    <textarea
+                      value={writtenAnswer}
+                      disabled={Boolean(feedback)}
+                      onChange={(event) => setWrittenAnswer(event.target.value)}
+                      placeholder="Write your answer in your own words. This is saved as a mastery response prompt for now."
+                    />
+                    <button
+                      type="button"
+                      disabled={Boolean(feedback) || writtenAnswer.trim().length < 8}
+                      onClick={submitWrittenAnswer}
+                    >
+                      Save Answer
+                    </button>
+                  </div>
+                )}
               </div>
 
               {feedback && (
                 <div className="quizFeedbackPanel">
-                  <strong>{feedback === "correct" ? "Correct. XP added." : "Not quite. Heart lost."}</strong>
+                  <strong>
+                    {currentQuestion.mode === "written"
+                      ? "Answer saved. XP added."
+                      : feedback === "correct"
+                        ? "Correct. XP added."
+                        : "Not quite. Heart lost."}
+                  </strong>
                   <p>
-                    {feedback === "correct"
+                    {currentQuestion.mode === "written"
+                      ? "This prompt now counts toward your mastery sprint. Save it to flashcards if it deserves extra review."
+                      : feedback === "correct"
                       ? `+${10 + Math.min(combo, 10)} XP, +${2 + Math.min(combo, 5)} coins, combo now ${combo}.`
                       : subscriberAccess
                         ? `Answer: ${currentQuestion.answer}. Unlimited attempts are active.`
