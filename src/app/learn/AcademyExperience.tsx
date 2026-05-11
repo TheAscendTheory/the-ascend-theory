@@ -443,7 +443,7 @@ export default function AcademyExperience() {
               <p className="eyebrow">{activeModule.trackTitle} / {activeModule.level}</p>
               <h2>{activeModule.title}</h2>
               <span>
-                {activeModule.estimatedPages} - {activeModule.assessmentQuestions} question assessment - {activeModule.passScore}% pass
+                {activeModule.assessmentQuestions} questions. {activeModule.passScore}% to pass.
               </span>
             </div>
             <strong>{progress.stars[activeModule.id] || 0}/5 stars</strong>
@@ -455,8 +455,7 @@ export default function AcademyExperience() {
               <div className="dailyChallengeCard">
                 <strong>Daily challenge</strong>
                 <span>
-                  Finish one short lesson sprint, save one weak question, and keep momentum.
-                  Free learners protect hearts; subscribers get unlimited attempts.
+                  Finish a short sprint, save one weak question, and keep momentum.
                 </span>
               </div>
               <div>
@@ -494,8 +493,7 @@ export default function AcademyExperience() {
                     <div>
                       <strong>{index + 1}. {section}</strong>
                       <p>
-                        Read this section, write the idea in your own words, then connect it to a real decision,
-                        market example, budget, or journal entry before moving on.
+                        Write the idea in your own words, then connect it to a real decision.
                       </p>
                     </div>
                   </article>
@@ -509,7 +507,7 @@ export default function AcademyExperience() {
                     <BookMarked size={18} />
                     <div>
                       <strong>{task}</strong>
-                      <p>This becomes proof of learning for certificates, school use, and account mastery.</p>
+                      <p>Use this as proof for certificates and account mastery.</p>
                     </div>
                   </article>
                 ))}
@@ -535,7 +533,7 @@ export default function AcademyExperience() {
               </div>
 
               <div className="quizLoopStats">
-                <span>{subscriberAccess ? "Unlimited attempts" : `${hearts}/5 hearts`}</span>
+                <span>{subscriberAccess ? "Unlimited" : `${hearts}/5 hearts`}</span>
                 <span>{sessionXp} XP</span>
                 <span>{combo} combo</span>
                 <span>{adaptiveMode}</span>
@@ -578,7 +576,7 @@ export default function AcademyExperience() {
                     {feedback === "correct"
                       ? `+${10 + Math.min(combo, 10)} XP, +${2 + Math.min(combo, 5)} coins, combo now ${combo}.`
                       : subscriberAccess
-                        ? `Correct answer: ${currentQuestion.answer}. Subscriber mode keeps attempts unlimited.`
+                        ? `Answer: ${currentQuestion.answer}. Unlimited attempts are active.`
                         : `Correct answer: ${currentQuestion.answer}`}
                   </p>
                   <div>
@@ -602,8 +600,8 @@ export default function AcademyExperience() {
               <strong>{result.score}%</strong>
               <p>
                 {result.passed
-                  ? `You earned ${starCount(result.score)} stars. Retakes can improve proficiency, but first completions carry the fairest weekly XP weight.`
-                  : "You need 80% or higher. Return to the reading path, save weak questions, then attempt the assessment again."}
+                  ? `You earned ${starCount(result.score)} stars. Retakes can improve proficiency.`
+                  : "You need 80% or higher. Review the reading, save weak questions, then retry."}
               </p>
               <div>
                 <button type="button" onClick={() => setStep("lesson")}>
