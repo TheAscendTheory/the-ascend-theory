@@ -23,6 +23,7 @@ type AcademyProgress = {
   stars: Record<string, number>;
   scores: Record<string, number>;
   savedQuestions: string[];
+  wrongAnswers: Record<string, number>;
   savedParagraphs: {
     moduleId: string;
     moduleTitle: string;
@@ -50,6 +51,7 @@ const defaultProgress: AcademyProgress = {
   stars: {},
   scores: {},
   savedQuestions: [],
+  wrongAnswers: {},
   savedParagraphs: [],
   highlightedParagraphs: [],
   lastRead: {},
@@ -143,10 +145,18 @@ function buildModuleQuestions(module: CurriculumModule): QuizQuestion[] {
 
 function buildReadingPassage(module: CurriculumModule) {
   if (module.lessonText) {
-    return module.lessonText
-      .split(/\n{2,}/)
-      .map((paragraph) => paragraph.trim())
+    const blocks = module.lessonText
+      .split(/\n(?=\d+\.\s+)/)
+      .map((block) =>
+        block
+          .split(/\n+/)
+          .map((line) => line.trim())
+          .filter(Boolean)
+          .join("\n")
+      )
       .filter(Boolean);
+
+    return blocks.length > 1 ? blocks : module.lessonText.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean);
   }
 
   return [
@@ -201,7 +211,9 @@ export default function AcademyExperience() {
   const [activeId, setActiveId] = useState(modules[0]?.id || "");
   const [step, setStep] = useState<"intro" | "lesson" | "quiz" | "result">("intro");
   const [result, setResult] = useState<{ score: number; passed: boolean } | null>(null);
-  const [status, setStatus] = useState("Progress saves locally. Sign in to sync with Supabase.");
+  const [status, setStatus] = useState("Progress saves locally. Sign in to sync across devices.");
+  const [practiceIndex, setPracticeIndex] = useState(0);
+  const [practiceFlipped, setPracticeFlipped] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [writtenAnswer, setWrittenAnswer] = useState("");
@@ -222,6 +234,28 @@ export default function AcademyExperience() {
     ? progress.savedParagraphs.filter((paragraph) => paragraph.moduleId === activeModule.id)
     : [];
   const quizProgress = questions.length ? Math.round(((questionIndex + (feedback ? 1 : 0)) / questions.length) * 100) : 0;
+  const practiceDeck = [
+    ...progress.savedQuestions.map((question) => {
+      const matched = modules
+        .flatMap((module) => buildModuleQuestions(module))
+        .find((item) => item.question === question);
+
+      return {
+        id: `question:${question}`,
+        front: question,
+        back: matched?.answer || "Review your written response and compare it with the lesson.",
+      };
+    }),
+    ...progress.savedParagraphs.map((paragraph) => ({
+      id: paragraphKey(paragraph.moduleId, paragraph.index),
+      front: `${paragraph.moduleTitle} / paragraph ${paragraph.index + 1}`,
+      back: paragraph.text,
+    })),
+  ];
+  const activePracticeCard = practiceDeck.length ? practiceDeck[practiceIndex % practiceDeck.length] : null;
+  const frequentlyWrong = Object.entries(progress.wrongAnswers)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8);
   const adaptiveMode = subscriberAccess
     ? "Subscriber mode"
     : combo >= 5
@@ -253,7 +287,7 @@ export default function AcademyExperience() {
         .eq("user_id", userId);
 
       if (error) {
-        setStatus("Supabase connected, but academy progress table needs the schema applied.");
+        setStatus("Account sync is not ready yet. Progress is saved on this device.");
         return;
       }
 
@@ -305,26 +339,11 @@ export default function AcademyExperience() {
         xp: Math.max(current.xp, (data || []).reduce((sum, row) => sum + (row.xp_earned || 0), 0)),
       }));
       setSubscriberAccess(Boolean(entitlementRows?.length));
-      setStatus("Supabase sync active for Academy progress.");
+      setStatus("Account sync active for Academy progress.");
     }
 
     loadCloudProgress();
   }, [supabase]);
-
-  useEffect(() => {
-    if (step !== "lesson" || !activeModule) return;
-
-    const lastReadIndex = activeLastRead;
-    if (!lastReadIndex) return;
-
-    const timeout = window.setTimeout(() => {
-      document
-        .getElementById(paragraphKey(activeModule.id, lastReadIndex))
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 120);
-
-    return () => window.clearTimeout(timeout);
-  }, [step, activeModule, activeLastRead]);
 
   useEffect(() => {
     if (step !== "lesson" || !activeModule || typeof IntersectionObserver === "undefined") return;
@@ -379,7 +398,7 @@ export default function AcademyExperience() {
     });
 
     if (error) {
-      setStatus("Saved locally. Supabase academy progress needs schema verification.");
+      setStatus("Saved locally. Account sync needs attention.");
       return;
     }
 
@@ -387,7 +406,7 @@ export default function AcademyExperience() {
       .from("ascend_profiles")
       .update({ academy_level: `Academy XP ${nextProgress.xp}` })
       .eq("user_id", userId);
-    setStatus("Academy progress saved locally and synced to Supabase.");
+    setStatus("Academy progress saved.");
   }
 
   async function saveQuestion(question: string) {
@@ -622,6 +641,13 @@ export default function AcademyExperience() {
     }
 
     setCombo(0);
+    setProgress((current) => ({
+      ...current,
+      wrongAnswers: {
+        ...current.wrongAnswers,
+        [currentQuestion.question]: (current.wrongAnswers[currentQuestion.question] || 0) + 1,
+      },
+    }));
     if (!subscriberAccess) {
       setHearts((current) => Math.max(0, current - 1));
     }
@@ -655,6 +681,12 @@ export default function AcademyExperience() {
     setSelectedAnswer("");
     setWrittenAnswer("");
     setFeedback(null);
+  }
+
+  function shufflePracticeDeck() {
+    if (!practiceDeck.length) return;
+    setPracticeIndex(Math.floor(Math.random() * practiceDeck.length));
+    setPracticeFlipped(false);
   }
 
   if (!activeModule) {
@@ -1006,6 +1038,59 @@ export default function AcademyExperience() {
         </div>
       </section>
 
+      <section className="academyPracticeArena">
+        <div>
+          <p className="eyebrow">Practice Arena</p>
+          <h2>Retention recall deck.</h2>
+          <p>Shuffle saved questions and lesson highlights. Tap the card to reveal the answer or saved passage.</p>
+        </div>
+
+        <article
+          className={practiceFlipped ? "practiceCard isFlipped" : "practiceCard"}
+          onClick={() => practiceDeck.length && setPracticeFlipped((flipped) => !flipped)}
+        >
+          <span>{practiceFlipped ? "Back" : "Front"}</span>
+          <strong>
+            {activePracticeCard
+              ? practiceFlipped
+                ? activePracticeCard.back
+                : activePracticeCard.front
+              : "Save questions or paragraphs to build your recall deck."}
+          </strong>
+        </article>
+
+        <div className="practiceActions">
+          <button type="button" onClick={shufflePracticeDeck} disabled={!practiceDeck.length}>
+            Shuffle Deck
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (!practiceDeck.length) return;
+              setPracticeIndex((index) => (index + 1) % practiceDeck.length);
+              setPracticeFlipped(false);
+            }}
+            disabled={!practiceDeck.length}
+          >
+            Next Card
+          </button>
+        </div>
+
+        <div className="wrongAnswerColumn">
+          <h3>Frequently answered wrong</h3>
+          {frequentlyWrong.length ? (
+            frequentlyWrong.map(([question, count]) => (
+              <button key={question} type="button" onClick={() => saveQuestion(question)}>
+                <span>{count} misses</span>
+                {question}
+              </button>
+            ))
+          ) : (
+            <p>Questions you miss during tests will collect here for faster review.</p>
+          )}
+        </div>
+      </section>
+
       <section className="academyPolicyStrip">
         <article>
           <span>Pass Rule</span>
@@ -1016,12 +1101,12 @@ export default function AcademyExperience() {
           <strong>1-5 proficiency</strong>
         </article>
         <article>
-          <span>Access</span>
-          <strong>30% free target</strong>
+          <span>Practice</span>
+          <strong>Recall deck</strong>
         </article>
         <article>
-          <span>Fair XP</span>
-          <strong>Reduced retake value</strong>
+          <span>Progress</span>
+          <strong>Locked path</strong>
         </article>
       </section>
     </section>

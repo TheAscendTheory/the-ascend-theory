@@ -16,7 +16,7 @@ function localAssistantReply(message: string) {
   const lower = message.toLowerCase();
 
   if (lower.includes("risk") || lower.includes("position") || lower.includes("size")) {
-    return "Start with risk before direction: define account size, max risk percentage, entry, invalidation, and target. Then use the Risk Calculator in Charts to size the trade before opening or journaling anything.";
+    return "Start with risk before direction: define account size, max risk percentage, entry, invalidation, and target. Then use the Risk Calculator in Trading Desk to size the trade before opening or journaling anything.";
   }
 
   if (lower.includes("study") || lower.includes("academy") || lower.includes("learn")) {
@@ -31,8 +31,8 @@ function localAssistantReply(message: string) {
     return "Use a clean market read: trend or range, key liquidity, session context, catalyst risk, invalidation, and whether the reward justifies the risk. If any part is unclear, no-trade is still a valid decision.";
   }
 
-  if (lower.includes("supabase") || lower.includes("login") || lower.includes("account")) {
-    return "Account, social, academy progress, demo trading, and trade journal all depend on Supabase. If something does not save, check the environment keys first, then confirm the Supabase schema has been applied.";
+  if (lower.includes("login") || lower.includes("account")) {
+    return "Account, social, academy progress, demo trading, and trade journal need your account connection to save across devices. If something does not save, use the account page first, then try again.";
   }
 
   return "I can help with Academy study, trading prep, risk planning, journaling, market context, and site navigation. Give me the specific thing you are working on and I will turn it into a clear next step.";

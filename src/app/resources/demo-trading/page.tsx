@@ -23,8 +23,8 @@ export default function DemoTradingPage() {
         </p>
 
         <div className="pageCtaActions">
-          <a href="/resources/charting" className="pageCtaPrimary">
-            Open Charts
+          <a href="/resources/market-dashboard" className="pageCtaPrimary">
+            Open Trading Desk
           </a>
 
           <a href="/resources/trade-journal" className="pageCtaSecondary">

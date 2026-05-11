@@ -13,8 +13,7 @@ import { MediaLayerProvider } from "./MediaLayer";
 
 const primaryLinks = [
   { label: "Home", href: "/" },
-  { label: "Charts", href: "/resources/market-dashboard" },
-  { label: "Economic Calendar", href: "/resources/economic-calendar" },
+  { label: "Trading Desk", href: "/resources/market-dashboard" },
   { label: "Academy", href: "/learn" },
   { label: "News", href: "/news" },
   { label: "Social", href: "/social" },
@@ -22,8 +21,9 @@ const primaryLinks = [
 ];
 
 const moreLinks = [
-  { label: "Resources", href: "/resources" },
+  { label: "Economic Calendar", href: "/resources/economic-calendar" },
   { label: "Risk Calculator", href: "/resources/risk-calculator" },
+  { label: "Resources", href: "/resources" },
   { label: "Demo Trading", href: "/resources/demo-trading" },
   { label: "Trade Journal", href: "/resources/trade-journal" },
   { label: "Affiliates", href: "/affiliates" },
@@ -92,7 +92,7 @@ export default function SiteShell({
             </Link>
           ))}
 
-          <div className="moreNavWrap">
+          <div className="moreNavWrap" onMouseLeave={() => setMoreOpen(false)}>
             <button
               type="button"
               className={moreLinks.some((link) => isActiveLink(link.href)) ? "activeNavLink" : ""}

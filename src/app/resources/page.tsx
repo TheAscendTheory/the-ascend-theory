@@ -50,13 +50,13 @@ const marketTools = [
     href: "/learn",
   },
   {
-    title: "Market Dashboard",
+    title: "Trading Desk",
     text: "Use the trader workstation for liquidity, order flow, structure, correlation, volatility, exposure, execution planning, heatmaps, sessions, and alerts.",
     href: "/resources/market-dashboard",
   },
   {
-    title: "Charts",
-    text: "Use a dedicated live charting desk with watchlists, indicators, macro references, and drawing tools.",
+    title: "Chart Workspace",
+    text: "Use a dedicated charting workspace with watchlists, indicators, macro references, and drawing tools.",
     href: "/resources/charting",
   },
   {

@@ -521,11 +521,10 @@ export default function SocialClient() {
   if (!supabase) {
     return (
       <section className="socialAuthPanel">
-        <h2>Connect Supabase to activate social.</h2>
+        <h2>Connect your account to activate social.</h2>
         <p>
-          Add <code>NEXT_PUBLIC_SUPABASE_URL</code>{" "}
-          and{" "}
-          <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to the environment.
+          Social profiles, friend requests, messages, stories, and saved posts
+          become active once account services are connected.
         </p>
       </section>
     );

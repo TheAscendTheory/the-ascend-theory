@@ -4,7 +4,7 @@ import TradingWorkspace from "../charting/TradingWorkspace";
 import TradingViewAdvancedChart from "./TradingViewAdvancedChart";
 
 export const metadata: Metadata = {
-  title: "Market Dashboard",
+  title: "Trading Desk",
   description:
     "Use The Ascend Theory market dashboard for order flow, liquidity, structure, correlation, volatility, risk, execution planning, heatmaps, sessions, and market awareness.",
 };
@@ -21,23 +21,22 @@ export default function MarketDashboardPage() {
   return (
     <main className="resourcesPage">
       <section className="resourcesHero">
-        <p className="eyebrow">Market Tool</p>
+        <p className="eyebrow">Trading Desk</p>
 
-        <h1>MARKET DASHBOARD.</h1>
+        <h1>TRADING DESK.</h1>
 
         <p>
-          A practical market hub connecting order flow, liquidity, structure,
+          A practical trading desk connecting charts, calendar, liquidity, structure,
           macro context, volatility, risk, execution planning, journaling, and
           session timing into one workflow.
         </p>
 
         <div className="pageCtaActions">
-          <a href="#live-chart" className="pageCtaPrimary">
-            Open Trading Desk
-          </a>
-
           <a href="#workspace-tools" className="pageCtaSecondary">
             Customize Tools
+          </a>
+          <a href="/resources/economic-calendar" className="pageCtaPrimary">
+            Economic Calendar
           </a>
         </div>
       </section>
@@ -51,6 +50,24 @@ export default function MarketDashboardPage() {
       </div>
 
       <section className="resourceCallout">
+        <p className="eyebrow">Calendar</p>
+
+        <h2>Check the calendar before sizing risk.</h2>
+
+        <p>
+          Major economic releases can change volatility, spreads, and session
+          behavior. Keep the calendar inside the Trading Desk workflow before
+          planning entries.
+        </p>
+
+        <div className="pageCtaActions">
+          <a href="/resources/economic-calendar" className="pageCtaPrimary">
+            Open Economic Calendar
+          </a>
+        </div>
+      </section>
+
+      <section className="resourceCallout">
         <p className="eyebrow">Market Stack</p>
 
         <h2>One clean workflow: chart, plan, size, journal.</h2>
@@ -62,7 +79,7 @@ export default function MarketDashboardPage() {
 
         <div className="marketToolGrid">
           <a href="/resources/charting">
-            <strong>Charting Desk</strong>
+            <strong>Trading Desk</strong>
             <span>Live chart with optional watchlist, structure, flow notes, risk, journal, and sessions.</span>
           </a>
 
@@ -95,8 +112,8 @@ export default function MarketDashboardPage() {
 
         <p>
           Use this planner to define the symbol, level, and reason before
-          setting a live alert in your broker, TradingView account, or future
-          notification workflow.
+          setting a live alert in your trading account or future notification
+          workflow.
         </p>
 
         <AlertPlanner />

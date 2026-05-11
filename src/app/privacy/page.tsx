@@ -49,9 +49,9 @@ export default function PrivacyPage() {
         <h2>Third-Party Services</h2>
 
         <p>
-          The site may use services such as Vercel, Supabase, Resend, analytics
-          tools, and other platforms to host the site, store waitlist
-          information, send emails, and understand site performance.
+          The site may use trusted infrastructure and communication providers
+          to host the site, store waitlist information, send emails, and
+          understand site performance.
         </p>
 
         <h2>Data Protection</h2>

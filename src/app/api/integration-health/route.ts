@@ -48,10 +48,10 @@ async function checkTable(
         message:
           body?.message ||
           (response.status === 404
-            ? "Table was not found in the Supabase REST schema."
+            ? "Table was not found in the backend schema."
             : response.status === 401
-              ? "Supabase API key is invalid or not accepted by the REST API."
-              : "Supabase table check failed."),
+              ? "Backend API key is invalid or not accepted."
+              : "Backend table check failed."),
         details: body?.details || null,
         hint: body?.hint || null,
       },
@@ -63,7 +63,7 @@ async function checkTable(
       status: 0,
       error: {
         code: "NETWORK_ERROR",
-        message: error instanceof Error ? error.message : "Unable to reach Supabase.",
+        message: error instanceof Error ? error.message : "Unable to reach backend services.",
         details: null,
         hint: null,
       },
@@ -94,7 +94,7 @@ async function checkSupabaseKey(supabaseUrl: string, key: string, label: string)
       label,
       ok: false,
       status: 0,
-      message: error instanceof Error ? error.message : "Unable to reach Supabase.",
+      message: error instanceof Error ? error.message : "Unable to reach backend services.",
       hint: null,
     };
   }
@@ -124,7 +124,7 @@ export async function GET() {
       ok: false,
       env,
       tables: [],
-      message: "Supabase URL or service role key is missing.",
+      message: "Backend URL or service key is missing.",
     });
   }
 

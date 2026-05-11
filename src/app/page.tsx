@@ -254,7 +254,7 @@ export default function Home() {
 
         <div className="homeActions">
           <a href="/resources/charting" className="primaryButton">
-            Open Charts
+            Open Trading Desk
           </a>
 
           <a href="/resources/demo-trading" className="secondaryButton">

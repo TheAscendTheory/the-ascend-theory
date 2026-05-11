@@ -55,6 +55,10 @@ const socialLinks = [
     href: "https://www.youtube.com/@TheAscendTheoryGlobal",
   },
   {
+    label: "Twitch",
+    href: "https://www.twitch.tv/theascendtheory",
+  },
+  {
     label: "Instagram",
     href: "https://www.instagram.com/theascendtheoryglobal/",
   },
@@ -92,12 +96,30 @@ export default function CommunityPage() {
           </Link>
 
           <a
+            href="https://discord.gg/sRkBrb2n"
+            target="_blank"
+            rel="noreferrer"
+            className="pageCtaSecondary"
+          >
+            Join Discord
+          </a>
+
+          <a
             href="https://www.youtube.com/@TheAscendTheoryGlobal"
             target="_blank"
             rel="noreferrer"
             className="pageCtaSecondary"
           >
             Follow YouTube
+          </a>
+
+          <a
+            href="https://www.twitch.tv/theascendtheory"
+            target="_blank"
+            rel="noreferrer"
+            className="pageCtaSecondary"
+          >
+            Join Twitch
           </a>
         </div>
       </section>

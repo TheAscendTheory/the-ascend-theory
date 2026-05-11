@@ -139,7 +139,7 @@ export default function NewsPage() {
           <p>
             Each news item should answer what happened, why it matters, what
             assets may be affected, what is still unknown, and how learners can
-            connect it to the Academy or Charts workflow.
+            connect it to the Academy or Trading Desk workflow.
           </p>
           <div>
             <span>Source trail</span>

@@ -22,8 +22,8 @@ export default function TradeJournalPage() {
         </p>
 
         <div className="pageCtaActions">
-          <a href="/resources/charting" className="pageCtaPrimary">
-            Open Charts
+          <a href="/resources/market-dashboard" className="pageCtaPrimary">
+            Open Trading Desk
           </a>
 
           <a href="/resources/risk-calculator" className="pageCtaSecondary">
@@ -38,9 +38,8 @@ export default function TradeJournalPage() {
         <h2>Track the process, not just the result.</h2>
 
         <p>
-          Your journal saves in this browser for now. Profile-based cloud saving
-          can be connected once Supabase Auth and the journal database table are
-          enabled.
+          Your journal saves in this browser and syncs to your account when you
+          are signed in.
         </p>
 
         <TradeJournal />

@@ -164,7 +164,7 @@ export default function TradeJournal() {
         .order("created_at", { ascending: false });
 
       if (tradeError) {
-        setSyncStatus("Saved locally. Apply the Supabase market tools schema to enable profile sync.");
+        setSyncStatus("Saved locally. Account sync is not available yet.");
         return;
       }
 

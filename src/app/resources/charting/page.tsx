@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Charts",
+  title: "Trading Desk",
   description:
     "Use The Ascend Theory charting workspace for market structure, watchlists, drawing tools, indicators, and disciplined technical analysis.",
 };
@@ -22,7 +22,7 @@ export default function ChartingPage() {
       <section className="chartingHero">
         <p className="eyebrow">Markets</p>
 
-        <h1>CHARTING DESK.</h1>
+        <h1>TRADING DESK.</h1>
 
         <p>
           A focused market workspace for live charts, drawing tools, watchlists,
@@ -43,7 +43,7 @@ export default function ChartingPage() {
       <section className="resourceCallout">
         <p className="eyebrow">Charting Process</p>
 
-        <h2>The full charting desk now lives in Market Dashboard.</h2>
+        <h2>The full workspace now lives in Trading Desk.</h2>
 
         <p>
           To keep the experience seamless, charts, watchlists, structure,
@@ -52,7 +52,7 @@ export default function ChartingPage() {
 
         <div className="pageCtaActions">
           <Link href="/resources/market-dashboard" className="pageCtaPrimary">
-            Open Market Dashboard
+            Open Trading Desk
           </Link>
         </div>
 

@@ -34,7 +34,7 @@ export default function GlobalChatDock() {
   useEffect(() => {
     async function loadChatBasics() {
       if (!supabase) {
-        setStatus("Chat needs Supabase environment keys.");
+        setStatus("Chat is not connected yet.");
         return;
       }
 
@@ -55,7 +55,7 @@ export default function GlobalChatDock() {
         .or(`requester_id.eq.${currentUserId},addressee_id.eq.${currentUserId}`);
 
       if (error) {
-        setStatus("Chat tables need Supabase schema/policies.");
+        setStatus("Chat is not ready yet.");
         return;
       }
 
@@ -167,7 +167,7 @@ export default function GlobalChatDock() {
       .single();
 
     if (error) {
-      setStatus("Message did not send. Check Supabase policies.");
+      setStatus("Message did not send. Try again shortly.");
       return;
     }
 

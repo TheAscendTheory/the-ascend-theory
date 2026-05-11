@@ -3327,6 +3327,84 @@ input {
   line-height: 1.5;
 }
 
+.academyPracticeArena {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+  padding: clamp(20px, 4vw, 30px);
+  border: 1px solid rgba(250, 204, 21, 0.18);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.academyPracticeArena h2,
+.wrongAnswerColumn h3 {
+  margin: 0;
+  color: white;
+}
+
+.academyPracticeArena p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.65;
+}
+
+.practiceCard {
+  display: grid;
+  gap: 12px;
+  min-height: 220px;
+  padding: clamp(18px, 4vw, 28px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.09), rgba(255, 255, 255, 0.03));
+  cursor: pointer;
+}
+
+.practiceCard.isFlipped {
+  border-color: rgba(250, 204, 21, 0.34);
+  background: rgba(250, 204, 21, 0.1);
+}
+
+.practiceCard span {
+  color: #facc15;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.practiceCard strong {
+  color: white;
+  font-size: clamp(18px, 3vw, 28px);
+  line-height: 1.35;
+  white-space: pre-line;
+}
+
+.practiceActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.wrongAnswerColumn {
+  display: grid;
+  gap: 10px;
+}
+
+.wrongAnswerColumn button {
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 54px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
+  text-align: left;
+}
+
+.wrongAnswerColumn button span {
+  flex: 0 0 auto;
+  color: #facc15;
+}
+
 .dailyChallengeCard {
   grid-column: 1 / -1;
   display: grid;
@@ -4280,6 +4358,8 @@ input {
 }
 
 .assistantButton {
+  right: auto;
+  left: 22px;
   border-color: rgba(56, 189, 248, 0.34);
   color: #bae6fd;
 }
@@ -4289,8 +4369,6 @@ input {
 }
 
 .siteChatButton {
-  right: auto;
-  left: 22px;
   border-color: rgba(250, 204, 21, 0.34);
   color: #facc15;
 }
@@ -4318,6 +4396,11 @@ input {
 }
 
 .siteChatDock {
+  right: 22px;
+  left: auto;
+}
+
+.floatingChat:not(.siteChatDock) {
   right: auto;
   left: 22px;
 }
@@ -4952,9 +5035,15 @@ input {
     bottom: 16px;
   }
 
-  .siteChatButton {
+  .assistantButton {
     right: auto;
     left: 16px;
+    bottom: 16px;
+  }
+
+  .siteChatButton {
+    right: 16px;
+    left: auto;
     bottom: 16px;
   }
 

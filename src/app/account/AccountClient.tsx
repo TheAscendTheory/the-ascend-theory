@@ -63,7 +63,7 @@ export default function AccountClient() {
     event.preventDefault();
 
     if (!supabase) {
-      setStatus("Supabase Auth needs public environment keys before sign-in works.");
+      setStatus("Account sign-in is not connected yet.");
       return;
     }
 
@@ -85,7 +85,7 @@ export default function AccountClient() {
     event.preventDefault();
 
     if (!supabase) {
-      setStatus("Supabase Auth needs public environment keys before profile saving works.");
+      setStatus("Profile saving is not connected yet.");
       return;
     }
 
@@ -144,11 +144,7 @@ export default function AccountClient() {
 
         {!supabase && (
           <p>
-            The interface is ready, but sign-in needs
-            <code>NEXT_PUBLIC_SUPABASE_URL</code>{" "}
-            and{" "}
-            <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> added to the project
-            environment.
+            The interface is ready, but account sign-in is not connected yet.
           </p>
         )}
 

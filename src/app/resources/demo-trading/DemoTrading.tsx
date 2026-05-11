@@ -267,7 +267,7 @@ export default function DemoTrading() {
       }
 
       if (accountResult.error || positionsResult.error) {
-        setStatus("Saved locally. Apply the Supabase market tools schema to enable profile sync.");
+        setStatus("Saved locally. Account sync is not available yet.");
       } else {
         setStatus("Demo account synced to your Ascend profile.");
       }

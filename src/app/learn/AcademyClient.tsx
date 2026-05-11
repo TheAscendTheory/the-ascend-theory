@@ -2126,8 +2126,8 @@ export default function AcademyClient() {
             </article>
             <article>
               <span>Access Model</span>
-              <strong>30% free target</strong>
-              <p>{assessmentPolicy.freeAccess}</p>
+              <strong>Subscription prompt path</strong>
+              <p>Learners can keep building momentum, then continue with a subscription when the free path ends.</p>
             </article>
           </div>
 
