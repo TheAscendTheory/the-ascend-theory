@@ -80,6 +80,22 @@ function starCount(score: number) {
   return 1;
 }
 
+function letterGrade(score: number) {
+  if (score >= 97) return "A+";
+  if (score >= 93) return "A";
+  if (score >= 90) return "A-";
+  if (score >= 87) return "B+";
+  if (score >= 83) return "B";
+  if (score >= 80) return "B-";
+  if (score >= 77) return "C+";
+  if (score >= 73) return "C";
+  if (score >= 70) return "C-";
+  if (score >= 67) return "D+";
+  if (score >= 63) return "D";
+  if (score >= 60) return "D-";
+  return "F";
+}
+
 function cleanText(text = "") {
   return text
     .replaceAll("â€œ", "“")
@@ -1127,10 +1143,11 @@ export default function AcademyExperience() {
           {step === "result" && result && (
             <div className="academyResultPanel">
               <h3>{result.passed ? "Passed. Module unlocked." : "Not yet. Review and retry."}</h3>
-              <strong>{result.score}%</strong>
+              <strong>{letterGrade(result.score)}</strong>
+              <span>{result.score}% score</span>
               <p>
                 {result.passed
-                  ? `You earned ${starCount(result.score)} stars. Retakes can improve proficiency.`
+                  ? `Grade ${letterGrade(result.score)} recorded. You earned ${starCount(result.score)} proficiency stars. Retakes can improve your grade.`
                   : `You need ${activeModule.passScore}% or higher. Review the reading, save weak questions, then retry.`}
               </p>
               <div>
@@ -1237,8 +1254,8 @@ export default function AcademyExperience() {
           <strong>{assessmentPolicy.passScore}%</strong>
         </article>
         <article>
-          <span>Stars</span>
-          <strong>1-5 proficiency</strong>
+          <span>Grades</span>
+          <strong>F to A+</strong>
         </article>
         <article>
           <span>Practice</span>

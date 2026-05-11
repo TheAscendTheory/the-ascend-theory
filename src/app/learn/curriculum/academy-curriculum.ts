@@ -257,7 +257,7 @@ export const assessmentPolicy = {
   passScore: 80,
   finalPassScore: 85,
   starScale:
-    "1 star below 60%, 2 stars at 60-79%, 3 stars at 80-89%, 4 stars at 90-94%, 5 stars at 95%+.",
+    "Letter grade scale: A+ 97-100, A 93-96, A- 90-92, B+ 87-89, B 83-86, B- 80-82, C+ 77-79, C 73-76, C- 70-72, D+ 67-69, D 63-66, D- 60-62, F below 60. Stars remain proficiency rewards.",
   xpFairness:
     "First completion earns full XP based on score. Retakes improve stars but should earn reduced weekly XP to protect competition fairness.",
   freeAccess:
@@ -282,7 +282,7 @@ export const curriculumSummary = {
     0,
   ),
   targetModel:
-    "Forty-eight rank-gated modules with focused readings, real mastery prompts, 80% pass rule, 85% final exam rule, saved flashcards, stars, XP, streaks, and subscriber-locked advanced material.",
+    "Forty-eight rank-gated modules with focused readings, real mastery prompts, standardized F-to-A grading, 80% baseline pass rule, 85% final exam rule, saved flashcards, stars, XP, streaks, and subscriber-locked advanced material.",
   nextBuildStep:
     "Convert the written mastery prompts with answer keys into fully auto-graded question banks where exact scoring is required.",
 };
