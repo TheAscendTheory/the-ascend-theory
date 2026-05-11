@@ -6,7 +6,7 @@ import {
   BookMarked,
   BookOpen,
   CheckCircle2,
-  FileText,
+  ChevronRight,
   Image as ImageIcon,
   Lock,
   Play,
@@ -46,6 +46,12 @@ type QuizQuestion = {
   mode: "choice" | "written";
 };
 
+type ReadingBlock = {
+  label: string;
+  title: string;
+  paragraphs: string[];
+};
+
 const storageKey = "ascend-academy-reader-progress";
 
 const defaultProgress: AcademyProgress = {
@@ -74,14 +80,33 @@ function starCount(score: number) {
   return 1;
 }
 
+function cleanText(text = "") {
+  return text
+    .replaceAll("â€œ", "“")
+    .replaceAll("â€", "”")
+    .replaceAll("â€™", "’")
+    .replaceAll("â€˜", "‘")
+    .replaceAll("â€”", "—")
+    .replaceAll("â€“", "–")
+    .replaceAll("Ã—", "×")
+    .replaceAll("â€‹", "")
+    .replaceAll("\t", " ")
+    .replace(/\n{4,}/g, "\n\n\n");
+}
+
 function buildModuleQuestions(module: CurriculumModule): QuizQuestion[] {
   if (module.quizQuestions?.length) {
-    return module.quizQuestions;
+    return module.quizQuestions.map((question) => ({
+      ...question,
+      question: cleanText(question.question),
+      options: question.options?.map(cleanText),
+      answer: cleanText(question.answer),
+    }));
   }
 
   if (module.quizPrompts?.length) {
     return module.quizPrompts.map((question) => ({
-      question,
+      question: cleanText(question),
       mode: "written",
     }));
   }
@@ -145,34 +170,27 @@ function buildModuleQuestions(module: CurriculumModule): QuizQuestion[] {
   });
 }
 
-function buildReadingPassage(module: CurriculumModule) {
+function buildReadingPassage(module: CurriculumModule): ReadingBlock[] {
   if (module.lessonText) {
-    const blocks = module.lessonText
+    const normalized = cleanText(module.lessonText)
+      .replace(/^Lesson:\s*/i, "")
+      .trim();
+    const blocks = normalized
       .split(/\n(?=\d+\.\s+)/)
-      .map((block) =>
-        block
-          .split(/\n+/)
-          .map((line) => line.trim())
-          .filter(Boolean)
-          .join("\n")
-      )
+      .map((block) => block.trim())
       .filter(Boolean);
 
     const cleanedBlocks =
       blocks.length > 1
         ? blocks.filter((block, index) => {
             if (index > 0) return true;
-            const lines = block
-              .split(/\n+/)
-              .map((line) => line.trim())
-              .filter(Boolean)
-              .filter((line) => line.toLowerCase() !== "lesson:");
+            const lines = block.split(/\n+/).map((line) => line.trim()).filter(Boolean);
 
             return lines.length > 1 && !lines.every((line) => /^stage\s+\d+/i.test(line));
           })
-        : module.lessonText.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean);
+        : normalized.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean);
 
-    return cleanedBlocks;
+    return cleanedBlocks.map(formatReadingBlock);
   }
 
   return [
@@ -181,37 +199,44 @@ function buildReadingPassage(module: CurriculumModule) {
     `The second layer is application. ${module.readingSections[1] || module.learningObjectives[1]} A strong student should be able to explain the concept, create a small example, and notice where the idea appears in daily money choices, markets, news, or personal planning.`,
     `The third layer is proof. ${module.workbookTasks[0] || "Create a written artifact that shows the concept being used."} Ascend treats this as evidence of learning because certificates should represent usable skill, not passive scrolling.`,
     `Before the quiz, the learner should be able to answer three questions in plain language: what does this concept mean, where does it show up, and what decision becomes better because I understand it?`,
-  ];
+  ].map((text, index) => ({
+    label: `Section ${String(index + 1).padStart(2, "0")}`,
+    title: index === 0 ? module.title : module.readingSections[index - 1] || `Study section ${index + 1}`,
+    paragraphs: [cleanText(text)],
+  }));
 }
 
 function paragraphKey(moduleId: string, index: number) {
   return `${moduleId}:${index}`;
 }
 
-function formatReadingBlock(block: string, index: number) {
-  const lines = block
-    .split(/\n+/)
-    .map((line) => line.trim())
+function formatReadingBlock(block: string, index: number): ReadingBlock {
+  const paragraphs = block
+    .split(/\n{2,}/)
+    .map((paragraph) =>
+      paragraph
+        .split(/\n/)
+        .map((line) => cleanText(line.trim()))
+        .filter(Boolean)
+        .join("\n")
+    )
     .filter(Boolean)
-    .filter((line) => line.toLowerCase() !== "lesson:");
-  const firstLine = lines[0] || `Lesson block ${index + 1}`;
+    .filter((paragraph) => paragraph.toLowerCase() !== "lesson:")
+    .filter((paragraph) => !/^stage\s+\d+\s*[—-]/i.test(paragraph));
+  const firstLine = paragraphs[0] || `Study section ${index + 1}`;
   const hasNumberedTitle = /^\d+\.\s+/.test(firstLine);
-  const title = hasNumberedTitle
-    ? firstLine
-    : firstLine.length > 14
-      ? firstLine
-      : lines[1] || firstLine;
-  const bodyLines = hasNumberedTitle ? lines.slice(1) : lines.filter((line) => line !== title);
+  const title = hasNumberedTitle ? firstLine.replace(/^\d+\.\s+/, "") : firstLine;
+  const bodyParagraphs = hasNumberedTitle ? paragraphs.slice(1) : paragraphs.slice(1);
 
   return {
-    label: hasNumberedTitle ? `Lesson ${String(index + 1).padStart(2, "0")}` : "Overview",
+    label: `Section ${String(index + 1).padStart(2, "0")}`,
     title,
-    bodyLines,
+    paragraphs: bodyParagraphs.length ? bodyParagraphs : [firstLine],
   };
 }
 
 function isSubPoint(line: string) {
-  return /^([A-Z]\.|[a-z]\)|[-*])\s+/.test(line);
+  return /^([A-Z]\.|[a-z]\)|[-*])\s+/.test(line) || line.split("\n").length > 3;
 }
 
 function visualTone(index: number) {
@@ -275,7 +300,10 @@ export default function AcademyExperience() {
   const questions = activeModule ? buildModuleQuestions(activeModule) : [];
   const currentQuestion = questions[questionIndex];
   const readingPassage = activeModule ? buildReadingPassage(activeModule) : [];
-  const activeLastRead = activeModule ? progress.lastRead[activeModule.id] || 0 : 0;
+  const rawLastRead = activeModule ? progress.lastRead[activeModule.id] || 0 : 0;
+  const activeLastRead = readingPassage.length
+    ? Math.max(0, Math.min(rawLastRead, readingPassage.length - 1))
+    : 0;
   const activeSavedParagraphs = activeModule
     ? progress.savedParagraphs.filter((paragraph) => paragraph.moduleId === activeModule.id)
     : [];
@@ -601,7 +629,7 @@ export default function AcademyExperience() {
     window.setTimeout(() => {
       document
         .getElementById(paragraphKey(activeModule.id, activeLastRead))
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+        ?.scrollIntoView({ behavior: "auto", block: "start" });
     }, 120);
   }
 
@@ -755,8 +783,8 @@ export default function AcademyExperience() {
           <strong>{progress.streak}</strong>
         </article>
         <article>
-          <span>Flashcards</span>
-          <strong>{progress.savedQuestions.length}</strong>
+          <span>Saved Bank</span>
+          <strong>{progress.savedQuestions.length + progress.savedParagraphs.length}</strong>
         </article>
       </div>
 
@@ -786,7 +814,7 @@ export default function AcademyExperience() {
                   <div>
                     <strong>{module.title}</strong>
                     <em>
-                      {module.rank} - {module.assessmentQuestions} prompts
+                      {cleanText(module.rank)} - {module.assessmentQuestions} prompts
                       {accessLocked ? " - subscriber" : ""}
                     </em>
                   </div>
@@ -801,9 +829,9 @@ export default function AcademyExperience() {
           <div className="academyReaderHeader">
             <div>
               <p className="eyebrow">{activeModule.trackTitle} / {activeModule.level}</p>
-              <h2>{activeModule.title}</h2>
+              <h2>{cleanText(activeModule.title)}</h2>
               <span>
-                Rank {activeModule.rank}. {activeModule.assessmentQuestions} mastery prompts.{" "}
+                Rank {cleanText(activeModule.rank)}. {activeModule.assessmentQuestions} mastery prompts.{" "}
                 {activeModule.passScore}% to pass.
               </span>
             </div>
@@ -817,24 +845,24 @@ export default function AcademyExperience() {
                   <span />
                   <span />
                   <span />
-                  <strong>{activeModule.rank}</strong>
+                  <strong>{cleanText(activeModule.rank)}</strong>
                 </div>
                 <div>
                   <p className="eyebrow">Class Preview</p>
-                  <h3>{activeModule.title}</h3>
-                  <p>{activeModule.overview}</p>
+                  <h3>{cleanText(activeModule.title)}</h3>
+                  <p>{cleanText(activeModule.overview)}</p>
                 </div>
               </div>
-              <p>{activeModule.overview}</p>
+              <p>{cleanText(activeModule.overview)}</p>
               <div className="dailyChallengeCard">
                 <strong>Daily challenge</strong>
                 <span>
-                  Finish a short sprint, save one weak question, and keep momentum.
+                  Read one section, save one useful idea, and finish a focused mastery sprint.
                 </span>
               </div>
               <div>
                 {activeModule.learningObjectives.map((objective) => (
-                  <span key={objective}>{objective}</span>
+                  <span key={objective}>{cleanText(objective)}</span>
                 ))}
               </div>
               <div className="academyIntroActions">
@@ -862,31 +890,31 @@ export default function AcademyExperience() {
                 <article>
                   <Video size={18} />
                   <div>
-                    <strong>Lecture support</strong>
-                    <p>Short walkthroughs and class-style explanations can sit beside the reading.</p>
+                    <strong>Class companion</strong>
+                    <p>Use this space for short walkthroughs, examples, and instructor notes beside the reading.</p>
                   </div>
                 </article>
                 <article>
                   <ImageIcon size={18} />
                   <div>
-                    <strong>Visual model</strong>
-                    <p>Key ideas are supported with diagrams, examples, and animated study cues.</p>
+                    <strong>Study model</strong>
+                    <p>Each level can pair the lecture with diagrams, charts, definitions, and worked examples.</p>
                   </div>
                 </article>
                 <div className={`academyVisualFrame ${visualTone(activeIndex + activeLastRead)}`}>
                   <span />
                   <span />
                   <span />
-                  <strong>{activeModule.rank}</strong>
+                  <strong>{cleanText(activeModule.rank)}</strong>
                 </div>
               </aside>
               <section>
-                <h3>Reading Passage</h3>
+                <h3>Study Reader</h3>
                 <div className="academyMemoryBar">
                   <span>
                     {activeLastRead > 0
-                      ? `Last read: paragraph ${activeLastRead + 1} of ${readingPassage.length}`
-                      : `Start here: ${readingPassage.length} reading blocks`}
+                      ? `Last read: section ${activeLastRead + 1} of ${readingPassage.length}`
+                      : `Start here: ${readingPassage.length} study sections`}
                   </span>
                   <span>{activeSavedParagraphs.length} saved from this level</span>
                   {activeLastRead > 0 && (
@@ -895,11 +923,29 @@ export default function AcademyExperience() {
                     </button>
                   )}
                 </div>
+                <div className="academyReaderNav" aria-label="Study section quick navigation">
+                  {readingPassage.map((block, index) => (
+                    <button
+                      key={`${block.label}-jump`}
+                      type="button"
+                      className={index === activeLastRead ? "isCurrent" : ""}
+                      onClick={() => {
+                        markParagraphRead(index);
+                        document
+                          .getElementById(paragraphKey(activeModule.id, index))
+                          ?.scrollIntoView({ behavior: "auto", block: "start" });
+                      }}
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </button>
+                  ))}
+                </div>
                 <div className="academyPassage">
                   {readingPassage.map((paragraph, index) => {
                     const key = paragraphKey(activeModule.id, index);
                     const highlighted = progress.highlightedParagraphs.includes(key);
                     const saved = activeSavedParagraphs.some((savedParagraph) => savedParagraph.index === index);
+                    const savedText = [paragraph.title, ...paragraph.paragraphs].join("\n\n");
 
                     return (
                       <article
@@ -909,34 +955,26 @@ export default function AcademyExperience() {
                         data-paragraph-index={index}
                         className={highlighted ? "isHighlighted" : ""}
                       >
-                        {(() => {
-                          const block = formatReadingBlock(paragraph, index);
-
-                          return (
-                            <>
-                              <header className="academyLectureBlockHeader">
-                                <span>{block.label}</span>
-                                <h4>{block.title}</h4>
-                              </header>
-                              <div className="academyLectureText">
-                                {block.bodyLines.map((line, lineIndex) => (
-                                  <p
-                                    key={`${key}-line-${lineIndex}`}
-                                    className={isSubPoint(line) ? "isSubPoint" : ""}
-                                  >
-                                    {line}
-                                  </p>
-                                ))}
-                              </div>
-                            </>
-                          );
-                        })()}
+                        <header className="academyLectureBlockHeader">
+                          <span>{paragraph.label}</span>
+                          <h4>{paragraph.title}</h4>
+                        </header>
+                        <div className="academyLectureText">
+                          {paragraph.paragraphs.map((line, lineIndex) => (
+                            <p
+                              key={`${key}-line-${lineIndex}`}
+                              className={isSubPoint(line) ? "isSubPoint" : ""}
+                            >
+                              {line}
+                            </p>
+                          ))}
+                        </div>
                         <div className="paragraphMemoryTools">
                           <button type="button" onClick={() => toggleHighlightParagraph(index)}>
                             <Star size={14} />
                             {highlighted ? "Highlighted" : "Highlight"}
                           </button>
-                          <button type="button" onClick={() => saveParagraph(index, paragraph)}>
+                          <button type="button" onClick={() => saveParagraph(index, savedText)}>
                             <BookMarked size={14} />
                             {saved ? "Saved" : "Save"}
                           </button>
@@ -955,9 +993,9 @@ export default function AcademyExperience() {
                 <h3>Reading Path</h3>
                 {activeModule.readingSections.map((section, index) => (
                   <article key={section}>
-                    <FileText size={18} />
+                    <ChevronRight size={18} />
                     <div>
-                      <strong>{index + 1}. {section}</strong>
+                      <strong>{index + 1}. {cleanText(section)}</strong>
                       <p>
                         Write the idea in your own words, then connect it to a real decision.
                       </p>
@@ -972,7 +1010,7 @@ export default function AcademyExperience() {
                   <article key={task}>
                     <BookMarked size={18} />
                     <div>
-                      <strong>{task}</strong>
+                      <strong>{cleanText(task)}</strong>
                       <p>Use this as proof for certificates and account mastery.</p>
                     </div>
                   </article>

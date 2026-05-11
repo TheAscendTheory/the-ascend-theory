@@ -3072,6 +3072,7 @@ input {
   min-height: 720px;
   padding: clamp(18px, 4vw, 34px);
   background:
+    linear-gradient(115deg, rgba(250, 204, 21, 0.06), transparent 36%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(0, 0, 0, 0.12)),
     rgba(255, 255, 255, 0.035);
 }
@@ -3425,6 +3426,33 @@ input {
     rgba(5, 5, 5, 0.36);
 }
 
+.academyReaderNav {
+  display: flex;
+  gap: 8px;
+  max-width: 980px;
+  overflow-x: auto;
+  padding: 4px 0 10px;
+  scrollbar-width: thin;
+}
+
+.academyReaderNav button {
+  flex: 0 0 auto;
+  min-width: 42px;
+  min-height: 36px;
+  padding: 0 11px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 12px;
+}
+
+.academyReaderNav button.isCurrent {
+  border-color: rgba(250, 204, 21, 0.52);
+  background: rgba(250, 204, 21, 0.15);
+  color: white;
+}
+
 .academyMemoryBar {
   display: flex;
   flex-wrap: wrap;
@@ -3458,10 +3486,10 @@ input {
   grid-template-columns: minmax(0, 1fr);
   gap: 18px;
   padding: clamp(20px, 4vw, 34px);
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
   background:
-    linear-gradient(90deg, rgba(250, 204, 21, 0.07), transparent 22%),
+    linear-gradient(90deg, rgba(250, 204, 21, 0.08), transparent 18%),
     rgba(0, 0, 0, 0.24);
   scroll-margin-top: 120px;
 }
@@ -3500,17 +3528,22 @@ input {
 }
 
 .academyLectureText {
-  display: grid;
-  gap: 14px;
+  display: block;
+  max-width: 78ch;
 }
 
 .academyLectureText p,
 .academyPassage p {
-  margin: 0;
+  margin: 0 0 1.1rem;
   color: rgba(255, 255, 255, 0.82);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(18px, 2vw, 21px);
   line-height: 1.82;
+  white-space: pre-line;
+}
+
+.academyLectureText p:last-child {
+  margin-bottom: 0;
 }
 
 .academyLectureText p.isSubPoint {
