@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, Eye, EyeOff, Palette, SlidersHorizontal } from "lucide-react";
 import TradingViewEconomicCalendar from "../economic-calendar/TradingViewEconomicCalendar";
 import RiskCalculator from "../risk-calculator/RiskCalculator";
@@ -50,6 +50,41 @@ const toolLabels: Record<ToolKey, string> = {
   sessions: "Sessions",
 };
 
+const layoutStorageKey = "ascend-trading-desk-layout";
+
+const minimalLayout: Record<ToolKey, boolean> = {
+  watchlist: true,
+  calendar: false,
+  levels: false,
+  flow: false,
+  risk: true,
+  journal: false,
+  alerts: false,
+  sessions: false,
+};
+
+const planningLayout: Record<ToolKey, boolean> = {
+  watchlist: true,
+  calendar: true,
+  levels: true,
+  flow: false,
+  risk: true,
+  journal: false,
+  alerts: true,
+  sessions: true,
+};
+
+const reviewLayout: Record<ToolKey, boolean> = {
+  watchlist: false,
+  calendar: false,
+  levels: false,
+  flow: false,
+  risk: true,
+  journal: true,
+  alerts: false,
+  sessions: false,
+};
+
 function ToolShell({
   id,
   title,
@@ -77,22 +112,40 @@ function ToolShell({
 }
 
 export default function TradingWorkspace() {
-  const [visibleTools, setVisibleTools] = useState<Record<ToolKey, boolean>>({
-    watchlist: true,
-    calendar: true,
-    levels: true,
-    flow: false,
-    risk: true,
-    journal: false,
-    alerts: false,
-    sessions: false,
-  });
+  const [visibleTools, setVisibleTools] = useState<Record<ToolKey, boolean>>(planningLayout);
   const [theme, setTheme] = useState<WorkspaceTheme>("dark");
 
   const activeCount = useMemo(
     () => Object.values(visibleTools).filter(Boolean).length,
     [visibleTools]
   );
+
+  useEffect(() => {
+    const restoreLayout = window.setTimeout(() => {
+      try {
+        const saved = window.localStorage.getItem(layoutStorageKey);
+        if (!saved) return;
+
+        const parsed = JSON.parse(saved) as {
+          visibleTools?: Partial<Record<ToolKey, boolean>>;
+          theme?: WorkspaceTheme;
+        };
+
+        setVisibleTools((current) => ({ ...current, ...parsed.visibleTools }));
+        if (parsed.theme === "dark" || parsed.theme === "contrast" || parsed.theme === "light") {
+          setTheme(parsed.theme);
+        }
+      } catch {
+        return;
+      }
+    }, 0);
+
+    return () => window.clearTimeout(restoreLayout);
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(layoutStorageKey, JSON.stringify({ visibleTools, theme }));
+  }, [theme, visibleTools]);
 
   function toggleTool(tool: ToolKey) {
     setVisibleTools((current) => ({
@@ -102,29 +155,15 @@ export default function TradingWorkspace() {
   }
 
   function setMinimal() {
-    setVisibleTools({
-      watchlist: true,
-      calendar: false,
-      levels: false,
-      flow: false,
-      risk: false,
-      journal: false,
-      alerts: false,
-      sessions: false,
-    });
+    setVisibleTools(minimalLayout);
   }
 
   function setPlanning() {
-    setVisibleTools({
-      watchlist: true,
-      calendar: true,
-      levels: true,
-      flow: true,
-      risk: true,
-      journal: false,
-      alerts: true,
-      sessions: true,
-    });
+    setVisibleTools(planningLayout);
+  }
+
+  function setReview() {
+    setVisibleTools(reviewLayout);
   }
 
   return (
@@ -132,8 +171,8 @@ export default function TradingWorkspace() {
       <div className="workspaceControls">
         <div>
           <p className="eyebrow">Workspace Controls</p>
-          <h2>Show only what you need while charting.</h2>
-          <p>{activeCount} tools visible. Collapse the rest for a clean chart-first setup.</p>
+          <h2>Build the desk around the trade.</h2>
+          <p>{activeCount} tools visible. Your layout and contrast choice stay saved on this device.</p>
         </div>
 
         <div className="workspaceControlActions">
@@ -144,6 +183,10 @@ export default function TradingWorkspace() {
           <button type="button" onClick={setPlanning}>
             <SlidersHorizontal size={16} />
             Planning
+          </button>
+          <button type="button" onClick={setReview}>
+            <SlidersHorizontal size={16} />
+            Review
           </button>
           <label>
             <Palette size={16} />
@@ -162,6 +205,7 @@ export default function TradingWorkspace() {
             key={tool}
             type="button"
             className={visibleTools[tool] ? "isActive" : ""}
+            aria-pressed={visibleTools[tool]}
             onClick={() => toggleTool(tool)}
           >
             {visibleTools[tool] ? <Eye size={14} /> : <EyeOff size={14} />}
@@ -186,10 +230,6 @@ export default function TradingWorkspace() {
           </div>
         </ToolShell>
 
-        <ToolShell id="calendar" title="Economic Calendar" visible={visibleTools.calendar} onToggle={toggleTool} wide>
-          <TradingViewEconomicCalendar compact />
-        </ToolShell>
-
         <ToolShell id="levels" title="Structure Levels" visible={visibleTools.levels} onToggle={toggleTool}>
           <div className="structureLevelList">
             {structureLevels.map((level) => (
@@ -202,16 +242,8 @@ export default function TradingWorkspace() {
           </div>
         </ToolShell>
 
-        <ToolShell id="flow" title="Order Flow Notes" visible={visibleTools.flow} onToggle={toggleTool}>
-          <div className="flowNoteList">
-            {orderFlowReads.map((read) => (
-              <article key={read.label}>
-                <span>{read.status}</span>
-                <strong>{read.label}</strong>
-                <p>{read.value}</p>
-              </article>
-            ))}
-          </div>
+        <ToolShell id="risk" title="Risk Calculator" visible={visibleTools.risk} onToggle={toggleTool}>
+          <RiskCalculator />
         </ToolShell>
 
         <ToolShell id="sessions" title="Session Timing" visible={visibleTools.sessions} onToggle={toggleTool}>
@@ -226,12 +258,24 @@ export default function TradingWorkspace() {
           </div>
         </ToolShell>
 
-        <ToolShell id="risk" title="Risk Calculator" visible={visibleTools.risk} onToggle={toggleTool}>
-          <RiskCalculator />
-        </ToolShell>
-
         <ToolShell id="alerts" title="Alert Planner" visible={visibleTools.alerts} onToggle={toggleTool}>
           <AlertPlanner />
+        </ToolShell>
+
+        <ToolShell id="flow" title="Order Flow Notes" visible={visibleTools.flow} onToggle={toggleTool}>
+          <div className="flowNoteList">
+            {orderFlowReads.map((read) => (
+              <article key={read.label}>
+                <span>{read.status}</span>
+                <strong>{read.label}</strong>
+                <p>{read.value}</p>
+              </article>
+            ))}
+          </div>
+        </ToolShell>
+
+        <ToolShell id="calendar" title="Economic Calendar" visible={visibleTools.calendar} onToggle={toggleTool} wide>
+          <TradingViewEconomicCalendar compact />
         </ToolShell>
 
         <ToolShell id="journal" title="Trade Journal" visible={visibleTools.journal} onToggle={toggleTool}>

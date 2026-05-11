@@ -832,13 +832,44 @@ input {
   margin-top: 42px;
 }
 
+.tradingDeskSurface {
+  padding: clamp(14px, 3vw, 22px);
+  border: 1px solid rgba(234, 179, 8, 0.18);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02)),
+    rgba(0, 0, 0, 0.22);
+  scroll-margin-top: 138px;
+}
+
+.tradingDeskSurfaceHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.34fr);
+  gap: 18px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.tradingDeskSurfaceHeader h2 {
+  margin: 0;
+  color: white;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1;
+}
+
+.tradingDeskSurfaceHeader span {
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
 .advancedChartWidget {
   width: 100%;
   height: 760px;
-  margin-top: 34px;
   overflow: hidden;
   border: 1px solid rgba(234, 179, 8, 0.18);
-  border-radius: 18px;
+  border-radius: 14px;
   background: rgba(0, 0, 0, 0.34);
 }
 
@@ -846,6 +877,43 @@ input {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+.deskWorkflowStrip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.deskWorkflowStrip article {
+  min-height: 132px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.deskWorkflowStrip span {
+  display: block;
+  color: #eab308;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.deskWorkflowStrip strong {
+  display: block;
+  margin-top: 12px;
+  color: white;
+  font-size: 20px;
+}
+
+.deskWorkflowStrip p {
+  margin: 8px 0 0;
+  color: rgba(255, 255, 255, 0.64);
+  line-height: 1.45;
 }
 
 .affiliateGrid {
@@ -902,8 +970,11 @@ input {
   margin-top: 18px;
   padding: 18px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent),
+    rgba(255, 255, 255, 0.025);
+  scroll-margin-top: 138px;
 }
 
 .tradingWorkspace.light {
@@ -922,6 +993,7 @@ input {
   gap: 18px;
   align-items: end;
   padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   background: rgba(0, 0, 0, 0.22);
 }
@@ -1008,14 +1080,15 @@ input {
 
 .workspacePanelGrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(260px, 0.82fr) minmax(320px, 1.18fr);
   gap: 14px;
+  align-items: start;
 }
 
 .workspacePanel {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
+  border-radius: 12px;
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -1048,6 +1121,10 @@ input {
 
 .workspacePanelBody {
   padding: 0 16px 16px;
+}
+
+.workspacePanel .tradeJournal {
+  margin-top: 0;
 }
 
 .assetWatchlist,
@@ -1130,425 +1207,6 @@ input {
 
 .workspacePanel .economicCalendarWidget {
   border-color: rgba(255, 255, 255, 0.08);
-}
-
-.traderDesk {
-  display: grid;
-  gap: 22px;
-  margin-top: 58px;
-}
-
-.traderDeskHeader {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 22px;
-  align-items: end;
-  padding: 26px;
-  border: 1px solid rgba(234, 179, 8, 0.22);
-  border-radius: 22px;
-  background:
-    linear-gradient(135deg, rgba(234, 179, 8, 0.1), rgba(34, 197, 94, 0.045)),
-    rgba(255, 255, 255, 0.035);
-}
-
-.traderDeskHeader h2 {
-  max-width: 980px;
-  margin: 0 0 14px;
-  color: white;
-  font-size: clamp(32px, 5vw, 62px);
-  line-height: 0.98;
-}
-
-.traderDeskHeader p:not(.eyebrow) {
-  max-width: 860px;
-  margin: 0;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.75;
-}
-
-.marketSelector {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
-}
-
-.marketSelector button {
-  min-height: 42px;
-  padding: 10px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.22);
-  color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-}
-
-.marketSelector button.isActive {
-  border-color: rgba(234, 179, 8, 0.55);
-  background: rgba(234, 179, 8, 0.12);
-  color: #facc15;
-}
-
-.marketPulse {
-  display: grid;
-  grid-template-columns: 0.8fr 1fr 1.2fr;
-  gap: 14px;
-}
-
-.marketPulse article,
-.deskPanel,
-.exposureSummary article,
-.levelStack article,
-.correlationGrid article,
-.volatilityGrid article,
-.newsFlow article,
-.sessionList article,
-.heatmapDesk article {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.035);
-}
-
-.marketPulse article {
-  min-height: 128px;
-  padding: 20px;
-  border-radius: 18px;
-}
-
-.marketPulse span,
-.exposureSummary span,
-.volatilityGrid span,
-.levelStack span,
-.correlationGrid span {
-  display: block;
-  color: rgba(255, 255, 255, 0.56);
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.marketPulse strong {
-  display: block;
-  margin: 10px 0 8px;
-  color: white;
-  font-size: clamp(24px, 4vw, 42px);
-  line-height: 1;
-}
-
-.marketPulse p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.66);
-  line-height: 1.5;
-}
-
-.traderDeskGrid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.deskPanel {
-  display: grid;
-  gap: 16px;
-  align-content: start;
-  min-height: 320px;
-  padding: 18px;
-  border-radius: 18px;
-}
-
-.deskPanelWide {
-  grid-column: span 2;
-}
-
-.deskPanelHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.deskPanelHeader h3 {
-  margin: 0;
-  color: white;
-  font-size: 22px;
-  line-height: 1.05;
-}
-
-.deskPanelHeader svg {
-  color: #eab308;
-  flex: 0 0 auto;
-}
-
-.orderFlowGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.domTable,
-.volumeProfile,
-.footprintTable,
-.tapeList,
-.levelStack,
-.correlationGrid,
-.volatilityGrid,
-.exposureList,
-.executionPad,
-.newsFlow,
-.replayTool,
-.sessionList,
-.coreLayerList {
-  display: grid;
-  gap: 8px;
-}
-
-.domTable div,
-.footprintTable div,
-.tapeList div,
-.volumeProfile div,
-.exposureList div {
-  position: relative;
-  display: grid;
-  grid-template-columns: 52px minmax(0, 1fr) auto;
-  gap: 10px;
-  align-items: center;
-  overflow: hidden;
-  min-height: 36px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.24);
-}
-
-.domTable span,
-.footprintTable span,
-.tapeList span,
-.volumeProfile span,
-.exposureList span {
-  color: rgba(255, 255, 255, 0.62);
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.domTable strong,
-.footprintTable strong,
-.tapeList strong,
-.volumeProfile em,
-.exposureList em {
-  color: white;
-  font-style: normal;
-  font-size: 12px;
-  font-weight: 900;
-}
-
-.domTable em {
-  display: block;
-  height: 16px;
-  min-width: 34px;
-  border-radius: 999px;
-  color: black;
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 900;
-  line-height: 16px;
-  text-align: center;
-}
-
-.isAsk em,
-.domTable .isAsk em {
-  background: #fb7185;
-}
-
-.isBid em,
-.domTable .isBid em {
-  background: #4ade80;
-}
-
-.volumeProfile div,
-.exposureList div {
-  grid-template-columns: 62px minmax(0, 1fr) auto;
-}
-
-.volumeProfile strong,
-.exposureList strong {
-  display: block;
-  height: 13px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #eab308, #22c55e);
-}
-
-.footprintTable em,
-.tapeList em {
-  color: #facc15;
-  font-style: normal;
-  font-size: 12px;
-  font-weight: 900;
-}
-
-.levelStack article,
-.correlationGrid article,
-.volatilityGrid article,
-.newsFlow article,
-.sessionList article {
-  padding: 14px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.22);
-}
-
-.levelStack strong,
-.correlationGrid strong,
-.volatilityGrid strong,
-.exposureSummary strong {
-  display: block;
-  margin-top: 8px;
-  color: white;
-  font-size: 20px;
-  line-height: 1.1;
-}
-
-.levelStack p,
-.correlationGrid p,
-.newsFlow strong,
-.sessionList p,
-.replayTool p,
-.executionPad p {
-  margin: 8px 0 0;
-  color: rgba(255, 255, 255, 0.66);
-  line-height: 1.45;
-}
-
-.correlationGrid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.volatilityGrid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.exposureSummary {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.exposureSummary article {
-  padding: 16px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.22);
-}
-
-.executionPad button {
-  min-height: 42px;
-  border: 1px solid rgba(234, 179, 8, 0.22);
-  border-radius: 12px;
-  background: rgba(234, 179, 8, 0.1);
-  color: #facc15;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.executionPad button:hover {
-  border-color: rgba(234, 179, 8, 0.5);
-  background: rgba(234, 179, 8, 0.16);
-}
-
-.newsFlow span,
-.sessionList span {
-  color: #eab308;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.newsFlow article.isHot {
-  border-color: rgba(251, 113, 133, 0.34);
-  background: rgba(251, 113, 133, 0.075);
-}
-
-.replayTool input {
-  width: 100%;
-  accent-color: #eab308;
-}
-
-.replayTool strong {
-  color: white;
-}
-
-.heatmapDesk {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.heatmapDesk article {
-  padding: 14px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.22);
-}
-
-.heatmapDesk h4 {
-  margin: 0 0 12px;
-  color: white;
-  font-size: 16px;
-}
-
-.heatmapDesk article div {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.heatmapDesk span {
-  display: grid;
-  gap: 3px;
-  padding: 10px;
-  border-radius: 10px;
-  background: rgba(234, 179, 8, 0.12);
-  color: #facc15;
-  font-size: 12px;
-  font-weight: 900;
-}
-
-.heatmapDesk span.isStrong {
-  background: rgba(34, 197, 94, 0.13);
-  color: #4ade80;
-}
-
-.heatmapDesk span.isWeak {
-  background: rgba(251, 113, 133, 0.13);
-  color: #fb7185;
-}
-
-.heatmapDesk strong {
-  color: white;
-}
-
-.sessionList article.isActive {
-  border-color: rgba(34, 197, 94, 0.34);
-  background: rgba(34, 197, 94, 0.08);
-}
-
-.sessionList strong {
-  display: block;
-  margin-top: 8px;
-  color: white;
-}
-
-.coreLayerList span {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.22);
-  color: rgba(255, 255, 255, 0.76);
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.coreLayerList svg {
-  color: #eab308;
 }
 
 .riskCalculator {
@@ -4798,10 +4456,8 @@ input {
   .alertPlanner,
   .journalWorkspace,
   .accountPanel,
-  .traderDeskHeader,
-  .marketPulse,
-  .traderDeskGrid,
-  .orderFlowGrid,
+  .tradingDeskSurfaceHeader,
+  .deskWorkflowStrip,
   .curriculumPolicyGrid,
   .benchmarkGrid,
   .ascendAdvantageGrid,
@@ -4831,14 +4487,6 @@ input {
 
   .academyLecturePreview {
     display: grid !important;
-  }
-
-  .deskPanelWide {
-    grid-column: span 1;
-  }
-
-  .heatmapDesk {
-    grid-template-columns: 1fr;
   }
 
   .journalTrade {
@@ -5012,21 +4660,7 @@ input {
   .journalStats,
   .journalTrade,
   .demoPosition,
-  .exposureSummary,
-  .correlationGrid,
-  .volatilityGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .traderDeskHeader {
-    padding: 22px;
-  }
-
-  .marketSelector {
-    justify-content: flex-start;
-  }
-
-  .heatmapDesk article div {
+  .workspacePanelGrid {
     grid-template-columns: 1fr;
   }
 
