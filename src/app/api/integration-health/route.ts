@@ -15,6 +15,19 @@ const requiredTables = [
   "ascend_academy_progress",
 ];
 
+const requiredColumnChecks = [
+  {
+    table: "ascend_profiles",
+    select: "pnl_public",
+    label: "Profile P&L privacy",
+  },
+  {
+    table: "ascend_social_posts",
+    select: "category,tags,media_url,media_type,pnl_amount",
+    label: "Social categories, tags, media, and P&L",
+  },
+];
+
 async function checkTable(
   supabaseUrl: string,
   key: string,
@@ -59,6 +72,59 @@ async function checkTable(
   } catch (error) {
     return {
       table,
+      ok: false,
+      status: 0,
+      error: {
+        code: "NETWORK_ERROR",
+        message: error instanceof Error ? error.message : "Unable to reach backend services.",
+        details: null,
+        hint: null,
+      },
+    };
+  }
+}
+
+async function checkColumns(
+  supabaseUrl: string,
+  key: string,
+  check: (typeof requiredColumnChecks)[number]
+) {
+  try {
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/${check.table}?select=${check.select}&limit=1`,
+      {
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+        },
+      }
+    );
+
+    if (response.ok) {
+      return {
+        ...check,
+        ok: true,
+        status: response.status,
+        error: null,
+      };
+    }
+
+    const body = await response.json().catch(() => null);
+
+    return {
+      ...check,
+      ok: false,
+      status: response.status,
+      error: {
+        code: body?.code || null,
+        message: body?.message || "Column check failed.",
+        details: body?.details || null,
+        hint: body?.hint || null,
+      },
+    };
+  } catch (error) {
+    return {
+      ...check,
       ok: false,
       status: 0,
       error: {
@@ -144,16 +210,21 @@ export async function GET() {
   const tables = await Promise.all(
     requiredTables.map((table) => checkTable(supabaseUrl, tableKey, table))
   );
+  const columns = await Promise.all(
+    requiredColumnChecks.map((check) => checkColumns(supabaseUrl, tableKey, check))
+  );
   const ok =
     Object.values(env).slice(0, 4).every(Boolean) &&
     serviceKeyCheck.ok &&
-    tables.every((table) => table.ok);
+    tables.every((table) => table.ok) &&
+    columns.every((column) => column.ok);
 
   return NextResponse.json({
     ok,
     env,
     keys: [serviceKeyCheck, anonKeyCheck],
     tables,
+    columns,
     message: ok
       ? "Core integrations are reachable."
       : "One or more integrations need attention.",
