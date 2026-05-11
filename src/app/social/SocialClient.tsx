@@ -1,14 +1,17 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   Bell,
   Bookmark,
   Check,
+  Clock,
   MessageCircle,
   Plus,
   Search,
   Send,
+  Sparkles,
   UserPlus,
 } from "lucide-react";
 import { createBrowserSupabaseClient } from "../lib/supabaseBrowser";
@@ -142,9 +145,11 @@ export default function SocialClient() {
   }, [friendships, profileMap, userId]);
 
   const activeFriend = friends.find((friend) => friend.id === activeFriendId);
+  const currentProfile = profileMap.get(userId);
   const friendRequests = friends.filter(
     (friend) => friend.status === "request" && friend.direction === "incoming"
   );
+  const acceptedFriends = friends.filter((friend) => friend.status === "friend");
   const savedPostIds = useMemo(
     () => new Set(savedPosts.map((savedPost) => savedPost.post_id)),
     [savedPosts]
@@ -153,17 +158,18 @@ export default function SocialClient() {
   const profileHighlights = stories.filter(
     (story) => story.user_id === userId && story.kept_on_profile
   );
+  const activeStories = stories.filter((story) => !story.kept_on_profile);
+  const unreadNotifications = notifications.filter((notification) => !notification.read_at);
 
   const notificationText = useMemo(() => {
-    const unread = notifications.filter((notification) => !notification.read_at);
-    return unread.length
-      ? unread.map((notification) => notification.body)
+    return unreadNotifications.length
+      ? unreadNotifications.map((notification) => notification.body)
       : [
           `${friendRequests.length} friend request${friendRequests.length === 1 ? "" : "s"}`,
           `${savedPostList.length} saved post${savedPostList.length === 1 ? "" : "s"}`,
-          `${stories.filter((story) => !story.kept_on_profile).length} active stories`,
+          `${activeStories.length} active stories`,
         ];
-  }, [friendRequests.length, notifications, savedPostList.length, stories]);
+  }, [activeStories.length, friendRequests.length, savedPostList.length, unreadNotifications]);
 
   const loadSocialData = useCallback(async () => {
     if (!supabase) {
@@ -358,7 +364,7 @@ export default function SocialClient() {
       user_id: profile.user_id,
       actor_id: userId,
       type: "friend_request",
-      body: `${profileName(profile)} received your friend request.`,
+      body: `${profileName(currentProfile)} sent you a friend request.`,
       href: "/social",
     });
 
@@ -526,6 +532,10 @@ export default function SocialClient() {
           Social profiles, friend requests, messages, stories, and saved posts
           become active once account services are connected.
         </p>
+        <div className="socialAuthActions">
+          <Link href="/account">Open Account</Link>
+          <Link href="/community">Community</Link>
+        </div>
       </section>
     );
   }
@@ -538,12 +548,50 @@ export default function SocialClient() {
           Friend requests, messages, notifications, stories, and saved posts are
           connected to your Ascend profile.
         </p>
+        <div className="socialAuthActions">
+          <Link href="/account">Sign In</Link>
+          <Link href="/community">Community</Link>
+        </div>
       </section>
     );
   }
 
   return (
-    <section className="socialShell" aria-label="Ascenders social dashboard">
+    <>
+      <section className="socialCommandPanel" aria-label="Social overview">
+        <div>
+          <p className="eyebrow">Social Command</p>
+          <h2>Notifications, stories, friends, and messages in one place.</h2>
+          <p>
+            Keep direct chat inside the social layer, save useful posts, and
+            turn short-lived stories into profile highlights when they matter.
+          </p>
+        </div>
+        <div className="socialQuickStats">
+          <article>
+            <Bell size={17} />
+            <span>Unread</span>
+            <strong>{unreadNotifications.length}</strong>
+          </article>
+          <article>
+            <UserPlus size={17} />
+            <span>Friends</span>
+            <strong>{acceptedFriends.length}</strong>
+          </article>
+          <article>
+            <Clock size={17} />
+            <span>Stories</span>
+            <strong>{activeStories.length}</strong>
+          </article>
+          <article>
+            <Bookmark size={17} />
+            <span>Saved</span>
+            <strong>{savedPostList.length}</strong>
+          </article>
+        </div>
+      </section>
+
+      <section className="socialShell" aria-label="Ascenders social dashboard">
       <aside className="socialRail" aria-label="Notifications">
         <div className="socialPanelHeader">
           <span>
@@ -622,6 +670,7 @@ export default function SocialClient() {
         <section className="storyStrip" aria-label="Stories">
           {stories.length === 0 ? (
             <article className="storyBubble">
+              <Sparkles size={18} />
               <strong>No stories yet</strong>
               <span>Post one to start the 24-hour story lane.</span>
             </article>
@@ -781,5 +830,6 @@ export default function SocialClient() {
         {status && <p className="accountStatus">{status}</p>}
       </aside>
     </section>
+    </>
   );
 }

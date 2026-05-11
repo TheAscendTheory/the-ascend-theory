@@ -86,7 +86,7 @@ export default function GlobalChatDock() {
 
       setFriends(nextFriends);
       setActiveFriendId((current) => current || nextFriends[0]?.id || "");
-      setStatus(nextFriends.length ? "Global friend chat ready." : "Add friends in Social to chat.");
+      setStatus(nextFriends.length ? "Friend chat ready." : "Add friends in Social to chat.");
     }
 
     loadChatBasics();
@@ -126,7 +126,7 @@ export default function GlobalChatDock() {
           friend.id === activeFriendId ? { ...friend, conversationId } : friend
         )
       );
-      setStatus("Global friend chat ready.");
+      setStatus("Friend chat ready.");
     }
 
     loadMessages();
@@ -185,7 +185,7 @@ export default function GlobalChatDock() {
           setOpen(true);
           setMinimized(false);
         }}
-        aria-label="Open global friend chat"
+        aria-label="Open friend chat"
       >
         <MessageCircle size={20} />
         <span>Chat</span>
@@ -198,7 +198,7 @@ export default function GlobalChatDock() {
       <div className="floatingChatHeader siteChatHeader">
         <button type="button" onClick={() => setMinimized((current) => !current)}>
           <Users size={17} />
-          <span>Global Chat</span>
+          <span>Friend Chat</span>
         </button>
 
         <div>
