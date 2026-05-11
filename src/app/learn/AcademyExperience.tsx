@@ -444,7 +444,7 @@ export default function AcademyExperience() {
     });
 
     if (error) {
-      setStatus("Saved locally. Account sync needs attention.");
+      setStatus("Progress saved on this device.");
       return;
     }
 

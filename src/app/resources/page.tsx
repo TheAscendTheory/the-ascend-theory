@@ -34,19 +34,10 @@ const resources = [
   },
 ];
 
-const upcomingResources = [
-  "The Ascender Starter Guide",
-  "Financial Literacy Basics",
-  "Personal Operating System Template",
-  "AI Tools For Young Builders",
-  "Market Awareness Beginner Guide",
-  "Discipline And Execution Tracker",
-];
-
 const marketTools = [
   {
     title: "Ascend Academy",
-    text: "A staged curriculum with lessons, quizzes, XP, badges, and account levels from first principles to advanced market thinking.",
+    text: "A structured curriculum with lessons, quizzes, XP, badges, and account levels from first principles to advanced market thinking.",
     href: "/learn",
   },
   {
@@ -142,24 +133,6 @@ export default function ResourcesPage() {
               <strong>{tool.title}</strong>
               <span>{tool.text}</span>
             </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="resourceCallout">
-        <p className="eyebrow">Library Buildout</p>
-
-        <h2>Guides, templates, frameworks, and learning systems.</h2>
-
-        <p>
-          The resource library is being developed as a practical toolset for
-          financial literacy, market awareness, digital execution, AI literacy,
-          and personal operating systems.
-        </p>
-
-        <div className="resourceLibraryGrid">
-          {upcomingResources.map((item) => (
-            <div key={item}>{item}</div>
           ))}
         </div>
       </section>

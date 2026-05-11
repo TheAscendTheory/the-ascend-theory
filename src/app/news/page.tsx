@@ -38,13 +38,13 @@ const dailyBriefs = [
   },
 ];
 
-const newsSlots = [
+const newsFormats = [
   {
     type: "Video",
     title: "Daily Market Recap",
     description:
       "A quick video format for what moved markets today, what mattered, and what was noise.",
-    status: "Ready for upload",
+    status: "Video desk",
     icon: Play,
   },
   {
@@ -68,7 +68,7 @@ const newsSlots = [
     title: "News Voice Note",
     description:
       "A lightweight audio format for quick commentary when a full video is too slow to produce.",
-    status: "Audio-ready",
+    status: "Audio desk",
     icon: Radio,
   },
 ];
@@ -116,18 +116,18 @@ export default function NewsPage() {
             <h2>Videos, articles, alerts, and audio in one fast desk.</h2>
           </div>
 
-          {newsSlots.map((slot) => {
-            const Icon = slot.icon;
+          {newsFormats.map((format) => {
+            const Icon = format.icon;
 
             return (
-              <article key={slot.title} className="newsStoryCard">
+              <article key={format.title} className="newsStoryCard">
                 <div>
                   <Icon size={20} />
-                  <span>{slot.type}</span>
+                  <span>{format.type}</span>
                 </div>
-                <h3>{slot.title}</h3>
-                <p>{slot.description}</p>
-                <em>{slot.status}</em>
+                <h3>{format.title}</h3>
+                <p>{format.description}</p>
+                <em>{format.status}</em>
               </article>
             );
           })}

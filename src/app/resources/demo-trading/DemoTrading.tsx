@@ -267,7 +267,7 @@ export default function DemoTrading() {
       }
 
       if (accountResult.error || positionsResult.error) {
-        setStatus("Saved locally. Account sync is not available yet.");
+        setStatus("Saved in this browser.");
       } else {
         setStatus("Demo account synced to your Ascend profile.");
       }
@@ -372,7 +372,7 @@ export default function DemoTrading() {
 
       setStatus(
         error
-          ? `${position.symbol} opened locally. Cloud sync needs the demo table.`
+          ? `${position.symbol} demo position opened.`
           : `${position.symbol} demo position opened and synced.`
       );
     }

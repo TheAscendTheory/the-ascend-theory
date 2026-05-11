@@ -34,7 +34,7 @@ export default function PrivacyPage() {
         <p>
           We use submitted information to manage the waitlist, send updates,
           respond to inquiries, share resources, improve the site, and develop
-          future media, education, community, and program offerings.
+          media, education, community, and program offerings.
         </p>
 
         <h2>Email Communication</h2>
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
         <p>
           If you join the waitlist, you may receive emails related to The Ascend
           Theory, including launch updates, resources, newsletters, programs,
-          and community announcements. You may unsubscribe from future emails
+          and community announcements. You may unsubscribe from emails
           when unsubscribe options are provided.
         </p>
 

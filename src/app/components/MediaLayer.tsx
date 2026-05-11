@@ -20,7 +20,6 @@ export type PlayerItem = {
   source: MediaSource;
   src: string;
   access: "free" | "member" | "paid" | "exclusive";
-  ready?: boolean;
 };
 
 type MediaContextValue = {
@@ -48,8 +47,8 @@ function YouTubePlayer({ item }: { item: PlayerItem }) {
 
   if (!embedUrl) {
     return (
-      <div className="globalMediaPlaceholder">
-        Add a YouTube video URL to play this inside the site.
+      <div className="globalMediaFallback">
+        This video link could not be loaded.
       </div>
     );
   }
@@ -101,20 +100,13 @@ function GlobalMediaDock() {
             <strong>{item.access === "free" ? "Free" : item.access}</strong>
           </div>
 
-          {item.ready === false && (
-            <div className="globalMediaPlaceholder">
-              Media player ready. Add the final source file or YouTube video
-              URL when the content is published.
-            </div>
-          )}
+          {item.kind === "video" && item.source === "youtube" && <YouTubePlayer item={item} />}
 
-          {item.ready !== false && item.kind === "video" && item.source === "youtube" && <YouTubePlayer item={item} />}
-
-          {item.ready !== false && item.kind === "video" && item.source === "file" && (
+          {item.kind === "video" && item.source === "file" && (
             <video src={item.src} controls autoPlay playsInline />
           )}
 
-          {item.ready !== false && item.kind === "audio" && <audio src={item.src} controls autoPlay />}
+          {item.kind === "audio" && <audio src={item.src} controls autoPlay />}
         </div>
       )}
     </aside>

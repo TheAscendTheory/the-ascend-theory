@@ -164,7 +164,7 @@ export default function TradeJournal() {
         .order("created_at", { ascending: false });
 
       if (tradeError) {
-        setSyncStatus("Saved locally. Account sync is not available yet.");
+        setSyncStatus("Saved in this browser.");
         return;
       }
 
@@ -259,7 +259,7 @@ export default function TradeJournal() {
         .insert(tradeToRow(trade, userId));
 
       setSyncStatus(
-        error ? "Saved locally. Cloud sync needs the journal table." : "Synced to your Ascend profile."
+        error ? "Saved in this browser." : "Synced to your Ascend profile."
       );
     }
 

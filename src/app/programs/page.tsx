@@ -25,7 +25,7 @@ const programs = [
   },
   {
     title: "Youth Education Initiatives",
-    text: "Programs designed for students and young adults learning money, markets, technology, personal growth, and future readiness.",
+    text: "Programs designed for students and young adults learning money, markets, technology, personal growth, and modern readiness.",
   },
   {
     title: "Community Learning Programs",
@@ -119,7 +119,7 @@ export default function ProgramsPage() {
 
         <p>
           The Ascend Theory can grow through content, live programming, resource
-          libraries, community spaces, and future institutional partnerships.
+          libraries, community spaces, and institutional partnerships.
         </p>
 
         <div className="programRoadmap">

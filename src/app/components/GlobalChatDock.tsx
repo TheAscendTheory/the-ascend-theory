@@ -34,7 +34,7 @@ export default function GlobalChatDock() {
   useEffect(() => {
     async function loadChatBasics() {
       if (!supabase) {
-        setStatus("Chat is not connected yet.");
+        setStatus("Sign in to start chat.");
         return;
       }
 

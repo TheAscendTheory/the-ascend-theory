@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import MediaLibrary from "./MediaLibrary";
 
 export const metadata: Metadata = {
   title: "Media",
@@ -18,7 +17,7 @@ const mediaFormats = [
   },
   {
     title: "Live Media",
-    text: "Future livestreams, interviews, panels, podcasts, workshops, and real-time conversations with builders and learners.",
+    text: "Livestreams, interviews, panels, podcasts, workshops, and real-time conversations with builders and learners.",
   },
   {
     title: "Market Breakdowns",
@@ -32,15 +31,6 @@ const mediaFormats = [
     title: "Interviews",
     text: "Conversations with creators, traders, founders, educators, students, builders, and community leaders.",
   },
-];
-
-const mediaSeries = [
-  "Money Basics",
-  "Market Awareness",
-  "Systems Over Motivation",
-  "AI For Builders",
-  "Ascender Notes",
-  "Founder Build Log",
 ];
 
 const distributionChannels = [
@@ -79,18 +69,14 @@ export default function MediaPage() {
         <h1>THE MEDIA ENGINE.</h1>
 
         <p>
-          The Ascend Theory is building a media ecosystem across short-form
+          The Ascend Theory media ecosystem connects short-form
           content, long-form education, podcasts, interviews, livestreams,
           documentaries, and market breakdowns.
         </p>
 
         <div className="pageCtaActions">
-          <a href="#media-library" className="pageCtaPrimary">
-            Open Player
-          </a>
-
-          <a href="#media-series" className="pageCtaSecondary">
-            Browse Series
+          <a href="#distribution" className="pageCtaPrimary">
+            Follow Channels
           </a>
         </div>
       </section>
@@ -104,28 +90,7 @@ export default function MediaPage() {
         ))}
       </section>
 
-      <MediaLibrary />
-
-      <section id="media-series" className="mediaCallout">
-        <p className="eyebrow">Content Series</p>
-
-        <h2>Original formats built around education and execution.</h2>
-
-        <p>
-          The media strategy is designed around repeatable series that can teach
-          financial literacy, market awareness, digital skills, systems
-          thinking, and disciplined execution without relying on generic
-          motivational content.
-        </p>
-
-        <div className="mediaSeriesGrid">
-          {mediaSeries.map((series) => (
-            <div key={series}>{series}</div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mediaCallout">
+      <section id="distribution" className="mediaCallout">
         <p className="eyebrow">Distribution</p>
 
         <h2>Built for multi-platform reach without losing identity.</h2>
@@ -163,7 +128,7 @@ export default function MediaPage() {
       </section>
 
       <section className="pageCta">
-        <h2>Follow the media engine as it develops.</h2>
+        <h2>Follow the media engine.</h2>
 
         <p>
           The Ascend Theory uses media to make financial literacy, market

@@ -63,7 +63,7 @@ export default function AccountClient() {
     event.preventDefault();
 
     if (!supabase) {
-      setStatus("Account sign-in is not connected yet.");
+      setStatus("Account sign-in is unavailable.");
       return;
     }
 
@@ -85,7 +85,7 @@ export default function AccountClient() {
     event.preventDefault();
 
     if (!supabase) {
-      setStatus("Profile saving is not connected yet.");
+      setStatus("Profile saving is unavailable.");
       return;
     }
 
@@ -144,7 +144,7 @@ export default function AccountClient() {
 
         {!supabase && (
           <p>
-            The interface is ready, but account sign-in is not connected yet.
+            Account sign-in is unavailable.
           </p>
         )}
 
@@ -204,7 +204,7 @@ export default function AccountClient() {
         <p className="eyebrow">Next Layer</p>
         <h2>{academyLevel}</h2>
         <p>
-          Your Ascend Academy level appears here as you complete staged lessons,
+          Your Ascend Academy level appears here as you complete structured lessons,
           pass quizzes, earn XP, and unlock badges across the learning system.
         </p>
       </section>
