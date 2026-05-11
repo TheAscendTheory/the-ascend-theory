@@ -7,9 +7,11 @@ import {
   BookOpen,
   CheckCircle2,
   FileText,
+  Image as ImageIcon,
   Lock,
   Play,
   Star,
+  Video,
 } from "lucide-react";
 import { createBrowserSupabaseClient } from "../lib/supabaseBrowser";
 import {
@@ -170,6 +172,29 @@ function buildReadingPassage(module: CurriculumModule) {
 
 function paragraphKey(moduleId: string, index: number) {
   return `${moduleId}:${index}`;
+}
+
+function formatReadingBlock(block: string, index: number) {
+  const lines = block
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const firstLine = lines[0] || `Lesson block ${index + 1}`;
+  const hasNumberedTitle = /^\d+\.\s+/.test(firstLine);
+
+  return {
+    label: `Block ${String(index + 1).padStart(2, "0")}`,
+    title: hasNumberedTitle ? firstLine : "Opening Context",
+    bodyLines: hasNumberedTitle ? lines.slice(1) : lines,
+  };
+}
+
+function isSubPoint(line: string) {
+  return /^([A-Z]\.|[a-z]\)|[-*])\s+/.test(line);
+}
+
+function visualTone(index: number) {
+  return ["map", "model", "practice", "review"][index % 4];
 }
 
 function encodeMemoryPayload(value: unknown) {
@@ -766,6 +791,19 @@ export default function AcademyExperience() {
 
           {step === "intro" && (
             <div className="academyReaderIntro">
+              <div className="academyLecturePreview">
+                <div className={`academyVisualFrame ${visualTone(activeIndex)}`}>
+                  <span />
+                  <span />
+                  <span />
+                  <strong>{activeModule.rank}</strong>
+                </div>
+                <div>
+                  <p className="eyebrow">Class Preview</p>
+                  <h3>{activeModule.title}</h3>
+                  <p>{activeModule.overview}</p>
+                </div>
+              </div>
               <p>{activeModule.overview}</p>
               <div className="dailyChallengeCard">
                 <strong>Daily challenge</strong>
@@ -799,6 +837,28 @@ export default function AcademyExperience() {
                 <ArrowLeft size={16} />
                 Module overview
               </button>
+              <aside className="academyLessonMedia">
+                <article>
+                  <Video size={18} />
+                  <div>
+                    <strong>Lecture clip slot</strong>
+                    <p>Use this area for a short walkthrough, screen recording, or class-style explanation.</p>
+                  </div>
+                </article>
+                <article>
+                  <ImageIcon size={18} />
+                  <div>
+                    <strong>Visual model</strong>
+                    <p>Key ideas are supported with diagrams, examples, and animated study cues.</p>
+                  </div>
+                </article>
+                <div className={`academyVisualFrame ${visualTone(activeIndex + activeLastRead)}`}>
+                  <span />
+                  <span />
+                  <span />
+                  <strong>{activeModule.rank}</strong>
+                </div>
+              </aside>
               <section>
                 <h3>Reading Passage</h3>
                 <div className="academyMemoryBar">
@@ -828,7 +888,28 @@ export default function AcademyExperience() {
                         data-paragraph-index={index}
                         className={highlighted ? "isHighlighted" : ""}
                       >
-                        <p>{paragraph}</p>
+                        {(() => {
+                          const block = formatReadingBlock(paragraph, index);
+
+                          return (
+                            <>
+                              <header className="academyLectureBlockHeader">
+                                <span>{block.label}</span>
+                                <h4>{block.title}</h4>
+                              </header>
+                              <div className="academyLectureText">
+                                {block.bodyLines.map((line, lineIndex) => (
+                                  <p
+                                    key={`${key}-line-${lineIndex}`}
+                                    className={isSubPoint(line) ? "isSubPoint" : ""}
+                                  >
+                                    {line}
+                                  </p>
+                                ))}
+                              </div>
+                            </>
+                          );
+                        })()}
                         <div className="paragraphMemoryTools">
                           <button type="button" onClick={() => toggleHighlightParagraph(index)}>
                             <Star size={14} />
