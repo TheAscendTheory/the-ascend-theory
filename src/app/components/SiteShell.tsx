@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import AIAssistantDock from "./AIAssistantDock";
+import GlobalChatDock from "./GlobalChatDock";
 import { MediaLayerProvider } from "./MediaLayer";
 
 const primaryLinks = [
@@ -16,7 +17,7 @@ const primaryLinks = [
   { label: "Economic Calendar", href: "/resources/economic-calendar" },
   { label: "Academy", href: "/learn" },
   { label: "News", href: "/news" },
-  { label: "Social", href: "/social" },
+  { label: "Shop", href: "/shop" },
 ];
 
 const moreLinks = [
@@ -28,9 +29,9 @@ const moreLinks = [
   { label: "Programs", href: "/programs" },
   { label: "Community", href: "/community" },
   { label: "Media", href: "/media" },
+  { label: "Social", href: "/social" },
   { label: "About", href: "/about" },
   { label: "Account", href: "/account" },
-  { label: "Shop", href: "/shop" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -152,6 +153,7 @@ export default function SiteShell({
       )}
 
       {children}
+      <GlobalChatDock />
       <AIAssistantDock />
       </MediaLayerProvider>
     </>

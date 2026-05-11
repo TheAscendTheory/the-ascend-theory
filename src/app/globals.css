@@ -4177,6 +4177,17 @@ input {
   background: rgba(56, 189, 248, 0.12);
 }
 
+.siteChatButton {
+  right: auto;
+  left: 22px;
+  border-color: rgba(250, 204, 21, 0.34);
+  color: #facc15;
+}
+
+.siteChatButton:hover {
+  background: rgba(250, 204, 21, 0.12);
+}
+
 .floatingChat {
   position: fixed;
   right: 22px;
@@ -4193,6 +4204,11 @@ input {
   box-shadow: 0 26px 90px rgba(0, 0, 0, 0.54);
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
+}
+
+.siteChatDock {
+  right: auto;
+  left: 22px;
 }
 
 .floatingChat.isMinimized {
@@ -4257,6 +4273,37 @@ input {
 .assistantHeader button:hover {
   background: rgba(56, 189, 248, 0.1);
   color: #bae6fd;
+}
+
+.siteChatHeader > button {
+  color: #facc15;
+}
+
+.globalChatFriendRow {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  overflow-x: auto;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.globalChatFriendRow button,
+.globalChatFriendRow span {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.globalChatFriendRow button.isActive {
+  border-color: rgba(250, 204, 21, 0.42);
+  background: rgba(250, 204, 21, 0.12);
+  color: #facc15;
 }
 
 .assistantPromptGrid {
@@ -4757,11 +4804,25 @@ input {
     bottom: 16px;
   }
 
+  .siteChatButton {
+    right: auto;
+    left: 16px;
+    bottom: 16px;
+  }
+
   .floatingChat {
     right: 12px;
     bottom: 12px;
     width: calc(100vw - 24px);
     max-height: min(560px, calc(100vh - 96px));
+  }
+
+  .siteChatDock {
+    right: 12px;
+    left: 12px;
+    bottom: 74px;
+    width: auto;
+    max-height: min(460px, calc(100vh - 138px));
   }
 
   .globalMediaDock {
