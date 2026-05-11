@@ -158,7 +158,21 @@ function buildReadingPassage(module: CurriculumModule) {
       )
       .filter(Boolean);
 
-    return blocks.length > 1 ? blocks : module.lessonText.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean);
+    const cleanedBlocks =
+      blocks.length > 1
+        ? blocks.filter((block, index) => {
+            if (index > 0) return true;
+            const lines = block
+              .split(/\n+/)
+              .map((line) => line.trim())
+              .filter(Boolean)
+              .filter((line) => line.toLowerCase() !== "lesson:");
+
+            return lines.length > 1 && !lines.every((line) => /^stage\s+\d+/i.test(line));
+          })
+        : module.lessonText.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean);
+
+    return cleanedBlocks;
   }
 
   return [
@@ -178,14 +192,21 @@ function formatReadingBlock(block: string, index: number) {
   const lines = block
     .split(/\n+/)
     .map((line) => line.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter((line) => line.toLowerCase() !== "lesson:");
   const firstLine = lines[0] || `Lesson block ${index + 1}`;
   const hasNumberedTitle = /^\d+\.\s+/.test(firstLine);
+  const title = hasNumberedTitle
+    ? firstLine
+    : firstLine.length > 14
+      ? firstLine
+      : lines[1] || firstLine;
+  const bodyLines = hasNumberedTitle ? lines.slice(1) : lines.filter((line) => line !== title);
 
   return {
-    label: `Block ${String(index + 1).padStart(2, "0")}`,
-    title: hasNumberedTitle ? firstLine : "Opening Context",
-    bodyLines: hasNumberedTitle ? lines.slice(1) : lines,
+    label: hasNumberedTitle ? `Lesson ${String(index + 1).padStart(2, "0")}` : "Overview",
+    title,
+    bodyLines,
   };
 }
 
@@ -312,7 +333,7 @@ export default function AcademyExperience() {
         .eq("user_id", userId);
 
       if (error) {
-        setStatus("Account sync is not ready yet. Progress is saved on this device.");
+        setStatus("Progress is saved on this device. Sign in again later to sync.");
         return;
       }
 
@@ -841,8 +862,8 @@ export default function AcademyExperience() {
                 <article>
                   <Video size={18} />
                   <div>
-                    <strong>Lecture clip slot</strong>
-                    <p>Use this area for a short walkthrough, screen recording, or class-style explanation.</p>
+                    <strong>Lecture support</strong>
+                    <p>Short walkthroughs and class-style explanations can sit beside the reading.</p>
                   </div>
                 </article>
                 <article>

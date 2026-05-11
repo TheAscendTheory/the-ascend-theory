@@ -103,7 +103,7 @@ function GlobalMediaDock() {
 
           {item.ready === false && (
             <div className="globalMediaPlaceholder">
-              This media slot is ready. Add the final source file or YouTube video
+              Media player ready. Add the final source file or YouTube video
               URL when the content is published.
             </div>
           )}

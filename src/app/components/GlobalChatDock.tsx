@@ -55,7 +55,7 @@ export default function GlobalChatDock() {
         .or(`requester_id.eq.${currentUserId},addressee_id.eq.${currentUserId}`);
 
       if (error) {
-        setStatus("Chat is not ready yet.");
+        setStatus("Sign in to start chat.");
         return;
       }
 

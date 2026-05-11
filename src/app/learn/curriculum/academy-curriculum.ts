@@ -40,7 +40,7 @@ export const ascendDifferentiators = [
   {
     title: "Full Lesson Reader",
     text:
-      "Each level now opens into real long-form study material, not a paragraph wall or placeholder quiz.",
+      "Each level opens into long-form study material with a structured reader, mastery questions, and proof work.",
   },
   {
     title: "Prompt Bank Mastery",

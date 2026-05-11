@@ -43,7 +43,7 @@ const newsSlots = [
     type: "Video",
     title: "Daily Market Recap",
     description:
-      "A quick video slot for what moved markets today, what mattered, and what was noise.",
+      "A quick video format for what moved markets today, what mattered, and what was noise.",
     status: "Ready for upload",
     icon: Play,
   },
@@ -52,7 +52,7 @@ const newsSlots = [
     title: "Headline Breakdown",
     description:
       "Written analysis for inflation prints, central bank remarks, earnings, geopolitics, commodities, and digital asset events.",
-    status: "Editorial slot",
+    status: "Editorial desk",
     icon: FileText,
   },
   {
@@ -67,7 +67,7 @@ const newsSlots = [
     type: "Audio",
     title: "News Voice Note",
     description:
-      "A lightweight audio slot for quick commentary when a full video is too slow to produce.",
+      "A lightweight audio format for quick commentary when a full video is too slow to produce.",
     status: "Audio-ready",
     icon: Radio,
   },
@@ -112,7 +112,7 @@ export default function NewsPage() {
       <section className="newsDeskLayout">
         <div className="newsFeed">
           <div className="newsSectionHeader">
-            <p className="eyebrow">Publishing Slots</p>
+            <p className="eyebrow">Publishing Desk</p>
             <h2>Videos, articles, alerts, and audio in one fast desk.</h2>
           </div>
 
