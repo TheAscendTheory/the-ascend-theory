@@ -8,15 +8,27 @@ export const metadata: Metadata = {
 
 const mediaFormats = [
   {
-    title: "Short-Form",
+    title: "Shorts",
     text: "Fast, cinematic lessons on money, discipline, mindset, systems, markets, technology, and modern ambition.",
   },
   {
-    title: "Long-Form",
+    title: "Courses",
+    text: "Structured on-site education for Academy lessons, premium modules, walkthroughs, and subscriber learning paths.",
+  },
+  {
+    title: "Podcasts",
+    text: "Audio conversations, solo commentary, study discussions, market reflections, and interviews built for repeat listening.",
+  },
+  {
+    title: "Documentaries",
+    text: "Story-driven visual projects exploring discipline, ambition, financial education, technology, and culture.",
+  },
+  {
+    title: "Long-Form Video",
     text: "Deeper breakdowns, essays, educational videos, market psychology, strategy, economics, and philosophy.",
   },
   {
-    title: "Live Media",
+    title: "Livestreams",
     text: "Livestreams, interviews, panels, podcasts, workshops, and real-time conversations with builders and learners.",
   },
   {
@@ -24,13 +36,18 @@ const mediaFormats = [
     text: "Accessible analysis of financial movement, global markets, trading psychology, risk, and economic narratives.",
   },
   {
-    title: "Documentaries",
-    text: "Story-driven visual projects exploring discipline, ambition, financial education, technology, and culture.",
-  },
-  {
     title: "Interviews",
     text: "Conversations with creators, traders, founders, educators, students, builders, and community leaders.",
   },
+];
+
+const mediaLanes = [
+  "Podcasts live in their own lane.",
+  "Documentaries stay separate from daily news.",
+  "Courses connect directly to Academy and paid learning.",
+  "Market breakdowns can link back to Trading Desk.",
+  "Shorts drive discovery without burying long-form work.",
+  "Interviews and livestreams build trust through real voices.",
 ];
 
 const distributionChannels = [
@@ -71,13 +88,32 @@ export default function MediaPage() {
         <p>
           The Ascend Theory media ecosystem connects short-form
           content, long-form education, podcasts, interviews, livestreams,
-          documentaries, and market breakdowns.
+          documentaries, courses, and market breakdowns without bunching every
+          format into one feed.
         </p>
 
         <div className="pageCtaActions">
           <a href="#distribution" className="pageCtaPrimary">
             Follow Channels
           </a>
+          <a href="/news" className="pageCtaSecondary">
+            Open News Desk
+          </a>
+        </div>
+      </section>
+
+      <section className="mediaCallout mediaLaneCallout">
+        <p className="eyebrow">Content Lanes</p>
+        <h2>Evergreen media stays organized by category.</h2>
+        <p>
+          News gets its own fast-moving section. Media stays focused on the
+          evergreen library: videos, courses, podcasts, documentaries,
+          interviews, livestreams, and market education that people return to.
+        </p>
+        <div className="mediaSeriesGrid">
+          {mediaLanes.map((lane) => (
+            <div key={lane}>{lane}</div>
+          ))}
         </div>
       </section>
 

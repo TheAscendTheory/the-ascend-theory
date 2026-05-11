@@ -8,7 +8,6 @@ export const metadata: Metadata = {
 };
 
 const newsFilters = [
-  "All",
   "Macro",
   "Markets",
   "Crypto",
@@ -84,11 +83,19 @@ export default function NewsPage() {
           articles, short videos, briefs, alerts, and commentary built around
           current events that affect money, markets, business, and technology.
         </p>
+        <div className="pageCtaActions">
+          <a href="#publishing-desk" className="pageCtaPrimary">
+            View Desk
+          </a>
+          <a href="/media" className="pageCtaSecondary">
+            Evergreen Media
+          </a>
+        </div>
       </section>
 
       <nav className="newsFilterBar" aria-label="News categories">
         {newsFilters.map((filter) => (
-          <a key={filter} href={`#${filter.toLowerCase()}`}>
+          <a key={filter} href={`#news-${filter.toLowerCase()}`}>
             {filter}
           </a>
         ))}
@@ -109,7 +116,7 @@ export default function NewsPage() {
         })}
       </section>
 
-      <section className="newsDeskLayout">
+      <section id="publishing-desk" className="newsDeskLayout">
         <div className="newsFeed">
           <div className="newsSectionHeader">
             <p className="eyebrow">Publishing Desk</p>
@@ -148,6 +155,19 @@ export default function NewsPage() {
             <span>Follow-up watch</span>
           </div>
         </aside>
+      </section>
+
+      <section className="newsCategoryGrid" aria-label="News coverage lanes">
+        {newsFilters.map((filter) => (
+          <article key={filter} id={`news-${filter.toLowerCase()}`}>
+            <span>{filter}</span>
+            <p>
+              Track stories in this lane, then connect the impact back to
+              Academy concepts, Trading Desk preparation, or evergreen Media
+              explainers.
+            </p>
+          </article>
+        ))}
       </section>
     </main>
   );
