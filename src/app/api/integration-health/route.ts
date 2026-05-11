@@ -102,7 +102,11 @@ async function checkSupabaseKey(supabaseUrl: string, key: string, label: string)
 
 export async function GET() {
   const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const serviceKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_SECRET_KEY ||
+    process.env.SUPABASE_SERVICE_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const resendKey = process.env.RESEND_API_KEY;
   const openAiKey = process.env.OPENAI_API_KEY;
