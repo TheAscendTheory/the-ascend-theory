@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BarChart3, Clock, FileText, Play, Radio, Zap } from "lucide-react";
+import NewsFlowClient from "./NewsFlowClient";
 
 export const metadata: Metadata = {
   title: "News Desk",
@@ -115,6 +116,8 @@ export default function NewsPage() {
           );
         })}
       </section>
+
+      <NewsFlowClient />
 
       <section id="publishing-desk" className="newsDeskLayout">
         <div className="newsFeed">

@@ -110,6 +110,7 @@ export async function GET() {
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const resendKey = process.env.RESEND_API_KEY;
   const openAiKey = process.env.OPENAI_API_KEY;
+  const newsFeedKey = process.env.MARKETAUX_API_KEY || process.env.BENZINGA_API_KEY;
 
   const env = {
     supabaseUrl: Boolean(supabaseUrl),
@@ -117,6 +118,7 @@ export async function GET() {
     supabaseAnonKey: Boolean(anonKey),
     resendApiKey: Boolean(resendKey),
     openAiApiKey: Boolean(openAiKey),
+    financialNewsFeedKey: Boolean(newsFeedKey),
   };
 
   if (!supabaseUrl || !serviceKey) {
