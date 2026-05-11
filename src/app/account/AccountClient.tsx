@@ -262,6 +262,13 @@ export default function AccountClient() {
   }
 
   const rankStatus = rankStatusFromCompleted(stats.academyCompleted);
+  const completedRankNumbers = new Set(
+    academyRankGuide
+      .filter((rank) => rank.moduleNumber <= stats.academyCompleted)
+      .map((rank) => rank.moduleNumber)
+  );
+  const currentGuideRank = academyRankGuide[rankStatus.completedModules - 1];
+  const nextGuideRank = academyRankGuide[rankStatus.completedModules];
 
   return (
     <div className="accountCommandCenter">
@@ -416,14 +423,39 @@ export default function AccountClient() {
 
       <section className="accountCard rankingGuideCard">
         <p className="eyebrow">Ranking System Guide</p>
-        <h2>Ranks unlock through Academy completion.</h2>
+        <h2>Badge ladder and progression.</h2>
         <p>
-          Each rank icon represents the highest module you have completed in the
-          locked Academy path. Complete the next module to move the badge forward.
+          Every Academy module unlocks one badge. Each rank has three tiers:
+          bronze opens the rank, silver builds command, and gold proves mastery
+          before the next rank family begins.
         </p>
+
+        <div className="rankProgressExplainer">
+          <article>
+            <span>Your current badge</span>
+            <strong>{rankStatus.currentRank}</strong>
+            <p>{currentGuideRank?.iconMeaning || "Complete the first module to earn your first badge."}</p>
+          </article>
+          <article>
+            <span>Next unlock</span>
+            <strong>{rankStatus.nextRank}</strong>
+            <p>{nextGuideRank ? `Complete module ${nextGuideRank.moduleNumber}: ${nextGuideRank.moduleTitle}.` : "Full Academy ladder complete."}</p>
+          </article>
+          <article>
+            <span>How icons work</span>
+            <strong>48 modules, 48 badges</strong>
+            <p>The icon beside your name always shows the highest completed Academy module.</p>
+          </article>
+        </div>
+
         <div className="rankGuideList">
           {academyRankGuide.map((rank) => (
-            <article key={rank.rank}>
+            <article
+              key={rank.rank}
+              className={`${rank.moduleNumber === rankStatus.completedModules ? "isCurrentRank" : ""} ${
+                completedRankNumbers.has(rank.moduleNumber) ? "isUnlockedRank" : ""
+              }`}
+            >
               <div className={`rankIcon rankTone-${rank.tone}`}>
                 {rank.iconSrc ? (
                   <Image src={rank.iconSrc} alt="" width={46} height={46} />
@@ -432,8 +464,9 @@ export default function AccountClient() {
                 )}
               </div>
               <div>
-                <strong>{rank.rank}</strong>
+                <strong>{rank.moduleNumber}. {rank.rank}</strong>
                 <span>{rank.unlockText}</span>
+                <em>{rank.iconMeaning}</em>
                 <small>{rank.moduleTitle}</small>
               </div>
             </article>

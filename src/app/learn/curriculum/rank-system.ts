@@ -10,6 +10,12 @@ export type AcademyRankStatus = {
   iconSrc: string | null;
 };
 
+const tierMeaning: Record<string, string> = {
+  I: "Gold tier: full command of this rank stage.",
+  II: "Silver tier: developing command of this rank stage.",
+  III: "Bronze tier: first proof of this rank stage.",
+};
+
 const rankTones = [
   "slate",
   "bronze",
@@ -89,10 +95,15 @@ export const academyRankGuide = academyModules.map((module, index) => ({
   rank: module.rank,
   moduleTitle: module.title,
   moduleNumber: index + 1,
+  stageName: module.rank.replace(/\s+(I|II|III)$/u, ""),
+  tier: module.rank.match(/\b(I|II|III)\b/u)?.[1] || "",
   unlockText:
     index === 0
       ? "Complete the first Academy module."
       : `Complete modules 1-${index + 1} in locked order.`,
+  iconMeaning:
+    tierMeaning[module.rank.match(/\b(I|II|III)\b/u)?.[1] || ""] ||
+    "Final prestige badge for completing the full Academy path.",
   iconText: rankInitials(module.rank),
   iconSrc: rankIconSrc(index + 1),
   tone: rankTones[Math.floor(index / 3)] || "ascender",
