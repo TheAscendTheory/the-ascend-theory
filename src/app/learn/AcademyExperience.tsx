@@ -564,6 +564,12 @@ export default function AcademyExperience() {
     setStep("quiz");
   }
 
+  function exitQuizToReading() {
+    resetQuizLoop();
+    setStep("lesson");
+    setStatus("Test session reset. Reading progress is still saved.");
+  }
+
   function finishQuiz(finalCorrect: number) {
     if (!activeModule || !questions.length) return;
 
@@ -743,12 +749,12 @@ export default function AcademyExperience() {
               <div className="academyIntroActions">
                 <button type="button" onClick={() => setStep("lesson")}>
                   <BookOpen size={17} />
-                  {activeLastRead ? "Continue Lesson" : "Begin Lesson"}
+                  {activeLastRead ? "Continue Reading" : "Begin Reading"}
                 </button>
                 {activeLastRead > 0 && (
                   <button type="button" onClick={continueReading}>
                     <Play size={17} />
-                    Paragraph {activeLastRead + 1}
+                    Reading paragraph {activeLastRead + 1}
                   </button>
                 )}
               </div>
@@ -772,7 +778,7 @@ export default function AcademyExperience() {
                   <span>{activeSavedParagraphs.length} saved from this level</span>
                   {activeLastRead > 0 && (
                     <button type="button" onClick={continueReading}>
-                      Continue
+                      Continue Reading
                     </button>
                   )}
                 </div>
@@ -841,7 +847,7 @@ export default function AcademyExperience() {
 
               <button type="button" onClick={startQuizLoop}>
                 <Star size={17} />
-                Start Mastery Sprint
+                Start Test
               </button>
             </div>
           )}
@@ -849,9 +855,9 @@ export default function AcademyExperience() {
           {step === "quiz" && currentQuestion && (
             <div className={feedback ? `academyQuizLoop is${feedback}` : "academyQuizLoop"}>
               <div className="quizLoopTop">
-                <button type="button" className="plainBackButton" onClick={() => setStep("lesson")}>
+                <button type="button" className="plainBackButton" onClick={exitQuizToReading}>
                   <ArrowLeft size={16} />
-                  Reading
+                  Exit Test
                 </button>
                 <div className="quizLoopProgress" aria-label={`Quiz progress ${quizProgress}%`}>
                   <span style={{ width: `${quizProgress}%` }} />
