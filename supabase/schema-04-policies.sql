@@ -1,3 +1,8 @@
+drop policy if exists "Anyone can join the waitlist" on public.ascenders_waitlist;
+create policy "Anyone can join the waitlist"
+  on public.ascenders_waitlist for insert
+  with check (true);
+
 drop policy if exists "Users can read their trades" on public.ascend_user_trades;
 create policy "Users can read their trades"
   on public.ascend_user_trades for select

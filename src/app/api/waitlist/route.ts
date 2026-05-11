@@ -2,27 +2,32 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 
-const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseServerKey =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.SUPABASE_SECRET_KEY ||
-  process.env.SUPABASE_SERVICE_KEY ||
-  process.env.SUPABASE_SERVICE_ROLE ||
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const resendApiKey = process.env.RESEND_API_KEY;
-
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 function getWaitlistClients() {
-  if (!supabaseUrl || !supabaseServerKey) {
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_SECRET_KEY ||
+    process.env.SUPABASE_SERVICE_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const resendApiKey = process.env.RESEND_API_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
     return null;
   }
 
   return {
-    supabase: createClient(supabaseUrl, supabaseServerKey),
+    supabase: createClient(supabaseUrl, supabaseKey),
     resend: resendApiKey ? new Resend(resendApiKey) : null,
+    env: {
+      supabaseUrl: Boolean(supabaseUrl),
+      supabaseKey: Boolean(supabaseKey),
+      resendApiKey: Boolean(resendApiKey),
+    },
   };
 }
 
@@ -47,8 +52,14 @@ export async function POST(req: Request) {
 
     if (!clients) {
       console.error("Waitlist API missing environment variables:", {
-        supabaseUrl: Boolean(supabaseUrl),
-        supabaseServerKey: Boolean(supabaseServerKey),
+        supabaseUrl: Boolean(process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL),
+        supabaseKey: Boolean(
+          process.env.SUPABASE_SERVICE_ROLE_KEY ||
+            process.env.SUPABASE_SECRET_KEY ||
+            process.env.SUPABASE_SERVICE_KEY ||
+            process.env.SUPABASE_SERVICE_ROLE ||
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+        ),
       });
 
       return NextResponse.json(

@@ -48,6 +48,10 @@ alter table public.ascend_demo_accounts enable row level security;
 alter table public.ascend_demo_positions enable row level security;
 alter table public.ascenders_waitlist enable row level security;
 
+create policy "Anyone can join the waitlist"
+  on public.ascenders_waitlist for insert
+  with check (true);
+
 create policy "Users can read their trades"
   on public.ascend_user_trades for select
   using (auth.uid() = user_id);
