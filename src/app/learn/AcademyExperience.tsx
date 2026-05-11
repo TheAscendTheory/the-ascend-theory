@@ -1095,7 +1095,7 @@ export default function AcademyExperience() {
                       value={writtenAnswer}
                       disabled={Boolean(feedback)}
                       onChange={(event) => setWrittenAnswer(event.target.value)}
-                      placeholder="Write your answer in your own words. This is saved as a mastery response prompt for now."
+                      placeholder="Write your answer in your own words. Focus on the reasoning, example, and conclusion."
                     />
                     <button
                       type="button"
