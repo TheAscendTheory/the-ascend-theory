@@ -35,22 +35,22 @@ export type CurriculumTrack = {
 };
 
 const rankGroups = [
-  { rank: "Initiate", sourceStage: 1, focus: ["Money foundations", "Inflation, interest & debt", "Compounding and time value"] },
-  { rank: "Apprentice", sourceStage: 2, focus: ["Income statements", "Balance sheets", "Cash flow and ratios"] },
-  { rank: "Builder", sourceStage: 3, focus: ["Market purpose", "Asset classes and liquidity", "Market behavior"] },
-  { rank: "Analyst", sourceStage: 4, focus: ["Stock ownership", "Business quality", "Equity analysis"] },
-  { rank: "Operator", sourceStage: 5, focus: ["Bond basics", "Yields and rates", "Fixed-income risk"] },
-  { rank: "Strategist", sourceStage: 6, focus: ["Inflation and GDP", "Central banks and policy", "Cycles and currencies"] },
-  { rank: "Allocator", sourceStage: 7, focus: ["Diversification", "Portfolio construction", "Correlation and rebalancing"] },
-  { rank: "Valuator", sourceStage: 8, focus: ["Intrinsic value", "DCF and multiples", "Valuation judgment"] },
-  { rank: "Technician", sourceStage: 9, focus: ["Trading mechanics", "Orders and liquidity", "Execution discipline"] },
-  { rank: "Specialist", sourceStage: 10, focus: ["Technical foundations", "Price behavior", "Evidence-based chart work"] },
-  { rank: "Tactician", sourceStage: 11, focus: ["Derivative contracts", "Options, futures and hedging", "Advanced leverage risk"] },
-  { rank: "Risk Architect", sourceStage: 12, focus: ["Position sizing", "Drawdown control", "Exposure systems"] },
-  { rank: "Cognitive Sovereign", sourceStage: 13, focus: ["Bias and behavior", "Fear, greed and crowds", "Emotional discipline"] },
-  { rank: "Institutionalist", sourceStage: 14, focus: ["Banks and funds", "Central banks and clearing", "Systemic risk and plumbing"] },
-  { rank: "Market Strategist", sourceStage: 15, focus: ["Strategy selection", "Macro and specialization", "Advanced thesis work"] },
-  { rank: "Ascender", sourceStage: 16, focus: ["Integrated finance mastery", "Markets, risk and behavior mastery", "Ascender thesis defense"] },
+  { rank: "Initiate", sourceStage: 1 },
+  { rank: "Apprentice", sourceStage: 2 },
+  { rank: "Builder", sourceStage: 3 },
+  { rank: "Analyst", sourceStage: 4 },
+  { rank: "Operator", sourceStage: 5 },
+  { rank: "Strategist", sourceStage: 6 },
+  { rank: "Allocator", sourceStage: 7 },
+  { rank: "Valuator", sourceStage: 8 },
+  { rank: "Technician", sourceStage: 9 },
+  { rank: "Specialist", sourceStage: 10 },
+  { rank: "Tactician", sourceStage: 11 },
+  { rank: "Risk Architect", sourceStage: 12 },
+  { rank: "Cognitive Sovereign", sourceStage: 13 },
+  { rank: "Institutionalist", sourceStage: 14 },
+  { rank: "Market Strategist", sourceStage: 15 },
+  { rank: "Ascender", sourceStage: 16 },
 ] as const;
 
 const romanParts = ["I", "II", "III"] as const;
@@ -59,7 +59,6 @@ const academyProgressionPlan = rankGroups.flatMap((group) =>
   romanParts.map((partLabel, part) => ({
     rank: `${group.rank} ${partLabel}`,
     sourceStage: group.sourceStage,
-    title: `${group.rank} ${partLabel}: ${group.focus[part]}`,
     part,
     parts: 3,
   })),
@@ -143,13 +142,10 @@ function splitModule(
     id: `academy-${String(index + 1).padStart(2, "0")}-${plan.rank.toLowerCase().replaceAll(" ", "-")}`,
     stage: index + 1,
     rank: plan.rank,
-    title: plan.title,
+    title: `${source.title} - Part ${romanParts[plan.part]}`,
     level: plan.rank,
     access: index < 14 ? "free" : "subscriber",
-    estimatedPages:
-      plan.parts > 1
-        ? `Focused part ${plan.part + 1} of ${plan.parts}`
-        : source.estimatedPages,
+    estimatedPages: `${source.estimatedPages} - Part ${plan.part + 1} of ${plan.parts}`,
     assessmentQuestions,
     overview: source.overview,
     learningObjectives: learningObjectives.length ? learningObjectives : source.learningObjectives,
