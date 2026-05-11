@@ -2,6 +2,7 @@
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Bell,
   Bookmark,
@@ -15,7 +16,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import { createBrowserSupabaseClient } from "../lib/supabaseBrowser";
-import { academyRankGuide, rankInitials, rankStatusFromCompleted } from "../learn/curriculum/rank-system";
+import { rankStatusFromLevel } from "../learn/curriculum/rank-system";
 
 type Profile = {
   user_id: string;
@@ -1044,21 +1045,17 @@ function extractHashtags(value: string) {
 }
 
 function RankPill({ profile }: { profile?: Profile }) {
-  const academyLevel = profile?.academy_level || "New Ascender";
-  const completedMatch = academyLevel.match(/(\d+)\s*\/\s*48/i);
-  const rankGuideItem = academyRankGuide.find((rank) => rank.rank === academyLevel);
-  const rank = completedMatch
-    ? rankStatusFromCompleted(Number(completedMatch[1]))
-    : {
-        ...rankStatusFromCompleted(0),
-        currentRank: academyLevel,
-        initials: rankInitials(academyLevel),
-        tone: rankGuideItem?.tone || "slate",
-      };
+  const rank = rankStatusFromLevel(profile?.academy_level);
 
   return (
     <span className={`miniRankPill rankTone-${rank.tone}`}>
-      <b>{rank.initials}</b>
+      <b>
+        {rank.iconSrc ? (
+          <Image src={rank.iconSrc} alt="" width={24} height={24} />
+        ) : (
+          rank.initials
+        )}
+      </b>
       {rank.currentRank}
     </span>
   );

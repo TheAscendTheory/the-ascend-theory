@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { BookOpen, ChartCandlestick, Eye, EyeOff, Flame, MessageCircle, Star, Trophy } from "lucide-react";
 import { createBrowserSupabaseClient } from "../lib/supabaseBrowser";
 import { academyRankGuide, rankStatusFromCompleted } from "../learn/curriculum/rank-system";
@@ -277,7 +278,13 @@ export default function AccountClient() {
         <div className="accountIdentityBadge">
           <span>{handle ? `@${handle.replace(/^@/, "")}` : "Handle not set"}</span>
           <div className={`rankBadge rankTone-${rankStatus.tone}`}>
-            <b>{rankStatus.initials}</b>
+            <b>
+              {rankStatus.iconSrc ? (
+                <Image src={rankStatus.iconSrc} alt="" width={38} height={38} />
+              ) : (
+                rankStatus.initials
+              )}
+            </b>
             <strong>{rankStatus.currentRank}</strong>
           </div>
           <small>{rankStatus.progressLabel} complete. Next: {rankStatus.nextRank}</small>
@@ -417,7 +424,13 @@ export default function AccountClient() {
         <div className="rankGuideList">
           {academyRankGuide.map((rank) => (
             <article key={rank.rank}>
-              <div className={`rankIcon rankTone-${rank.tone}`}>{rank.iconText}</div>
+              <div className={`rankIcon rankTone-${rank.tone}`}>
+                {rank.iconSrc ? (
+                  <Image src={rank.iconSrc} alt="" width={46} height={46} />
+                ) : (
+                  rank.iconText
+                )}
+              </div>
               <div>
                 <strong>{rank.rank}</strong>
                 <span>{rank.unlockText}</span>

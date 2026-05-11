@@ -1,9 +1,10 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { MessageCircle, Minus, Send, Users, X } from "lucide-react";
 import { createBrowserSupabaseClient } from "../lib/supabaseBrowser";
-import { rankInitials } from "../learn/curriculum/rank-system";
+import { rankStatusFromLevel } from "../learn/curriculum/rank-system";
 
 type Friend = {
   id: string;
@@ -239,7 +240,7 @@ export default function GlobalChatDock() {
                   onClick={() => setActiveFriendId(friend.id)}
                 >
                   <span>{friend.name}</span>
-                  <b>{rankInitials(friend.academyLevel)}</b>
+                  <FriendRankIcon academyLevel={friend.academyLevel} />
                 </button>
               ))
             ) : (
@@ -276,5 +277,19 @@ export default function GlobalChatDock() {
         </>
       )}
     </aside>
+  );
+}
+
+function FriendRankIcon({ academyLevel }: { academyLevel: string }) {
+  const rank = rankStatusFromLevel(academyLevel);
+
+  return (
+    <b>
+      {rank.iconSrc ? (
+        <Image src={rank.iconSrc} alt="" width={24} height={24} />
+      ) : (
+        rank.initials
+      )}
+    </b>
   );
 }
