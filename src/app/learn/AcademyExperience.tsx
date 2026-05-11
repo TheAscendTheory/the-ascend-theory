@@ -814,7 +814,7 @@ export default function AcademyExperience() {
                   <div>
                     <strong>{module.title}</strong>
                     <em>
-                      {cleanText(module.rank)} - {module.assessmentQuestions} prompts
+                      {cleanText(module.rank)} - {module.assessmentQuestions} prompts - {module.passScore}% pass
                       {accessLocked ? " - subscriber" : ""}
                     </em>
                   </div>
@@ -1131,7 +1131,7 @@ export default function AcademyExperience() {
               <p>
                 {result.passed
                   ? `You earned ${starCount(result.score)} stars. Retakes can improve proficiency.`
-                  : "You need 80% or higher. Review the reading, save weak questions, then retry."}
+                  : `You need ${activeModule.passScore}% or higher. Review the reading, save weak questions, then retry.`}
               </p>
               <div>
                 <button type="button" onClick={() => setStep("lesson")}>

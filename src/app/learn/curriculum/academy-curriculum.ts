@@ -87,6 +87,48 @@ function chunkTextBlocks(blocks: string[], part: number, parts: number) {
   return chunkItems(cleanBlocks, part, parts);
 }
 
+function chunkTextByWeight(blocks: string[], part: number, parts: number) {
+  const cleanBlocks = blocks.map((block) => block.trim()).filter(Boolean);
+
+  if (cleanBlocks.length <= parts) {
+    return chunkTextBlocks(cleanBlocks, part, parts);
+  }
+
+  const targetSize =
+    cleanBlocks.reduce((total, block) => total + block.length, 0) / parts;
+  const chunks: string[][] = [];
+  let currentChunk: string[] = [];
+  let currentSize = 0;
+
+  cleanBlocks.forEach((block, index) => {
+    const remainingBlocks = cleanBlocks.length - index;
+    const remainingChunks = parts - chunks.length;
+    const shouldClose =
+      currentChunk.length > 0 &&
+      currentSize >= targetSize &&
+      remainingBlocks >= remainingChunks;
+
+    if (shouldClose) {
+      chunks.push(currentChunk);
+      currentChunk = [];
+      currentSize = 0;
+    }
+
+    currentChunk.push(block);
+    currentSize += block.length;
+  });
+
+  if (currentChunk.length) {
+    chunks.push(currentChunk);
+  }
+
+  while (chunks.length < parts) {
+    chunks.push([]);
+  }
+
+  return chunks[part]?.length ? chunks[part] : chunks.findLast((chunk) => chunk.length) || cleanBlocks;
+}
+
 function splitLessonText(text: string | undefined, part: number, parts: number) {
   if (!text || parts <= 1) {
     return text;
@@ -100,7 +142,7 @@ function splitLessonText(text: string | undefined, part: number, parts: number) 
 
   const selectedSections =
     sections.length > parts
-      ? chunkItems(sections, part, parts)
+      ? chunkTextByWeight(sections, part, parts)
       : chunkTextBlocks(normalized.split(/\n{2,}/), part, parts);
 
   return selectedSections.join("\n\n");
@@ -119,10 +161,26 @@ function splitTestText(text: string | undefined, part: number, parts: number) {
 
   const selectedSections =
     sections.length > parts
-      ? chunkItems(sections, part, parts)
+      ? chunkTextByWeight(sections, part, parts)
       : chunkTextBlocks(normalized.split(/\n{2,}/), part, parts);
 
   return selectedSections.join("\n\n");
+}
+
+function passScoreForModule(source: CurriculumModule, index: number) {
+  if (source.passScore >= 85) {
+    return source.passScore;
+  }
+
+  if (index >= 36) {
+    return 83;
+  }
+
+  if (index >= 24) {
+    return 82;
+  }
+
+  return source.passScore;
 }
 
 function splitModule(
@@ -147,6 +205,7 @@ function splitModule(
     access: index < 14 ? "free" : "subscriber",
     estimatedPages: `${source.estimatedPages} - Part ${plan.part + 1} of ${plan.parts}`,
     assessmentQuestions,
+    passScore: passScoreForModule(source, index),
     overview: source.overview,
     learningObjectives: learningObjectives.length ? learningObjectives : source.learningObjectives,
     readingSections: readingSections.length ? readingSections : source.readingSections,
