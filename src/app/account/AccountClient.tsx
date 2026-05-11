@@ -263,7 +263,7 @@ export default function AccountClient() {
         <article>
           <Star size={18} />
           <span>Modules</span>
-          <strong>{stats.academyCompleted}/27</strong>
+          <strong>{stats.academyCompleted}/48</strong>
         </article>
         <article>
           <BookOpen size={18} />
