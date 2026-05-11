@@ -3310,6 +3310,12 @@ input {
   gap: 12px;
 }
 
+.academyIntroActions {
+  display: flex !important;
+  flex-wrap: wrap;
+  grid-template-columns: none !important;
+}
+
 .academyReaderIntro span,
 .flashcardBank span {
   display: block;
@@ -3412,11 +3418,71 @@ input {
     rgba(0, 0, 0, 0.18);
 }
 
+.academyMemoryBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.academyMemoryBar span {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.22);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.academyMemoryBar button {
+  min-height: 34px;
+}
+
+.academyPassage article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.18);
+  scroll-margin-top: 120px;
+}
+
+.academyPassage article.isHighlighted {
+  border-color: rgba(250, 204, 21, 0.4);
+  background: rgba(250, 204, 21, 0.1);
+}
+
 .academyPassage p {
   margin: 0;
   color: rgba(255, 255, 255, 0.76);
   font-size: 16px;
   line-height: 1.85;
+  white-space: pre-line;
+}
+
+.paragraphMemoryTools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.paragraphMemoryTools button {
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 12px;
 }
 
 .academyReaderQuiz fieldset {

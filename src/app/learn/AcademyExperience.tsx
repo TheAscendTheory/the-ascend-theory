@@ -23,6 +23,14 @@ type AcademyProgress = {
   stars: Record<string, number>;
   scores: Record<string, number>;
   savedQuestions: string[];
+  savedParagraphs: {
+    moduleId: string;
+    moduleTitle: string;
+    index: number;
+    text: string;
+  }[];
+  highlightedParagraphs: string[];
+  lastRead: Record<string, number>;
   xp: number;
   coins: number;
   streak: number;
@@ -42,6 +50,9 @@ const defaultProgress: AcademyProgress = {
   stars: {},
   scores: {},
   savedQuestions: [],
+  savedParagraphs: [],
+  highlightedParagraphs: [],
+  lastRead: {},
   xp: 0,
   coins: 0,
   streak: 0,
@@ -147,6 +158,22 @@ function buildReadingPassage(module: CurriculumModule) {
   ];
 }
 
+function paragraphKey(moduleId: string, index: number) {
+  return `${moduleId}:${index}`;
+}
+
+function encodeMemoryPayload(value: unknown) {
+  return btoa(encodeURIComponent(JSON.stringify(value)));
+}
+
+function decodeMemoryPayload<T>(value: string): T | null {
+  try {
+    return JSON.parse(decodeURIComponent(atob(value))) as T;
+  } catch {
+    return null;
+  }
+}
+
 function flattenModules() {
   return curriculumTracks.flatMap((track) =>
     track.modules.map((module) => ({
@@ -189,6 +216,11 @@ export default function AcademyExperience() {
   const activeModule = modules[activeIndex] || modules[0];
   const questions = activeModule ? buildModuleQuestions(activeModule) : [];
   const currentQuestion = questions[questionIndex];
+  const readingPassage = activeModule ? buildReadingPassage(activeModule) : [];
+  const activeLastRead = activeModule ? progress.lastRead[activeModule.id] || 0 : 0;
+  const activeSavedParagraphs = activeModule
+    ? progress.savedParagraphs.filter((paragraph) => paragraph.moduleId === activeModule.id)
+    : [];
   const quizProgress = questions.length ? Math.round(((questionIndex + (feedback ? 1 : 0)) / questions.length) * 100) : 0;
   const adaptiveMode = subscriberAccess
     ? "Subscriber mode"
@@ -217,7 +249,7 @@ export default function AcademyExperience() {
 
       const { data, error } = await supabase
         .from("ascend_academy_progress")
-        .select("course_id,saved_question,score,xp_earned")
+        .select("stage_id,course_id,saved_question,score,xp_earned")
         .eq("user_id", userId);
 
       if (error) {
@@ -229,8 +261,20 @@ export default function AcademyExperience() {
         ?.filter((row) => row.course_id)
         .map((row) => row.course_id as string) || [];
       const savedQuestions = data
-        ?.filter((row) => row.saved_question)
+        ?.filter((row) => row.saved_question && !String(row.saved_question).startsWith("paragraph::") && !String(row.saved_question).startsWith("highlight::"))
         .map((row) => row.saved_question as string) || [];
+      const savedParagraphs = (data || [])
+        .filter((row) => String(row.saved_question || "").startsWith("paragraph::"))
+        .map((row) => decodeMemoryPayload<AcademyProgress["savedParagraphs"][number]>(String(row.saved_question).replace("paragraph::", "")))
+        .filter(Boolean) as AcademyProgress["savedParagraphs"];
+      const highlightedParagraphs = (data || [])
+        .filter((row) => String(row.saved_question || "").startsWith("highlight::"))
+        .map((row) => String(row.saved_question).replace("highlight::", ""));
+      const cloudLastRead = Object.fromEntries(
+        (data || [])
+          .filter((row) => String(row.stage_id || "").startsWith("last-read::"))
+          .map((row) => [String(row.stage_id).replace("last-read::", ""), row.score || 0])
+      );
       const scores = Object.fromEntries(
         (data || [])
           .filter((row) => row.course_id)
@@ -247,6 +291,16 @@ export default function AcademyExperience() {
         ...current,
         completed: Array.from(new Set([...current.completed, ...completed])),
         savedQuestions: Array.from(new Set([...current.savedQuestions, ...savedQuestions])),
+        savedParagraphs: Array.from(
+          new Map(
+            [...current.savedParagraphs, ...savedParagraphs].map((paragraph) => [
+              paragraphKey(paragraph.moduleId, paragraph.index),
+              paragraph,
+            ])
+          ).values()
+        ),
+        highlightedParagraphs: Array.from(new Set([...current.highlightedParagraphs, ...highlightedParagraphs])),
+        lastRead: { ...current.lastRead, ...cloudLastRead },
         scores: { ...current.scores, ...scores },
         xp: Math.max(current.xp, (data || []).reduce((sum, row) => sum + (row.xp_earned || 0), 0)),
       }));
@@ -256,6 +310,57 @@ export default function AcademyExperience() {
 
     loadCloudProgress();
   }, [supabase]);
+
+  useEffect(() => {
+    if (step !== "lesson" || !activeModule) return;
+
+    const lastReadIndex = activeLastRead;
+    if (!lastReadIndex) return;
+
+    const timeout = window.setTimeout(() => {
+      document
+        .getElementById(paragraphKey(activeModule.id, lastReadIndex))
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 120);
+
+    return () => window.clearTimeout(timeout);
+  }, [step, activeModule, activeLastRead]);
+
+  useEffect(() => {
+    if (step !== "lesson" || !activeModule || typeof IntersectionObserver === "undefined") return;
+
+    const nodes = Array.from(
+      document.querySelectorAll<HTMLElement>(`[data-academy-module="${activeModule.id}"]`)
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleIndexes = entries
+          .filter((entry) => entry.isIntersecting)
+          .map((entry) => Number((entry.target as HTMLElement).dataset.paragraphIndex || 0));
+
+        const furthest = Math.max(...visibleIndexes, -1);
+        if (furthest < 0) return;
+
+        setProgress((current) => {
+          if ((current.lastRead[activeModule.id] || 0) >= furthest) return current;
+
+          return {
+            ...current,
+            lastRead: {
+              ...current.lastRead,
+              [activeModule.id]: furthest,
+            },
+          };
+        });
+      },
+      { threshold: 0.45 }
+    );
+
+    nodes.forEach((node) => observer.observe(node));
+
+    return () => observer.disconnect();
+  }, [step, activeModule]);
 
   async function saveCloudProgress(nextProgress: AcademyProgress, module: CurriculumModule, score: number) {
     if (!supabase) return;
@@ -307,6 +412,132 @@ export default function AcademyExperience() {
       xp_earned: 0,
       completed_at: new Date().toISOString(),
     });
+  }
+
+  async function syncReadingMemory(
+    payload:
+      | { type: "last-read"; moduleId: string; index: number }
+      | { type: "paragraph"; paragraph: AcademyProgress["savedParagraphs"][number] }
+      | { type: "highlight"; key: string }
+  ) {
+    if (!supabase) return;
+
+    const { data: userData } = await supabase.auth.getUser();
+    const userId = userData.user?.id;
+
+    if (!userId) return;
+
+    if (payload.type === "last-read") {
+      await supabase.from("ascend_academy_progress").upsert({
+        user_id: userId,
+        stage_id: `last-read::${payload.moduleId}`,
+        score: payload.index,
+        xp_earned: 0,
+        completed_at: new Date().toISOString(),
+      });
+      return;
+    }
+
+    if (payload.type === "paragraph") {
+      await supabase.from("ascend_academy_progress").upsert({
+        user_id: userId,
+        saved_question: `paragraph::${encodeMemoryPayload(payload.paragraph)}`,
+        score: 0,
+        xp_earned: 0,
+        completed_at: new Date().toISOString(),
+      });
+      return;
+    }
+
+    await supabase.from("ascend_academy_progress").upsert({
+      user_id: userId,
+      saved_question: `highlight::${payload.key}`,
+      score: 0,
+      xp_earned: 0,
+      completed_at: new Date().toISOString(),
+    });
+  }
+
+  function markParagraphRead(index: number) {
+    if (!activeModule) return;
+
+    setProgress((current) => ({
+      ...current,
+      lastRead: {
+        ...current.lastRead,
+        [activeModule.id]: index,
+      },
+    }));
+    syncReadingMemory({ type: "last-read", moduleId: activeModule.id, index });
+    setStatus(`Saved reading position in ${activeModule.title}.`);
+  }
+
+  function saveParagraph(index: number, text: string) {
+    if (!activeModule) return;
+
+    const paragraph = {
+      moduleId: activeModule.id,
+      moduleTitle: activeModule.title,
+      index,
+      text,
+    };
+
+    setProgress((current) => ({
+      ...current,
+      savedParagraphs: Array.from(
+        new Map(
+          [...current.savedParagraphs, paragraph].map((saved) => [
+            paragraphKey(saved.moduleId, saved.index),
+            saved,
+          ])
+        ).values()
+      ),
+      lastRead: {
+        ...current.lastRead,
+        [activeModule.id]: index,
+      },
+    }));
+    syncReadingMemory({ type: "paragraph", paragraph });
+    syncReadingMemory({ type: "last-read", moduleId: activeModule.id, index });
+    setStatus("Paragraph saved to your reading bank.");
+  }
+
+  function toggleHighlightParagraph(index: number) {
+    if (!activeModule) return;
+
+    const key = paragraphKey(activeModule.id, index);
+
+    setProgress((current) => {
+      const highlighted = current.highlightedParagraphs.includes(key);
+
+      return {
+        ...current,
+        highlightedParagraphs: highlighted
+          ? current.highlightedParagraphs.filter((item) => item !== key)
+          : [...current.highlightedParagraphs, key],
+        lastRead: {
+          ...current.lastRead,
+          [activeModule.id]: index,
+        },
+      };
+    });
+
+    if (!progress.highlightedParagraphs.includes(key)) {
+      syncReadingMemory({ type: "highlight", key });
+    }
+    syncReadingMemory({ type: "last-read", moduleId: activeModule.id, index });
+    setStatus("Highlight updated.");
+  }
+
+  function continueReading() {
+    if (!activeModule) return;
+
+    setStep("lesson");
+    window.setTimeout(() => {
+      document
+        .getElementById(paragraphKey(activeModule.id, activeLastRead))
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 120);
   }
 
   function openModule(moduleId: string, index: number) {
@@ -509,10 +740,18 @@ export default function AcademyExperience() {
                   <span key={objective}>{objective}</span>
                 ))}
               </div>
-              <button type="button" onClick={() => setStep("lesson")}>
-                <BookOpen size={17} />
-                Begin Lesson
-              </button>
+              <div className="academyIntroActions">
+                <button type="button" onClick={() => setStep("lesson")}>
+                  <BookOpen size={17} />
+                  {activeLastRead ? "Continue Lesson" : "Begin Lesson"}
+                </button>
+                {activeLastRead > 0 && (
+                  <button type="button" onClick={continueReading}>
+                    <Play size={17} />
+                    Paragraph {activeLastRead + 1}
+                  </button>
+                )}
+              </div>
             </div>
           )}
 
@@ -524,10 +763,51 @@ export default function AcademyExperience() {
               </button>
               <section>
                 <h3>Reading Passage</h3>
+                <div className="academyMemoryBar">
+                  <span>
+                    {activeLastRead > 0
+                      ? `Last read: paragraph ${activeLastRead + 1} of ${readingPassage.length}`
+                      : `Start here: ${readingPassage.length} reading blocks`}
+                  </span>
+                  <span>{activeSavedParagraphs.length} saved from this level</span>
+                  {activeLastRead > 0 && (
+                    <button type="button" onClick={continueReading}>
+                      Continue
+                    </button>
+                  )}
+                </div>
                 <div className="academyPassage">
-                  {buildReadingPassage(activeModule).map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
+                  {readingPassage.map((paragraph, index) => {
+                    const key = paragraphKey(activeModule.id, index);
+                    const highlighted = progress.highlightedParagraphs.includes(key);
+                    const saved = activeSavedParagraphs.some((savedParagraph) => savedParagraph.index === index);
+
+                    return (
+                      <article
+                        key={key}
+                        id={key}
+                        data-academy-module={activeModule.id}
+                        data-paragraph-index={index}
+                        className={highlighted ? "isHighlighted" : ""}
+                      >
+                        <p>{paragraph}</p>
+                        <div className="paragraphMemoryTools">
+                          <button type="button" onClick={() => toggleHighlightParagraph(index)}>
+                            <Star size={14} />
+                            {highlighted ? "Highlighted" : "Highlight"}
+                          </button>
+                          <button type="button" onClick={() => saveParagraph(index, paragraph)}>
+                            <BookMarked size={14} />
+                            {saved ? "Saved" : "Save"}
+                          </button>
+                          <button type="button" onClick={() => markParagraphRead(index)}>
+                            <CheckCircle2 size={14} />
+                            Mark Read
+                          </button>
+                        </div>
+                      </article>
+                    );
+                  })}
                 </div>
               </section>
 
@@ -700,15 +980,22 @@ export default function AcademyExperience() {
       <section className="flashcardBank">
         <div>
           <p className="eyebrow">Saved Slot</p>
-          <h2>Flashcard bank.</h2>
-          <p>Saved questions live here as their own practice area, separate from the module map.</p>
+          <h2>Flashcard and reading bank.</h2>
+          <p>Saved questions and paragraphs live here as their own practice area, separate from the module map.</p>
         </div>
 
         <div>
-          {progress.savedQuestions.length ? (
-            progress.savedQuestions.map((question) => <span key={question}>{question}</span>)
+          {progress.savedQuestions.length || progress.savedParagraphs.length ? (
+            <>
+              {progress.savedQuestions.map((question) => <span key={question}>{question}</span>)}
+              {progress.savedParagraphs.map((paragraph) => (
+                <span key={paragraphKey(paragraph.moduleId, paragraph.index)}>
+                  {paragraph.moduleTitle} / paragraph {paragraph.index + 1}: {paragraph.text}
+                </span>
+              ))}
+            </>
           ) : (
-            <span>Save questions during quizzes to build a personal practice bank.</span>
+            <span>Save questions and paragraphs to build a personal practice bank.</span>
           )}
         </div>
       </section>
