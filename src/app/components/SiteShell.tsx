@@ -5,7 +5,7 @@ import "./siteshell.css";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import AIAssistantDock from "./AIAssistantDock";
 import GlobalChatDock from "./GlobalChatDock";
@@ -48,10 +48,23 @@ export default function SiteShell({
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const moreCloseTimer = useRef<number | null>(null);
 
   function closeMenu() {
     setMenuOpen(false);
     setMoreOpen(false);
+  }
+
+  function cancelMoreClose() {
+    if (moreCloseTimer.current) {
+      window.clearTimeout(moreCloseTimer.current);
+      moreCloseTimer.current = null;
+    }
+  }
+
+  function scheduleMoreClose() {
+    cancelMoreClose();
+    moreCloseTimer.current = window.setTimeout(() => setMoreOpen(false), 360);
   }
 
   function isActiveLink(href: string) {
@@ -92,11 +105,20 @@ export default function SiteShell({
             </Link>
           ))}
 
-          <div className="moreNavWrap" onMouseLeave={() => setMoreOpen(false)}>
+          <div
+            className="moreNavWrap"
+            onMouseEnter={cancelMoreClose}
+            onMouseLeave={scheduleMoreClose}
+            onFocus={cancelMoreClose}
+          >
             <button
               type="button"
               className={moreLinks.some((link) => isActiveLink(link.href)) ? "activeNavLink" : ""}
-              onClick={() => setMoreOpen((open) => !open)}
+              onClick={() => {
+                cancelMoreClose();
+                setMoreOpen((open) => !open);
+              }}
+              onMouseEnter={() => setMoreOpen(true)}
               aria-expanded={moreOpen}
               aria-controls="more-navigation"
             >

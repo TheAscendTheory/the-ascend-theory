@@ -23,10 +23,7 @@ export default function MarketDashboardPage() {
         </p>
 
         <div className="pageCtaActions">
-          <a href="#live-chart" className="pageCtaPrimary">
-            Open Desk
-          </a>
-          <a href="#workspace-tools" className="pageCtaSecondary">
+          <a href="#workspace-tools" className="pageCtaPrimary">
             Customize Tools
           </a>
         </div>
@@ -36,9 +33,9 @@ export default function MarketDashboardPage() {
         <div className="tradingDeskSurfaceHeader">
           <div>
             <p className="eyebrow">Live Chart</p>
-            <h2>Chart first. Tools when needed.</h2>
+            <h2>Live chart and execution workspace.</h2>
           </div>
-          <span>Watchlist, indicators, drawing tools, and symbol search are inside the chart.</span>
+          <span>Use the chart for price, then keep news, calendar, alerts, risk, and journal connected below.</span>
         </div>
         <TradingViewAdvancedChart />
       </section>

@@ -50,6 +50,7 @@ create table if not exists public.ascend_profiles (
   avatar_url text,
   bio text not null default '',
   academy_level text not null default 'New Ascender',
+  pnl_public boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -102,6 +103,11 @@ create table if not exists public.ascend_social_posts (
   user_id uuid not null references auth.users(id) on delete cascade,
   body text not null,
   visibility text not null default 'friends' check (visibility in ('public', 'friends', 'private')),
+  category text,
+  tags text[] not null default '{}',
+  media_url text,
+  media_type text check (media_type in ('photo', 'video', 'chart', 'pnl')),
+  pnl_amount numeric,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );

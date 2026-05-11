@@ -2,8 +2,9 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { BookOpen, ChartCandlestick, Flame, MessageCircle, Star, Trophy } from "lucide-react";
+import { BookOpen, ChartCandlestick, Eye, EyeOff, Flame, MessageCircle, Star, Trophy } from "lucide-react";
 import { createBrowserSupabaseClient } from "../lib/supabaseBrowser";
+import { academyRankGuide, rankStatusFromCompleted } from "../learn/curriculum/rank-system";
 
 type AccountStats = {
   academyXp: number;
@@ -58,7 +59,7 @@ export default function AccountClient() {
   const [handle, setHandle] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userId, setUserId] = useState("");
-  const [academyLevel, setAcademyLevel] = useState("New Ascender");
+  const [pnlPublic, setPnlPublic] = useState(false);
   const [stats, setStats] = useState<AccountStats>(emptyStats);
   const [status, setStatus] = useState("");
 
@@ -82,13 +83,21 @@ export default function AccountClient() {
     const client = supabase;
 
     async function loadAccount(userId: string, fallbackHandle = "") {
-      const [{ data: profile }, { data: progress }, { data: trades }, { data: posts }] =
-        await Promise.all([
-          client
+      const profileQuery = await client
+        .from("ascend_profiles")
+        .select("display_name, handle, academy_level, pnl_public")
+        .eq("user_id", userId)
+        .maybeSingle();
+      const profileResult = profileQuery.error
+        ? await client
             .from("ascend_profiles")
             .select("display_name, handle, academy_level")
             .eq("user_id", userId)
-            .maybeSingle(),
+            .maybeSingle()
+        : profileQuery;
+
+      const [{ data: progress }, { data: trades }, { data: posts }] =
+        await Promise.all([
           client
             .from("ascend_academy_progress")
             .select("course_id,saved_question,xp_earned")
@@ -103,10 +112,12 @@ export default function AccountClient() {
             .eq("user_id", userId),
         ]);
 
-      if (profile) {
-        setDisplayName(profile.display_name || "");
-        setHandle(profile.handle || fallbackHandle);
-        setAcademyLevel(profile.academy_level || "New Ascender");
+      if (profileResult.data) {
+        setDisplayName(profileResult.data.display_name || "");
+        setHandle(profileResult.data.handle || fallbackHandle);
+        if ("pnl_public" in profileResult.data) {
+          setPnlPublic(Boolean(profileResult.data.pnl_public));
+        }
       }
 
       setStats((current) => ({
@@ -207,12 +218,25 @@ export default function AccountClient() {
     }
 
     if (userId) {
-      const { error: profileError } = await supabase.from("ascend_profiles").upsert({
+      const profilePayload = {
         user_id: userId,
         display_name: displayName.trim() || userEmail.split("@")[0] || "Ascender",
         handle: cleanHandle || null,
+        pnl_public: pnlPublic,
         updated_at: new Date().toISOString(),
-      });
+      };
+
+      const extendedSave = await supabase.from("ascend_profiles").upsert(profilePayload);
+      const profileError = extendedSave.error
+        ? (
+            await supabase.from("ascend_profiles").upsert({
+              user_id: profilePayload.user_id,
+              display_name: profilePayload.display_name,
+              handle: profilePayload.handle,
+              updated_at: profilePayload.updated_at,
+            })
+          ).error
+        : null;
 
       setStatus(profileError ? profileError.message : "Profile saved.");
       return;
@@ -231,10 +255,12 @@ export default function AccountClient() {
     setUserEmail("");
     setDisplayName("");
     setHandle("");
-    setAcademyLevel("New Ascender");
+    setPnlPublic(false);
     setStats(readLocalStats());
     setStatus("Signed out.");
   }
+
+  const rankStatus = rankStatusFromCompleted(stats.academyCompleted);
 
   return (
     <div className="accountCommandCenter">
@@ -250,7 +276,11 @@ export default function AccountClient() {
         </div>
         <div className="accountIdentityBadge">
           <span>{handle ? `@${handle.replace(/^@/, "")}` : "Handle not set"}</span>
-          <strong>{academyLevel}</strong>
+          <div className={`rankBadge rankTone-${rankStatus.tone}`}>
+            <b>{rankStatus.initials}</b>
+            <strong>{rankStatus.currentRank}</strong>
+          </div>
+          <small>{rankStatus.progressLabel} complete. Next: {rankStatus.nextRank}</small>
         </div>
       </section>
 
@@ -338,6 +368,18 @@ export default function AccountClient() {
               />
             </label>
 
+            <label className="profilePrivacyToggle">
+              <input
+                type="checkbox"
+                checked={pnlPublic}
+                onChange={(event) => setPnlPublic(event.target.checked)}
+              />
+              <span>
+                {pnlPublic ? <Eye size={16} /> : <EyeOff size={16} />}
+                Make profile P&L public
+              </span>
+            </label>
+
             <div className="accountActions">
               <button type="submit">Save Profile</button>
               <button type="button" onClick={signOut}>
@@ -362,6 +404,27 @@ export default function AccountClient() {
           <Link href="/resources/market-dashboard">Trading Desk</Link>
           <Link href="/resources/trade-journal">Trade Journal</Link>
           <Link href="/social">Social Hub</Link>
+        </div>
+      </section>
+
+      <section className="accountCard rankingGuideCard">
+        <p className="eyebrow">Ranking System Guide</p>
+        <h2>Ranks unlock through Academy completion.</h2>
+        <p>
+          Each rank icon represents the highest module you have completed in the
+          locked Academy path. Complete the next module to move the badge forward.
+        </p>
+        <div className="rankGuideList">
+          {academyRankGuide.map((rank) => (
+            <article key={rank.rank}>
+              <div className={`rankIcon rankTone-${rank.tone}`}>{rank.iconText}</div>
+              <div>
+                <strong>{rank.rank}</strong>
+                <span>{rank.unlockText}</span>
+                <small>{rank.moduleTitle}</small>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
       </div>

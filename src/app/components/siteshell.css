@@ -102,6 +102,15 @@
   position: relative;
 }
 
+.moreNavWrap::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: -18px;
+  right: -18px;
+  height: 22px;
+}
+
 .moreNavPanel {
   position: absolute;
   top: calc(100% + 12px);
@@ -111,6 +120,9 @@
   grid-template-columns: repeat(2, minmax(170px, 1fr));
   gap: 6px;
   width: min(430px, calc(100vw - 44px));
+  max-height: min(68vh, 540px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 12px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 18px;
@@ -118,6 +130,17 @@
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.48);
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
+}
+
+.moreNavPanel::-webkit-scrollbar,
+.mobileNav::-webkit-scrollbar {
+  width: 8px;
+}
+
+.moreNavPanel::-webkit-scrollbar-thumb,
+.mobileNav::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(234, 179, 8, 0.42);
 }
 
 .moreNavPanel a {
@@ -158,6 +181,9 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 18px;
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.46);
+  max-height: calc(100vh - 112px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .mobileNav a {

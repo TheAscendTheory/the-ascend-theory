@@ -20,18 +20,38 @@ const instruments = [
   { group: "Forex", symbols: ["EUR/USD", "GBP/USD", "USD/JPY", "USD/CAD", "AUD/USD"] },
 ];
 
-const structureLevels = [
-  { label: "HTF Supply", value: "18,820 - 18,860", note: "Reaction zone above current price" },
-  { label: "London High", value: "18,791.25", note: "Buy-side liquidity" },
-  { label: "VWAP", value: "18,718.50", note: "Intraday fair value anchor" },
-  { label: "NY Low", value: "18,603.75", note: "Protected sell-side liquidity" },
-];
+const symbolNotes: Record<string, { bias: string; levels: string[]; flow: string[] }> = {
+  NQ: {
+    bias: "Index momentum asset. Confirm direction with NASDAQ breadth and high-impact event timing.",
+    levels: ["Prior session high", "VWAP", "Opening range", "Prior session low"],
+    flow: ["Watch absorption at VWAP", "Track failed breakouts near prior high", "Note large prints after data releases"],
+  },
+  ES: {
+    bias: "Broad index benchmark. Use it for clean macro confirmation before taking correlated trades.",
+    levels: ["Weekly open", "Prior day high", "VWAP", "Prior day low"],
+    flow: ["Compare NQ strength", "Mark volume acceptance above VWAP", "Watch NY open impulse"],
+  },
+  BTC: {
+    bias: "Crypto liquidity leader. Respect weekend gaps, funding shifts, and risk-on/risk-off headlines.",
+    levels: ["Asia range high", "Daily open", "VWAP", "Asia range low"],
+    flow: ["Track liquidation sweeps", "Watch spot/perp divergence", "Note ETF and macro headline reaction"],
+  },
+  "XAU/USD": {
+    bias: "Gold reacts strongly to real yields, dollar movement, inflation data, and geopolitical stress.",
+    levels: ["Prior day high", "London high", "VWAP", "Prior day low"],
+    flow: ["Compare DXY", "Watch rejection after yield spikes", "Mark news-driven volume bursts"],
+  },
+};
 
-const orderFlowReads = [
-  { label: "Volume Profile", value: "Value building near VWAP", status: "Useful" },
-  { label: "Delta", value: "Buyers defending pullbacks", status: "Watch" },
-  { label: "Tape", value: "Large prints near highs fading", status: "Caution" },
-];
+function selectedSymbolPlan(symbol: string) {
+  return (
+    symbolNotes[symbol] || {
+      bias: `${symbol} is the active desk symbol. Use the same symbol across watchlist, levels, alerts, notes, risk, and journal.`,
+      levels: ["Higher-timeframe supply", "Session high", "VWAP", "Session low"],
+      flow: ["Define current auction", "Mark aggressive buying or selling", "Record invalidation before entry"],
+    }
+  );
+}
 
 const sessions = [
   { label: "Asia", window: "20:00 - 00:00 ET", note: "Range creation" },
@@ -119,6 +139,7 @@ function ToolShell({
 export default function TradingWorkspace() {
   const [visibleTools, setVisibleTools] = useState<Record<ToolKey, boolean>>(planningLayout);
   const [theme, setTheme] = useState<WorkspaceTheme>("dark");
+  const [selectedSymbol, setSelectedSymbol] = useState("NQ");
 
   const activeCount = useMemo(
     () => Object.values(visibleTools).filter(Boolean).length,
@@ -152,6 +173,11 @@ export default function TradingWorkspace() {
     window.localStorage.setItem(layoutStorageKey, JSON.stringify({ visibleTools, theme }));
   }, [theme, visibleTools]);
 
+  useEffect(() => {
+    window.localStorage.setItem("ascend-trading-desk-symbol", selectedSymbol);
+    window.dispatchEvent(new CustomEvent("ascend-symbol-change", { detail: selectedSymbol }));
+  }, [selectedSymbol]);
+
   function toggleTool(tool: ToolKey) {
     setVisibleTools((current) => ({
       ...current,
@@ -171,13 +197,15 @@ export default function TradingWorkspace() {
     setVisibleTools(reviewLayout);
   }
 
+  const symbolPlan = selectedSymbolPlan(selectedSymbol);
+
   return (
     <section className={`tradingWorkspace ${theme}`} aria-label="One page trading workspace">
       <div className="workspaceControls">
         <div>
-          <p className="eyebrow">Workspace Controls</p>
-          <h2>Build the desk around the trade.</h2>
-          <p>{activeCount} tools visible. Your layout and contrast choice stay saved on this device.</p>
+          <p className="eyebrow">Active Desk: {selectedSymbol}</p>
+          <h2>One symbol, one plan.</h2>
+          <p>{symbolPlan.bias}</p>
         </div>
 
         <div className="workspaceControlActions">
@@ -204,6 +232,12 @@ export default function TradingWorkspace() {
         </div>
       </div>
 
+      <div className="activeSymbolBar" aria-label="Active trading desk symbol">
+        <span>Selected symbol</span>
+        <strong>{selectedSymbol}</strong>
+        <p>{activeCount} tools visible. Layout and contrast stay saved on this device.</p>
+      </div>
+
       <div className="workspaceToolChips">
         {(Object.keys(toolLabels) as ToolKey[]).map((tool) => (
           <button
@@ -227,7 +261,14 @@ export default function TradingWorkspace() {
                 <strong>{group.group}</strong>
                 <div>
                   {group.symbols.map((symbol) => (
-                    <span key={symbol}>{symbol}</span>
+                    <button
+                      key={symbol}
+                      type="button"
+                      className={symbol === selectedSymbol ? "isSelected" : ""}
+                      onClick={() => setSelectedSymbol(symbol)}
+                    >
+                      {symbol}
+                    </button>
                   ))}
                 </div>
               </article>
@@ -235,19 +276,19 @@ export default function TradingWorkspace() {
           </div>
         </ToolShell>
 
-        <ToolShell id="levels" title="Structure Levels" visible={visibleTools.levels} onToggle={toggleTool}>
+        <ToolShell id="levels" title={`${selectedSymbol} Structure Levels`} visible={visibleTools.levels} onToggle={toggleTool}>
           <div className="structureLevelList">
-            {structureLevels.map((level) => (
-              <article key={level.label}>
-                <span>{level.label}</span>
-                <strong>{level.value}</strong>
-                <p>{level.note}</p>
+            {symbolPlan.levels.map((level, index) => (
+              <article key={level}>
+                <span>{selectedSymbol} Level {index + 1}</span>
+                <strong>{level}</strong>
+                <p>Use this as a manual planning marker until the chart confirms reaction, acceptance, or invalidation.</p>
               </article>
             ))}
           </div>
         </ToolShell>
 
-        <ToolShell id="news" title="Market News Flow" visible={visibleTools.news} onToggle={toggleTool} wide>
+        <ToolShell id="news" title={`${selectedSymbol} Market News Flow`} visible={visibleTools.news} onToggle={toggleTool} wide>
           <NewsFlowClient compact />
         </ToolShell>
 
@@ -267,17 +308,17 @@ export default function TradingWorkspace() {
           </div>
         </ToolShell>
 
-        <ToolShell id="alerts" title="Alert Planner" visible={visibleTools.alerts} onToggle={toggleTool}>
-          <AlertPlanner />
+        <ToolShell id="alerts" title={`${selectedSymbol} Alert Planner`} visible={visibleTools.alerts} onToggle={toggleTool}>
+          <AlertPlanner key={selectedSymbol} initialSymbol={selectedSymbol} />
         </ToolShell>
 
-        <ToolShell id="flow" title="Order Flow Notes" visible={visibleTools.flow} onToggle={toggleTool}>
+        <ToolShell id="flow" title={`${selectedSymbol} Order Flow Notes`} visible={visibleTools.flow} onToggle={toggleTool}>
           <div className="flowNoteList">
-            {orderFlowReads.map((read) => (
-              <article key={read.label}>
-                <span>{read.status}</span>
-                <strong>{read.label}</strong>
-                <p>{read.value}</p>
+            {symbolPlan.flow.map((read, index) => (
+              <article key={read}>
+                <span>{selectedSymbol} Read {index + 1}</span>
+                <strong>{read}</strong>
+                <p>Write what price is proving now, not what you hope it proves later.</p>
               </article>
             ))}
           </div>

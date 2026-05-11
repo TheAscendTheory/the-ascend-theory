@@ -7,8 +7,8 @@ function toNumber(value: string) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-export default function AlertPlanner() {
-  const [symbol, setSymbol] = useState("QQQ");
+export default function AlertPlanner({ initialSymbol = "NQ" }: { initialSymbol?: string }) {
+  const [symbol, setSymbol] = useState(initialSymbol);
   const [currentPrice, setCurrentPrice] = useState("430");
   const [alertPrice, setAlertPrice] = useState("440");
   const [reason, setReason] = useState("Breakout confirmation");
@@ -64,7 +64,7 @@ export default function AlertPlanner() {
       </div>
 
       <div className="alertPlannerOutput">
-        <p className="eyebrow">Alert Plan</p>
+        <p className="eyebrow">{symbol || "Symbol"} alert setup</p>
         <h3>{symbol || "Symbol"} Alert</h3>
         <p>
           Watch for {symbol || "this asset"} near {alertPrice || "your level"}.

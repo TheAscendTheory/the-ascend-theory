@@ -1064,6 +1064,35 @@ input {
   justify-content: flex-start;
 }
 
+.activeSymbolBar {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid rgba(234, 179, 8, 0.18);
+  border-radius: 12px;
+  background: rgba(234, 179, 8, 0.07);
+}
+
+.activeSymbolBar span {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.activeSymbolBar strong {
+  color: #facc15;
+  font-size: 18px;
+}
+
+.activeSymbolBar p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.66);
+}
+
 .workspaceToolChips button.isActive {
   border-color: rgba(234, 179, 8, 0.5);
   background: rgba(234, 179, 8, 0.12);
@@ -1152,13 +1181,21 @@ input {
   margin-top: 10px;
 }
 
-.assetWatchlist span {
+.assetWatchlist button {
   padding: 7px 9px;
+  border: 1px solid rgba(234, 179, 8, 0.18);
   border-radius: 999px;
   background: rgba(234, 179, 8, 0.1);
   color: #facc15;
   font-size: 12px;
   font-weight: 900;
+  cursor: pointer;
+}
+
+.assetWatchlist button.isSelected {
+  background: #eab308;
+  color: #0a0a0a;
+  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.14);
 }
 
 .structureLevelList span,
@@ -1190,8 +1227,13 @@ input {
 
 .tradingWorkspace.light .structureLevelList p,
 .tradingWorkspace.light .flowNoteList p,
-.tradingWorkspace.light .sessionToolList p {
+.tradingWorkspace.light .sessionToolList p,
+.tradingWorkspace.light .activeSymbolBar p {
   color: rgba(0, 0, 0, 0.62);
+}
+
+.tradingWorkspace.light .activeSymbolBar span {
+  color: rgba(0, 0, 0, 0.58);
 }
 
 .workspacePanel .riskCalculator,
@@ -1582,6 +1624,11 @@ input {
   background: rgba(0, 0, 0, 0.28);
 }
 
+.accountIdentityBadge small {
+  color: rgba(255, 255, 255, 0.62);
+  line-height: 1.45;
+}
+
 .accountIdentityBadge span {
   color: #facc15;
   font-size: 13px;
@@ -1592,6 +1639,137 @@ input {
   color: white;
   font-size: 22px;
   line-height: 1.1;
+}
+
+.rankBadge,
+.miniRankPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  color: white;
+}
+
+.rankBadge b,
+.rankIcon,
+.miniRankPill b {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.miniRankPill {
+  padding: 5px 8px 5px 5px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.miniRankPill b {
+  width: 24px;
+  height: 24px;
+  font-size: 9px;
+}
+
+.rankTone-bronze b,
+.rankTone-bronze.rankIcon,
+.rankTone-bronze .rankIcon {
+  background: linear-gradient(135deg, #8a5a2b, #d08a3c);
+}
+
+.rankTone-amber b,
+.rankTone-amber.rankIcon,
+.rankTone-amber .rankIcon,
+.rankTone-gold b,
+.rankTone-gold.rankIcon,
+.rankTone-gold .rankIcon {
+  background: linear-gradient(135deg, #a16207, #facc15);
+  color: #111;
+}
+
+.rankTone-green b,
+.rankTone-green.rankIcon,
+.rankTone-green .rankIcon,
+.rankTone-teal b,
+.rankTone-teal.rankIcon,
+.rankTone-teal .rankIcon {
+  background: linear-gradient(135deg, #065f46, #2dd4bf);
+}
+
+.rankTone-cyan b,
+.rankTone-cyan.rankIcon,
+.rankTone-cyan .rankIcon,
+.rankTone-blue b,
+.rankTone-blue.rankIcon,
+.rankTone-blue .rankIcon,
+.rankTone-indigo b,
+.rankTone-indigo.rankIcon,
+.rankTone-indigo .rankIcon {
+  background: linear-gradient(135deg, #1d4ed8, #67e8f9);
+}
+
+.rankTone-violet b,
+.rankTone-violet.rankIcon,
+.rankTone-violet .rankIcon,
+.rankTone-fuchsia b,
+.rankTone-fuchsia.rankIcon,
+.rankTone-fuchsia .rankIcon,
+.rankTone-rose b,
+.rankTone-rose.rankIcon,
+.rankTone-rose .rankIcon {
+  background: linear-gradient(135deg, #7e22ce, #fb7185);
+}
+
+.rankTone-red b,
+.rankTone-red.rankIcon,
+.rankTone-red .rankIcon,
+.rankTone-orange b,
+.rankTone-orange.rankIcon,
+.rankTone-orange .rankIcon {
+  background: linear-gradient(135deg, #991b1b, #fb923c);
+}
+
+.rankTone-platinum b,
+.rankTone-platinum.rankIcon,
+.rankTone-platinum .rankIcon,
+.rankTone-ascender b,
+.rankTone-ascender.rankIcon,
+.rankTone-ascender .rankIcon {
+  background: linear-gradient(135deg, #f8fafc, #facc15);
+  color: #111;
+}
+
+.profilePrivacyToggle {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 12px !important;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.profilePrivacyToggle input {
+  width: 18px !important;
+  min-height: 18px !important;
+}
+
+.profilePrivacyToggle span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .accountStatsGrid {
@@ -1695,6 +1873,52 @@ input {
 .accountQuickLinks a:hover {
   border-color: rgba(234, 179, 8, 0.48);
   background: rgba(234, 179, 8, 0.16);
+}
+
+.rankingGuideCard {
+  grid-column: 1 / -1;
+}
+
+.rankGuideList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  max-height: 560px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.rankGuideList article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.rankGuideList strong,
+.rankGuideList span,
+.rankGuideList small {
+  display: block;
+}
+
+.rankGuideList strong {
+  color: white;
+}
+
+.rankGuideList span {
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 12px;
+}
+
+.rankGuideList small {
+  margin-top: 6px;
+  color: rgba(234, 179, 8, 0.72);
+  line-height: 1.35;
 }
 
 .socialShell {
@@ -1979,7 +2203,8 @@ input {
   margin-bottom: 16px;
 }
 
-.socialComposer input {
+.socialComposer input,
+.socialComposer select {
   min-width: 0;
   min-height: 46px;
   padding: 0 14px;
@@ -1990,7 +2215,8 @@ input {
   outline: none;
 }
 
-.socialComposer input:focus {
+.socialComposer input:focus,
+.socialComposer select:focus {
   border-color: rgba(234, 179, 8, 0.68);
   box-shadow: 0 0 0 4px rgba(234, 179, 8, 0.1);
 }
@@ -2001,6 +2227,44 @@ input {
   border-radius: 999px;
   background: #eab308;
   color: black;
+}
+
+.postComposerOptions {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.socialTagRail,
+.postTagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.socialTagRail {
+  margin: 0 0 14px;
+}
+
+.socialTagRail button,
+.postTagList button {
+  min-height: 30px;
+  padding: 6px 10px;
+  border: 1px solid rgba(234, 179, 8, 0.18);
+  border-radius: 999px;
+  background: rgba(234, 179, 8, 0.08);
+  color: #facc15;
+  font-size: 12px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.socialTagRail button.isActive,
+.socialTagRail button:hover,
+.postTagList button:hover {
+  background: #eab308;
+  color: #111;
 }
 
 .storyBubble {
@@ -2089,6 +2353,13 @@ input {
   display: block;
 }
 
+.socialIdentityLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
 .socialPost strong {
   color: white;
 }
@@ -2104,6 +2375,23 @@ input {
   color: rgba(255, 255, 255, 0.76);
   font-size: 16px;
   line-height: 1.65;
+}
+
+.pnlPositive {
+  color: #86efac !important;
+}
+
+.pnlNegative {
+  color: #fca5a5 !important;
+}
+
+.socialPostMedia {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .socialPost button {
@@ -4654,6 +4942,30 @@ input {
   color: rgba(255, 255, 255, 0.72);
   font-size: 12px;
   font-weight: 900;
+}
+
+.globalChatFriendRow button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.globalChatFriendRow button span {
+  min-height: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.globalChatFriendRow button b {
+  display: inline-grid;
+  min-width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(234, 179, 8, 0.18);
+  color: #facc15;
+  font-size: 9px;
 }
 
 .globalChatFriendRow button.isActive {

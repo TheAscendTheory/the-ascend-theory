@@ -15,11 +15,14 @@ import {
   UserPlus,
 } from "lucide-react";
 import { createBrowserSupabaseClient } from "../lib/supabaseBrowser";
+import { academyRankGuide, rankInitials, rankStatusFromCompleted } from "../learn/curriculum/rank-system";
 
 type Profile = {
   user_id: string;
   display_name: string;
   handle: string | null;
+  academy_level?: string | null;
+  pnl_public?: boolean | null;
 };
 
 type Friendship = {
@@ -35,6 +38,11 @@ type Post = {
   body: string;
   visibility: "public" | "friends" | "private";
   created_at: string;
+  category?: string | null;
+  tags?: string[] | null;
+  media_url?: string | null;
+  media_type?: "photo" | "video" | "chart" | "pnl" | null;
+  pnl_amount?: number | null;
 };
 
 type SavedPost = {
@@ -101,7 +109,14 @@ export default function SocialClient() {
   const [activeFriendId, setActiveFriendId] = useState("");
   const [activeConversationId, setActiveConversationId] = useState("");
   const [messageDraft, setMessageDraft] = useState("");
-  const [postDraft, setPostDraft] = useState("");
+const [postDraft, setPostDraft] = useState("");
+  const [postCategory, setPostCategory] = useState("Recap");
+  const [customCategory, setCustomCategory] = useState("");
+  const [tagDraft, setTagDraft] = useState("");
+  const [mediaUrl, setMediaUrl] = useState("");
+  const [mediaType, setMediaType] = useState<Post["media_type"]>("chart");
+  const [pnlAmount, setPnlAmount] = useState("");
+  const [activeTag, setActiveTag] = useState("");
   const [storyDraft, setStoryDraft] = useState("");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
@@ -146,6 +161,26 @@ export default function SocialClient() {
 
   const activeFriend = friends.find((friend) => friend.id === activeFriendId);
   const currentProfile = profileMap.get(userId);
+  const categoryOptions = [
+    "Wins",
+    "Loss",
+    "Replay",
+    "Recap",
+    "Lesson",
+    "Bias",
+    "Daily Bias",
+    "Weekly Bias",
+    "Monthly Bias",
+    "P&L",
+    "Stocks",
+    "Options",
+    "Crypto",
+    "Futures",
+    "Forex",
+    "ETFs",
+    "CFDs",
+    "Custom",
+  ];
   const friendRequests = friends.filter(
     (friend) => friend.status === "request" && friend.direction === "incoming"
   );
@@ -155,6 +190,24 @@ export default function SocialClient() {
     [savedPosts]
   );
   const savedPostList = posts.filter((post) => savedPostIds.has(post.id));
+  const allTags = useMemo(() => {
+    const tags = new Set<string>();
+    posts.forEach((post) => {
+      extractHashtags(post.body).forEach((tag) => tags.add(tag));
+      (post.tags || []).forEach((tag) => tags.add(cleanTag(tag)));
+      if (post.category) tags.add(cleanTag(post.category));
+    });
+    return Array.from(tags).filter(Boolean).slice(0, 18);
+  }, [posts]);
+  const filteredPosts = activeTag
+    ? posts.filter((post) =>
+        [
+          ...extractHashtags(post.body),
+          ...(post.tags || []).map(cleanTag),
+          cleanTag(post.category || ""),
+        ].includes(activeTag)
+      )
+    : posts;
   const profileHighlights = stories.filter(
     (story) => story.user_id === userId && story.kept_on_profile
   );
@@ -214,19 +267,38 @@ export default function SocialClient() {
       storiesResult,
       notificationsResult,
     ] = await Promise.all([
-      supabase
-        .from("ascend_profiles")
-        .select("user_id, display_name, handle")
-        .order("display_name", { ascending: true }),
+      (async () => {
+        const extended = await supabase
+          .from("ascend_profiles")
+          .select("user_id, display_name, handle, academy_level, pnl_public")
+          .order("display_name", { ascending: true });
+
+        return extended.error
+          ? supabase
+              .from("ascend_profiles")
+              .select("user_id, display_name, handle, academy_level")
+              .order("display_name", { ascending: true })
+          : extended;
+      })(),
       supabase
         .from("ascend_friendships")
         .select("id, requester_id, addressee_id, status")
         .order("updated_at", { ascending: false }),
-      supabase
-        .from("ascend_social_posts")
-        .select("id, user_id, body, visibility, created_at")
-        .order("created_at", { ascending: false })
-        .limit(40),
+      (async () => {
+        const extended = await supabase
+          .from("ascend_social_posts")
+          .select("id, user_id, body, visibility, created_at, category, tags, media_url, media_type, pnl_amount")
+          .order("created_at", { ascending: false })
+          .limit(40);
+
+        return extended.error
+          ? supabase
+              .from("ascend_social_posts")
+              .select("id, user_id, body, visibility, created_at")
+              .order("created_at", { ascending: false })
+              .limit(40)
+          : extended;
+      })(),
       supabase.from("ascend_saved_posts").select("post_id"),
       supabase
         .from("ascend_stories")
@@ -405,11 +477,40 @@ export default function SocialClient() {
       return;
     }
 
-    const { error } = await supabase.from("ascend_social_posts").insert({
+    const chosenCategory =
+      postCategory === "Custom" ? customCategory.trim() : postCategory.trim();
+    const tags = parseTags(`${tagDraft} ${postDraft}`);
+    const media = mediaUrl.trim();
+    const pnl = Number(pnlAmount);
+    const extendedPost = {
       user_id: userId,
       body: postDraft.trim(),
       visibility: "friends",
-    });
+      category: chosenCategory || null,
+      tags,
+      media_url: media || null,
+      media_type: media ? mediaType : chosenCategory === "P&L" ? "pnl" : null,
+      pnl_amount: Number.isFinite(pnl) && pnlAmount.trim() ? pnl : null,
+    };
+
+    const result = await supabase.from("ascend_social_posts").insert(extendedPost);
+    const error = result.error
+      ? (
+          await supabase.from("ascend_social_posts").insert({
+            user_id: extendedPost.user_id,
+            body: [
+              extendedPost.body,
+              chosenCategory ? `#${cleanTag(chosenCategory)}` : "",
+              ...tags.map((tag) => `#${tag}`),
+              media ? `Media: ${media}` : "",
+              extendedPost.pnl_amount !== null ? `P&L: ${extendedPost.pnl_amount}` : "",
+            ]
+              .filter(Boolean)
+              .join("\n"),
+            visibility: "friends",
+          })
+        ).error
+      : null;
 
     if (error) {
       setStatus(error.message);
@@ -417,6 +518,10 @@ export default function SocialClient() {
     }
 
     setPostDraft("");
+    setCustomCategory("");
+    setTagDraft("");
+    setMediaUrl("");
+    setPnlAmount("");
     loadSocialData();
   }
 
@@ -643,7 +748,10 @@ export default function SocialClient() {
             searchResults.map((profile) => (
               <article key={profile.user_id}>
                 <div>
-                  <strong>{profileName(profile)}</strong>
+                  <div className="socialIdentityLine">
+                    <strong>{profileName(profile)}</strong>
+                    <RankPill profile={profile} />
+                  </div>
                   <span>{profileHandle(profile)}</span>
                 </div>
                 <button type="button" onClick={() => sendFriendRequest(profile)}>
@@ -706,28 +814,110 @@ export default function SocialClient() {
               <input
                 value={postDraft}
                 onChange={(event) => setPostDraft(event.target.value)}
-                placeholder="Share a post with friends"
+                placeholder="Share a recap, lesson, chart note, or #market idea"
               />
               <button type="submit">
                 <Send size={18} />
               </button>
+              <div className="postComposerOptions">
+                <select value={postCategory} onChange={(event) => setPostCategory(event.target.value)}>
+                  {categoryOptions.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+                {postCategory === "Custom" && (
+                  <input
+                    value={customCategory}
+                    onChange={(event) => setCustomCategory(event.target.value)}
+                    placeholder="Custom category"
+                  />
+                )}
+                <input
+                  value={tagDraft}
+                  onChange={(event) => setTagDraft(event.target.value)}
+                  placeholder="Tags: liquidity, NQ, earnings"
+                />
+                <select value={mediaType || "chart"} onChange={(event) => setMediaType(event.target.value as Post["media_type"])}>
+                  <option value="chart">Chart screenshot</option>
+                  <option value="photo">Photo</option>
+                  <option value="video">Video</option>
+                  <option value="pnl">P&L</option>
+                </select>
+                <input
+                  value={mediaUrl}
+                  onChange={(event) => setMediaUrl(event.target.value)}
+                  placeholder="Optional photo/video/chart URL"
+                />
+                <input
+                  value={pnlAmount}
+                  onChange={(event) => setPnlAmount(event.target.value)}
+                  inputMode="decimal"
+                  placeholder="Optional P&L"
+                />
+              </div>
             </form>
 
-            {posts.length === 0 ? (
+            <div className="socialTagRail" aria-label="Discover post tags">
+              <button type="button" className={!activeTag ? "isActive" : ""} onClick={() => setActiveTag("")}>
+                All
+              </button>
+              {allTags.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  className={activeTag === tag ? "isActive" : ""}
+                  onClick={() => setActiveTag(tag)}
+                >
+                  #{tag}
+                </button>
+              ))}
+            </div>
+
+            {filteredPosts.length === 0 ? (
               <p className="emptySocialState">No posts yet.</p>
             ) : (
-              posts.map((post) => {
+              filteredPosts.map((post) => {
                 const author = profileMap.get(post.user_id);
                 const saved = savedPostIds.has(post.id);
+                const postTags = [
+                  cleanTag(post.category || ""),
+                  ...(post.tags || []).map(cleanTag),
+                  ...extractHashtags(post.body),
+                ].filter(Boolean);
                 return (
                   <article key={post.id} className="socialPost">
                     <div>
-                      <strong>
-                        {post.user_id === userId ? "You" : profileName(author)}
-                      </strong>
+                      <div className="socialIdentityLine">
+                        <strong>
+                          {post.user_id === userId ? "You" : profileName(author)}
+                        </strong>
+                        <RankPill profile={author} />
+                      </div>
                       <span>{profileHandle(author)}</span>
                     </div>
+                    <div className="postTagList">
+                      {Array.from(new Set(postTags)).slice(0, 8).map((tag) => (
+                        <button key={tag} type="button" onClick={() => setActiveTag(tag)}>
+                          #{tag}
+                        </button>
+                      ))}
+                    </div>
                     <p>{post.body}</p>
+                    {post.pnl_amount !== null && post.pnl_amount !== undefined && (
+                      <strong className={post.pnl_amount >= 0 ? "pnlPositive" : "pnlNegative"}>
+                        P&L {post.pnl_amount >= 0 ? "+" : ""}{post.pnl_amount.toFixed(2)}
+                      </strong>
+                    )}
+                    {post.media_url && (
+                      post.media_type === "video" ? (
+                        <video className="socialPostMedia" src={post.media_url} controls />
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img className="socialPostMedia" src={post.media_url} alt="Social post attachment" />
+                      )
+                    )}
                     <button type="button" onClick={() => toggleSavedPost(post)}>
                       <Bookmark size={17} fill={saved ? "currentColor" : "none"} />
                       {saved ? "Saved" : "Save"}
@@ -831,5 +1021,45 @@ export default function SocialClient() {
       </aside>
     </section>
     </>
+  );
+}
+
+function cleanTag(tag: string) {
+  return tag.trim().toLowerCase().replace(/^#/, "").replace(/[^a-z0-9_&-]/g, "");
+}
+
+function parseTags(value: string) {
+  return Array.from(
+    new Set(
+      value
+        .split(/[\s,]+/)
+        .map(cleanTag)
+        .filter((tag) => tag.length > 1)
+    )
+  ).slice(0, 12);
+}
+
+function extractHashtags(value: string) {
+  return Array.from(value.matchAll(/#([a-z0-9_&-]+)/gi), (match) => cleanTag(match[1]));
+}
+
+function RankPill({ profile }: { profile?: Profile }) {
+  const academyLevel = profile?.academy_level || "New Ascender";
+  const completedMatch = academyLevel.match(/(\d+)\s*\/\s*48/i);
+  const rankGuideItem = academyRankGuide.find((rank) => rank.rank === academyLevel);
+  const rank = completedMatch
+    ? rankStatusFromCompleted(Number(completedMatch[1]))
+    : {
+        ...rankStatusFromCompleted(0),
+        currentRank: academyLevel,
+        initials: rankInitials(academyLevel),
+        tone: rankGuideItem?.tone || "slate",
+      };
+
+  return (
+    <span className={`miniRankPill rankTone-${rank.tone}`}>
+      <b>{rank.initials}</b>
+      {rank.currentRank}
+    </span>
   );
 }

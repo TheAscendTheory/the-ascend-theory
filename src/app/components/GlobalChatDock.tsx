@@ -3,11 +3,13 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { MessageCircle, Minus, Send, Users, X } from "lucide-react";
 import { createBrowserSupabaseClient } from "../lib/supabaseBrowser";
+import { rankInitials } from "../learn/curriculum/rank-system";
 
 type Friend = {
   id: string;
   name: string;
   handle: string;
+  academyLevel: string;
   conversationId?: string;
 };
 
@@ -73,15 +75,25 @@ export default function GlobalChatDock() {
         return;
       }
 
-      const { data: profileRows } = await supabase
+      const profileQuery = await supabase
         .from("ascend_profiles")
-        .select("user_id,display_name,handle")
+        .select("user_id,display_name,handle,academy_level")
         .in("user_id", friendIds);
+      const profileResult = profileQuery.error
+        ? await supabase
+            .from("ascend_profiles")
+            .select("user_id,display_name,handle")
+            .in("user_id", friendIds)
+        : profileQuery;
 
-      const nextFriends = (profileRows || []).map((profile) => ({
+      const nextFriends = (profileResult.data || []).map((profile) => ({
         id: profile.user_id,
         name: profile.display_name || profile.handle || "Ascender",
         handle: profile.handle || "friend",
+        academyLevel:
+          "academy_level" in profile
+            ? String(profile.academy_level || "New Ascender")
+            : "New Ascender",
       }));
 
       setFriends(nextFriends);
@@ -226,7 +238,8 @@ export default function GlobalChatDock() {
                   className={friend.id === activeFriendId ? "isActive" : ""}
                   onClick={() => setActiveFriendId(friend.id)}
                 >
-                  {friend.name}
+                  <span>{friend.name}</span>
+                  <b>{rankInitials(friend.academyLevel)}</b>
                 </button>
               ))
             ) : (

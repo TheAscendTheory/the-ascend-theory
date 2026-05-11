@@ -19,6 +19,7 @@ import {
   curriculumTracks,
   type CurriculumModule,
 } from "./curriculum/academy-curriculum";
+import { rankStatusFromCompleted } from "./curriculum/rank-system";
 
 type AcademyProgress = {
   completed: string[];
@@ -494,7 +495,7 @@ export default function AcademyExperience() {
 
     await supabase
       .from("ascend_profiles")
-      .update({ academy_level: `Academy XP ${nextProgress.xp}` })
+      .update({ academy_level: rankStatusFromCompleted(nextProgress.completed.length).currentRank })
       .eq("user_id", userId);
     setStatus("Academy progress saved.");
   }
