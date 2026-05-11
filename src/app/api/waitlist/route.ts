@@ -6,23 +6,19 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const resendApiKey = process.env.RESEND_API_KEY;
 
-if (!supabaseUrl) {
-  throw new Error("Missing SUPABASE_URL environment variable.");
-}
-
-if (!supabaseServiceRoleKey) {
-  throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable.");
-}
-
-if (!resendApiKey) {
-  throw new Error("Missing RESEND_API_KEY environment variable.");
-}
-
-const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
-const resend = new Resend(resendApiKey);
-
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function getWaitlistClients() {
+  if (!supabaseUrl || !supabaseServiceRoleKey || !resendApiKey) {
+    return null;
+  }
+
+  return {
+    supabase: createClient(supabaseUrl, supabaseServiceRoleKey),
+    resend: new Resend(resendApiKey),
+  };
 }
 
 export async function POST(req: Request) {
@@ -42,7 +38,22 @@ export async function POST(req: Request) {
       );
     }
 
-    const { error } = await supabase
+    const clients = getWaitlistClients();
+
+    if (!clients) {
+      console.error("Waitlist API missing environment variables:", {
+        supabaseUrl: Boolean(supabaseUrl),
+        supabaseServiceRoleKey: Boolean(supabaseServiceRoleKey),
+        resendApiKey: Boolean(resendApiKey),
+      });
+
+      return NextResponse.json(
+        { error: "Waitlist is not configured yet." },
+        { status: 503 }
+      );
+    }
+
+    const { error } = await clients.supabase
       .from("ascenders_waitlist")
       .insert([{ email }]);
 
@@ -63,7 +74,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { error: emailError } = await resend.emails.send({
+    const { error: emailError } = await clients.resend.emails.send({
       from: "The Ascend Theory <contact@theascendtheory.com>",
       to: email,
       subject: "Welcome to The Ascend Theory",
