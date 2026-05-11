@@ -975,6 +975,12 @@ input {
   background: rgba(0, 0, 0, 0.34);
 }
 
+.economicCalendarWidget.isCompact {
+  min-height: 520px;
+  margin-top: 0;
+  border-radius: 12px;
+}
+
 .economicCalendarWidget iframe {
   display: block;
   width: 100%;
@@ -1010,44 +1016,6 @@ input {
   display: block;
   width: 100%;
   height: 100%;
-}
-
-.marketToolGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 14px;
-  margin-top: 34px;
-}
-
-.marketToolGrid a {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 160px;
-  padding: 22px;
-  border: 1px solid rgba(234, 179, 8, 0.2);
-  border-radius: 16px;
-  background: rgba(234, 179, 8, 0.045);
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    transform 0.2s ease;
-}
-
-.marketToolGrid a:hover {
-  transform: translateY(-2px);
-  border-color: rgba(234, 179, 8, 0.5);
-  background: rgba(234, 179, 8, 0.075);
-}
-
-.marketToolGrid strong {
-  color: #eab308;
-  font-size: 22px;
-}
-
-.marketToolGrid span {
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.65;
 }
 
 .affiliateGrid {
@@ -1225,6 +1193,10 @@ input {
   background: rgba(255, 255, 255, 0.025);
 }
 
+.workspacePanel.isWide {
+  grid-column: 1 / -1;
+}
+
 .tradingWorkspace.light .workspacePanel {
   border-color: rgba(0, 0, 0, 0.1);
   background: white;
@@ -1324,6 +1296,10 @@ input {
 .workspacePanel .journalWorkspace,
 .workspacePanel .riskCalculator {
   grid-template-columns: 1fr;
+}
+
+.workspacePanel .economicCalendarWidget {
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .traderDesk {
@@ -4968,6 +4944,10 @@ input {
   .economicCalendarWidget {
     min-height: 640px;
     border-radius: 16px;
+  }
+
+  .economicCalendarWidget.isCompact {
+    min-height: 520px;
   }
 
   .advancedChartWidget {

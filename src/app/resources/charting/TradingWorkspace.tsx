@@ -2,10 +2,12 @@
 
 import { useMemo, useState } from "react";
 import { ChevronDown, Eye, EyeOff, Palette, SlidersHorizontal } from "lucide-react";
+import TradingViewEconomicCalendar from "../economic-calendar/TradingViewEconomicCalendar";
 import RiskCalculator from "../risk-calculator/RiskCalculator";
 import TradeJournal from "../trade-journal/TradeJournal";
+import AlertPlanner from "../market-dashboard/AlertPlanner";
 
-type ToolKey = "watchlist" | "levels" | "flow" | "risk" | "journal" | "sessions";
+type ToolKey = "watchlist" | "calendar" | "levels" | "flow" | "risk" | "journal" | "alerts" | "sessions";
 type WorkspaceTheme = "dark" | "contrast" | "light";
 
 const instruments = [
@@ -39,10 +41,12 @@ const sessions = [
 
 const toolLabels: Record<ToolKey, string> = {
   watchlist: "Watchlist",
+  calendar: "Calendar",
   levels: "Structure",
   flow: "Flow Notes",
   risk: "Risk Calculator",
   journal: "Trade Journal",
+  alerts: "Alerts",
   sessions: "Sessions",
 };
 
@@ -50,17 +54,19 @@ function ToolShell({
   id,
   title,
   visible,
+  wide = false,
   onToggle,
   children,
 }: {
   id: ToolKey;
   title: string;
   visible: boolean;
+  wide?: boolean;
   onToggle: (id: ToolKey) => void;
   children: React.ReactNode;
 }) {
   return (
-    <section className={visible ? "workspacePanel" : "workspacePanel isCollapsed"}>
+    <section className={`${visible ? "workspacePanel" : "workspacePanel isCollapsed"}${wide ? " isWide" : ""}`}>
       <button type="button" className="workspacePanelToggle" onClick={() => onToggle(id)}>
         <span>{title}</span>
         {visible ? <ChevronDown size={18} /> : <EyeOff size={18} />}
@@ -73,10 +79,12 @@ function ToolShell({
 export default function TradingWorkspace() {
   const [visibleTools, setVisibleTools] = useState<Record<ToolKey, boolean>>({
     watchlist: true,
+    calendar: true,
     levels: true,
     flow: false,
     risk: true,
     journal: false,
+    alerts: false,
     sessions: false,
   });
   const [theme, setTheme] = useState<WorkspaceTheme>("dark");
@@ -96,10 +104,12 @@ export default function TradingWorkspace() {
   function setMinimal() {
     setVisibleTools({
       watchlist: true,
+      calendar: false,
       levels: false,
       flow: false,
       risk: false,
       journal: false,
+      alerts: false,
       sessions: false,
     });
   }
@@ -107,10 +117,12 @@ export default function TradingWorkspace() {
   function setPlanning() {
     setVisibleTools({
       watchlist: true,
+      calendar: true,
       levels: true,
       flow: true,
       risk: true,
       journal: false,
+      alerts: true,
       sessions: true,
     });
   }
@@ -174,6 +186,10 @@ export default function TradingWorkspace() {
           </div>
         </ToolShell>
 
+        <ToolShell id="calendar" title="Economic Calendar" visible={visibleTools.calendar} onToggle={toggleTool} wide>
+          <TradingViewEconomicCalendar compact />
+        </ToolShell>
+
         <ToolShell id="levels" title="Structure Levels" visible={visibleTools.levels} onToggle={toggleTool}>
           <div className="structureLevelList">
             {structureLevels.map((level) => (
@@ -212,6 +228,10 @@ export default function TradingWorkspace() {
 
         <ToolShell id="risk" title="Risk Calculator" visible={visibleTools.risk} onToggle={toggleTool}>
           <RiskCalculator />
+        </ToolShell>
+
+        <ToolShell id="alerts" title="Alert Planner" visible={visibleTools.alerts} onToggle={toggleTool}>
+          <AlertPlanner />
         </ToolShell>
 
         <ToolShell id="journal" title="Trade Journal" visible={visibleTools.journal} onToggle={toggleTool}>

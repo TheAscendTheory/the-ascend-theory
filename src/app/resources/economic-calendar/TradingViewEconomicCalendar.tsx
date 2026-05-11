@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export default function TradingViewEconomicCalendar() {
+export default function TradingViewEconomicCalendar({ compact = false }: { compact?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,14 +26,14 @@ export default function TradingViewEconomicCalendar() {
       colorTheme: "dark",
       isTransparent: true,
       width: "100%",
-      height: 720,
+      height: compact ? 520 : 720,
       locale: "en",
       importanceFilter: "-1,0,1",
       countryFilter: "us,eu,gb,ca,jp,cn,au,nz,ch",
     });
 
     container.appendChild(script);
-  }, []);
+  }, [compact]);
 
-  return <div ref={containerRef} className="economicCalendarWidget" />;
+  return <div ref={containerRef} className={compact ? "economicCalendarWidget isCompact" : "economicCalendarWidget"} />;
 }
