@@ -41,7 +41,11 @@ function formatTime(value: string) {
   }).format(date);
 }
 
-export default function NewsFlowClient() {
+export default function NewsFlowClient({
+  compact = false,
+}: {
+  compact?: boolean;
+}) {
   const [items, setItems] = useState<NewsFlowItem[]>([]);
   const [configured, setConfigured] = useState(true);
   const [activeFilter, setActiveFilter] = useState("All");
@@ -100,15 +104,20 @@ export default function NewsFlowClient() {
   }, [activeFilter, items]);
 
   return (
-    <section className="newsLiveFlow" aria-label="Live market news flow">
+    <section
+      className={`newsLiveFlow${compact ? " isCompact" : ""}`}
+      aria-label="Live market news flow"
+    >
       <div className="newsLiveHeader">
         <div>
           <p className="eyebrow">Market News Flow</p>
           <h2>Current events that can move risk, liquidity, and sentiment.</h2>
-          <p>
-            A live-ready desk for market-moving headlines, tagged by category,
-            impact, asset, and source so traders can scan without clutter.
-          </p>
+          {!compact ? (
+            <p>
+              A live-ready desk for market-moving headlines, tagged by category,
+              impact, asset, and source so traders can scan without clutter.
+            </p>
+          ) : null}
         </div>
 
         <button
@@ -160,7 +169,7 @@ export default function NewsFlowClient() {
         </div>
       ) : (
         <div className="newsFlowList">
-          {visibleItems.map((item) => (
+          {visibleItems.slice(0, compact ? 5 : visibleItems.length).map((item) => (
             <article key={item.id} className="newsFlowItem">
               <div className="newsFlowMeta">
                 <span>{item.impact} impact</span>

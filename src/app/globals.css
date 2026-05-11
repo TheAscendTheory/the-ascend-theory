@@ -3976,6 +3976,61 @@ input {
   font-weight: 800;
 }
 
+.newsLiveFlow.isCompact {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.newsLiveFlow.isCompact .newsLiveHeader {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.newsLiveFlow.isCompact .newsLiveHeader h2 {
+  max-width: 620px;
+  font-size: clamp(22px, 3vw, 32px);
+}
+
+.newsLiveFlow.isCompact .newsFlowList {
+  max-height: 440px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.newsLiveFlow.isCompact .newsFlowItem {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.newsLiveFlow.isCompact .newsFlowItem h3 {
+  font-size: clamp(18px, 2.4vw, 24px);
+}
+
+.tradingWorkspace.light .newsLiveFlow.isCompact .newsLiveHeader h2,
+.tradingWorkspace.light .newsLiveFlow.isCompact .newsFlowItem h3 {
+  color: #15110a;
+}
+
+.tradingWorkspace.light .newsLiveFlow.isCompact .newsFlowItem {
+  border-color: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.035);
+}
+
+.tradingWorkspace.light .newsLiveFlow.isCompact .newsFlowItem p,
+.tradingWorkspace.light .newsLiveFlow.isCompact .newsFlowRefresh {
+  color: rgba(0, 0, 0, 0.62);
+}
+
+.tradingWorkspace.light .newsLiveFlow.isCompact .newsFlowMeta span,
+.tradingWorkspace.light .newsLiveFlow.isCompact .newsFlowFooter span,
+.tradingWorkspace.light .newsLiveFlow.isCompact .newsFlowFooter strong,
+.tradingWorkspace.light .newsLiveFlow.isCompact .newsFlowControls button,
+.tradingWorkspace.light .newsLiveFlow.isCompact .newsLiveHeader button {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.045);
+  color: rgba(0, 0, 0, 0.7);
+}
+
 .newsDeskLayout {
   display: grid;
   grid-template-columns: minmax(0, 0.68fr) minmax(260px, 0.32fr);

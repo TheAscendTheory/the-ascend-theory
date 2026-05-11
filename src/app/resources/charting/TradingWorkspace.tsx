@@ -6,8 +6,9 @@ import TradingViewEconomicCalendar from "../economic-calendar/TradingViewEconomi
 import RiskCalculator from "../risk-calculator/RiskCalculator";
 import TradeJournal from "../trade-journal/TradeJournal";
 import AlertPlanner from "../market-dashboard/AlertPlanner";
+import NewsFlowClient from "../../news/NewsFlowClient";
 
-type ToolKey = "watchlist" | "calendar" | "levels" | "flow" | "risk" | "journal" | "alerts" | "sessions";
+type ToolKey = "watchlist" | "calendar" | "news" | "levels" | "flow" | "risk" | "journal" | "alerts" | "sessions";
 type WorkspaceTheme = "dark" | "contrast" | "light";
 
 const instruments = [
@@ -42,6 +43,7 @@ const sessions = [
 const toolLabels: Record<ToolKey, string> = {
   watchlist: "Watchlist",
   calendar: "Calendar",
+  news: "News Flow",
   levels: "Structure",
   flow: "Flow Notes",
   risk: "Risk Calculator",
@@ -55,6 +57,7 @@ const layoutStorageKey = "ascend-trading-desk-layout";
 const minimalLayout: Record<ToolKey, boolean> = {
   watchlist: true,
   calendar: false,
+  news: false,
   levels: false,
   flow: false,
   risk: true,
@@ -66,6 +69,7 @@ const minimalLayout: Record<ToolKey, boolean> = {
 const planningLayout: Record<ToolKey, boolean> = {
   watchlist: true,
   calendar: true,
+  news: true,
   levels: true,
   flow: false,
   risk: true,
@@ -77,6 +81,7 @@ const planningLayout: Record<ToolKey, boolean> = {
 const reviewLayout: Record<ToolKey, boolean> = {
   watchlist: false,
   calendar: false,
+  news: true,
   levels: false,
   flow: false,
   risk: true,
@@ -240,6 +245,10 @@ export default function TradingWorkspace() {
               </article>
             ))}
           </div>
+        </ToolShell>
+
+        <ToolShell id="news" title="Market News Flow" visible={visibleTools.news} onToggle={toggleTool} wide>
+          <NewsFlowClient compact />
         </ToolShell>
 
         <ToolShell id="risk" title="Risk Calculator" visible={visibleTools.risk} onToggle={toggleTool}>
