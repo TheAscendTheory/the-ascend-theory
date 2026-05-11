@@ -1536,7 +1536,97 @@ input {
   display: grid;
   grid-template-columns: minmax(280px, 0.9fr) minmax(280px, 1fr);
   gap: 22px;
+  margin-top: 22px;
+}
+
+.accountCommandCenter {
+  display: grid;
+  gap: 22px;
   margin-top: 58px;
+}
+
+.accountHeroCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.34fr);
+  gap: 22px;
+  align-items: end;
+  padding: clamp(24px, 4vw, 38px);
+  border: 1px solid rgba(234, 179, 8, 0.22);
+  border-radius: 20px;
+  background:
+    linear-gradient(135deg, rgba(234, 179, 8, 0.12), rgba(255, 255, 255, 0.035)),
+    rgba(0, 0, 0, 0.24);
+}
+
+.accountHeroCard h2 {
+  max-width: 920px;
+  margin: 0 0 14px;
+  color: white;
+  font-size: clamp(36px, 6vw, 74px);
+  line-height: 0.96;
+}
+
+.accountHeroCard p:not(.eyebrow) {
+  max-width: 820px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.7;
+}
+
+.accountIdentityBadge {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid rgba(234, 179, 8, 0.22);
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.accountIdentityBadge span {
+  color: #facc15;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.accountIdentityBadge strong {
+  color: white;
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.accountStatsGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.accountStatsGrid article {
+  display: grid;
+  gap: 10px;
+  min-height: 148px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.accountStatsGrid svg {
+  color: #eab308;
+}
+
+.accountStatsGrid span {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.accountStatsGrid strong {
+  margin-top: auto;
+  color: white;
+  font-size: clamp(26px, 4vw, 42px);
+  line-height: 1;
 }
 
 .accountCard {
@@ -1578,6 +1668,33 @@ input {
 .accountStatus {
   color: #eab308 !important;
   margin-top: 18px;
+}
+
+.accountQuickLinks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.accountQuickLinks a {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border: 1px solid rgba(234, 179, 8, 0.22);
+  border-radius: 999px;
+  background: rgba(234, 179, 8, 0.1);
+  color: #facc15;
+  font-size: 13px;
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.accountQuickLinks a:hover {
+  border-color: rgba(234, 179, 8, 0.48);
+  background: rgba(234, 179, 8, 0.16);
 }
 
 .socialShell {
@@ -4456,6 +4573,8 @@ input {
   .alertPlanner,
   .journalWorkspace,
   .accountPanel,
+  .accountHeroCard,
+  .accountStatsGrid,
   .tradingDeskSurfaceHeader,
   .deskWorkflowStrip,
   .curriculumPolicyGrid,
@@ -4660,7 +4779,8 @@ input {
   .journalStats,
   .journalTrade,
   .demoPosition,
-  .workspacePanelGrid {
+  .workspacePanelGrid,
+  .accountQuickLinks {
     grid-template-columns: 1fr;
   }
 
