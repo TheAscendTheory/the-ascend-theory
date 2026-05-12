@@ -293,6 +293,13 @@ export default function AccountClient() {
               )}
             </b>
             <strong>{rankStatus.currentRank}</strong>
+            <span className="rankHoverCard" role="tooltip">
+              <em>Current rank</em>
+              <strong>{rankStatus.currentRank}</strong>
+              <small>{rankStatus.progressLabel} complete</small>
+              <small>Next unlock: {rankStatus.nextRank}</small>
+              <small>{48 - rankStatus.completedModules} modules remaining</small>
+            </span>
           </div>
           <small>{rankStatus.progressLabel} complete. Next: {rankStatus.nextRank}</small>
         </div>

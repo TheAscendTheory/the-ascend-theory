@@ -8,11 +8,15 @@ import {
   Bookmark,
   Check,
   Clock,
+  Eye,
+  EyeOff,
+  Flame,
   MessageCircle,
   Plus,
   Search,
   Send,
   Sparkles,
+  Star,
   UserPlus,
 } from "lucide-react";
 import { createBrowserSupabaseClient } from "../lib/supabaseBrowser";
@@ -97,6 +101,26 @@ function hoursLeft(expiresAt: string) {
   return hours > 0 ? `${hours}h` : "expired";
 }
 
+function readSocialAcademyStats() {
+  try {
+    const academy = JSON.parse(
+      window.localStorage.getItem("ascend-academy-reader-progress") || "{}"
+    ) as {
+      xp?: number;
+      completed?: string[];
+      streak?: number;
+    };
+
+    return {
+      xp: academy.xp || 0,
+      completed: academy.completed?.length || 0,
+      streak: academy.streak || 0,
+    };
+  } catch {
+    return { xp: 0, completed: 0, streak: 0 };
+  }
+}
+
 export default function SocialClient() {
   const supabase = useMemo(() => createBrowserSupabaseClient(), []);
   const [userId, setUserId] = useState("");
@@ -110,7 +134,7 @@ export default function SocialClient() {
   const [activeFriendId, setActiveFriendId] = useState("");
   const [activeConversationId, setActiveConversationId] = useState("");
   const [messageDraft, setMessageDraft] = useState("");
-const [postDraft, setPostDraft] = useState("");
+  const [postDraft, setPostDraft] = useState("");
   const [postCategory, setPostCategory] = useState("Recap");
   const [customCategory, setCustomCategory] = useState("");
   const [tagDraft, setTagDraft] = useState("");
@@ -122,6 +146,9 @@ const [postDraft, setPostDraft] = useState("");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(true);
+  const [academyStats] = useState(() =>
+    typeof window === "undefined" ? { xp: 0, completed: 0, streak: 0 } : readSocialAcademyStats()
+  );
 
   const profileMap = useMemo(
     () => new Map(profiles.map((profile) => [profile.user_id, profile])),
@@ -162,6 +189,7 @@ const [postDraft, setPostDraft] = useState("");
 
   const activeFriend = friends.find((friend) => friend.id === activeFriendId);
   const currentProfile = profileMap.get(userId);
+  const currentRank = rankStatusFromLevel(currentProfile?.academy_level);
   const categoryOptions = [
     "Wins",
     "Loss",
@@ -674,6 +702,12 @@ const [postDraft, setPostDraft] = useState("");
           </p>
         </div>
         <div className="socialQuickStats">
+          <article className="socialProfilePreview">
+            <RankIcon rank={currentRank} size={46} />
+            <span>Your Rank</span>
+            <strong>{currentRank.currentRank}</strong>
+            <small>{currentRank.progressLabel}. Next: {currentRank.nextRank}</small>
+          </article>
           <article>
             <Bell size={17} />
             <span>Unread</span>
@@ -693,6 +727,21 @@ const [postDraft, setPostDraft] = useState("");
             <Bookmark size={17} />
             <span>Saved</span>
             <strong>{savedPostList.length}</strong>
+          </article>
+          <article>
+            <Star size={17} />
+            <span>Academy XP</span>
+            <strong>{academyStats.xp}</strong>
+          </article>
+          <article>
+            <Flame size={17} />
+            <span>Streak</span>
+            <strong>{academyStats.streak}</strong>
+          </article>
+          <article>
+            {currentProfile?.pnl_public ? <Eye size={17} /> : <EyeOff size={17} />}
+            <span>P&L</span>
+            <strong>{currentProfile?.pnl_public ? "Public" : "Private"}</strong>
           </article>
         </div>
       </section>
@@ -1049,14 +1098,33 @@ function RankPill({ profile }: { profile?: Profile }) {
 
   return (
     <span className={`miniRankPill rankTone-${rank.tone}`}>
-      <b>
-        {rank.iconSrc ? (
-          <Image src={rank.iconSrc} alt="" width={24} height={24} />
-        ) : (
-          rank.initials
-        )}
-      </b>
+      <RankIcon rank={rank} size={24} />
       {rank.currentRank}
+      <span className="rankHoverCard" role="tooltip">
+        <em>Current rank</em>
+        <strong>{rank.currentRank}</strong>
+        <small>{rank.progressLabel} complete</small>
+        <small>Next unlock: {rank.nextRank}</small>
+        <small>{48 - rank.completedModules} modules remaining</small>
+      </span>
     </span>
+  );
+}
+
+function RankIcon({
+  rank,
+  size,
+}: {
+  rank: ReturnType<typeof rankStatusFromLevel>;
+  size: number;
+}) {
+  return (
+    <b>
+      {rank.iconSrc ? (
+        <Image src={rank.iconSrc} alt="" width={size} height={size} />
+      ) : (
+        rank.initials
+      )}
+    </b>
   );
 }

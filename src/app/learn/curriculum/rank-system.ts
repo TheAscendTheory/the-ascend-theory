@@ -144,10 +144,15 @@ export function rankStatusFromLevel(level: string | null | undefined): AcademyRa
   }
 
   const rankGuideItem = academyRankGuide.find((rank) => rank.rank === rankLevel);
+  const completedModules = rankGuideItem?.moduleNumber || 0;
+  const nextRank = academyRankGuide[completedModules]?.rank || "Ascender III complete";
 
   return {
     ...rankStatusFromCompleted(0),
+    completedModules,
     currentRank: rankLevel,
+    nextRank,
+    progressLabel: `${completedModules}/${academyModules.length} modules`,
     initials: rankInitials(rankLevel),
     tone: rankGuideItem?.tone || "slate",
     iconSrc: rankGuideItem?.iconSrc || null,

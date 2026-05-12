@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import {
   ArrowLeft,
   BookMarked,
@@ -19,7 +20,7 @@ import {
   curriculumTracks,
   type CurriculumModule,
 } from "./curriculum/academy-curriculum";
-import { rankStatusFromCompleted } from "./curriculum/rank-system";
+import { rankIconSrc, rankStatusFromCompleted } from "./curriculum/rank-system";
 
 type AcademyProgress = {
   completed: string[];
@@ -287,15 +288,8 @@ const academyModules = flattenModules();
 export default function AcademyExperience() {
   const supabase = useMemo(() => createBrowserSupabaseClient(), []);
   const modules = academyModules;
-  const [progress, setProgress] = useState<AcademyProgress>(() => {
-    if (typeof window === "undefined") {
-      return defaultProgress;
-    }
-
-    const saved = window.localStorage.getItem(storageKey);
-
-    return saved ? { ...defaultProgress, ...JSON.parse(saved) } : defaultProgress;
-  });
+  const [progress, setProgress] = useState<AcademyProgress>(defaultProgress);
+  const [progressLoaded, setProgressLoaded] = useState(false);
   const [activeId, setActiveId] = useState(modules[0]?.id || "");
   const [step, setStep] = useState<"intro" | "lesson" | "quiz" | "result">("intro");
   const [result, setResult] = useState<{ score: number; passed: boolean } | null>(null);
@@ -360,8 +354,34 @@ export default function AcademyExperience() {
       : modules.findIndex((module) => !progress.completed.includes(module.id));
 
   useEffect(() => {
+    let cancelled = false;
+
+    window.requestAnimationFrame(() => {
+      if (cancelled) return;
+
+      try {
+        const saved = window.localStorage.getItem(storageKey);
+
+        if (saved) {
+          setProgress({ ...defaultProgress, ...JSON.parse(saved) });
+        }
+      } catch {
+        setStatus("Progress is saved on this device. Some older saved data could not be loaded.");
+      } finally {
+        setProgressLoaded(true);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!progressLoaded) return;
+
     window.localStorage.setItem(storageKey, JSON.stringify(progress));
-  }, [progress]);
+  }, [progress, progressLoaded]);
 
   useEffect(() => {
     async function loadCloudProgress() {
@@ -433,8 +453,10 @@ export default function AcademyExperience() {
       setStatus("Account sync active for Academy progress.");
     }
 
+    if (!progressLoaded) return;
+
     loadCloudProgress();
-  }, [supabase]);
+  }, [progressLoaded, supabase]);
 
   useEffect(() => {
     if (step !== "lesson" || !activeModule || typeof IntersectionObserver === "undefined") return;
@@ -818,6 +840,7 @@ export default function AcademyExperience() {
               const accessLocked = module.access === "subscriber" && !subscriberAccess && !complete;
               const locked = progressionLocked || accessLocked;
               const active = module.id === activeModule.id;
+              const moduleRankIcon = rankIconSrc(index + 1);
 
               return (
                 <button
@@ -827,7 +850,13 @@ export default function AcademyExperience() {
                   disabled={locked}
                   onClick={() => openModule(module.id, index)}
                 >
-                  <span>{index + 1}</span>
+                  <span className="academyModuleRankIcon">
+                    {moduleRankIcon ? (
+                      <Image src={moduleRankIcon} alt="" width={34} height={34} />
+                    ) : (
+                      index + 1
+                    )}
+                  </span>
                   <div>
                     <strong>{module.title}</strong>
                     <em>
