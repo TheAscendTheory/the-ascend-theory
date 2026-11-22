@@ -1,95 +1,17 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description:
-    "Privacy policy for The Ascend Theory, including how waitlist, contact, email, and site interaction information may be collected and used.",
-};
-
-export default function PrivacyPage() {
-  return (
-    <main className="privacyPage">
-      <section className="privacyHero">
-        <p className="eyebrow">Privacy Policy</p>
-
-        <h1>YOUR INFORMATION MATTERS.</h1>
-
-        <p>
-          The Ascend Theory collects limited information to operate the
-          waitlist, communicate with early supporters, and improve the ecosystem.
-        </p>
-      </section>
-
-      <section className="privacyContent">
-        <h2>Information We Collect</h2>
-
-        <p>
-          When you join the waitlist or contact The Ascend Theory, we may
-          collect information such as your email address, message details, and
-          basic interaction data.
-        </p>
-
-        <h2>How We Use Information</h2>
-
-        <p>
-          We use submitted information to manage the waitlist, send updates,
-          respond to inquiries, share resources, improve the site, and develop
-          media, education, community, and program offerings.
-        </p>
-
-        <h2>Email Communication</h2>
-
-        <p>
-          If you join the waitlist, you may receive emails related to The Ascend
-          Theory, including launch updates, resources, newsletters, programs,
-          and community announcements. You may unsubscribe from emails
-          when unsubscribe options are provided.
-        </p>
-
-        <h2>Third-Party Services</h2>
-
-        <p>
-          The site may use trusted infrastructure and communication providers
-          to host the site, store waitlist information, send emails, and
-          understand site performance.
-        </p>
-
-        <h2>Data Protection</h2>
-
-        <p>
-          We aim to use reasonable safeguards to protect submitted information.
-          However, no internet-based system can be guaranteed to be completely
-          secure.
-        </p>
-
-        <h2>Contact</h2>
-
-        <p>
-          For privacy-related questions, contact support@theascendtheory.com.
-        </p>
-      </section>
-
-      <section className="pageCta">
-        <h2>Questions about your information?</h2>
-
-        <p>
-          Contact The Ascend Theory for support, privacy questions, or account
-          and waitlist-related requests.
-        </p>
-
-        <div className="pageCtaActions">
-          <a
-            href="mailto:support@theascendtheory.com"
-            className="pageCtaPrimary"
-          >
-            Email Support
-          </a>
-
-          <a href="/contact" className="pageCtaSecondary">
-            Contact Page
-          </a>
-        </div>
-      </section>
-    </main>
-  );
-}
+import type {Metadata} from "next";
+import Link from "next/link";
+export const metadata:Metadata={title:"Privacy Policy",description:"How The Ascenders Club processes account, collaboration, Academy and Media data."};
+export default function PrivacyPage(){return <main className="ascSite">
+<section className="ascInnerHero ascWrap"><p className="ascOverline">THE ASCENDERS CLUB / PRIVACY</p><h1>Your information <em>matters.</em></h1><p>We aim to collect and use information only where it supports membership, collaboration, education, media delivery, site operations and security.</p><p>Last updated: November 22, 2026</p></section>
+<section className="ascWrap ascFeatureNote">
+<h2>Information collected</h2><p>When you create an account or join Ascend Hub, we may process your email, authentication identifiers, submitted profile and organization details, stated disciplines, project descriptions, geographic information you choose to provide, collaboration inquiries, content reports and personal blocking preferences. Ascend Academy may store saved lesson-completion progress. Ascend Media may process playback-related records and access entitlements if those features are enabled. Technical and operational data may be generated when accessing the site or applications.</p>
+<h2>Purposes of processing</h2><p>We use information to authenticate members, review applications, manage approved directories and submissions, operate education and media experiences, detect misuse, address reports, provide support and improve the reliability of the platform.</p>
+<h2>Who can see your information</h2><p>Membership applications and pending projects are not displayed publicly by the new Hub. Once approved, your profile and approved project submissions can be visible to other approved members. Account email addresses, sign-in credentials, private reports and personal blocking information are not intended to appear in the member directory. You should not provide sensitive personal information in a public profile, project description or posted content.</p>
+<h2>Providers and embedded services</h2><p>The platform currently uses infrastructure including Vercel for website hosting and Supabase for authentication and application data. Geographic displays may use OpenStreetMap. Published media may be delivered through third-party platforms such as YouTube or through a hosted file URL. These providers may process technical information under their own policies when you use their services.</p>
+<h2>Security and international processing</h2><p>Access controls, approved-member restrictions and database row-level policies are designed to limit inappropriate access. No internet-based system can guarantee absolute security. Data may be processed in jurisdictions where service providers operate. We do not claim data is stored exclusively in Canada.</p>
+<h2>Retention and deletion</h2><p>Account holders can use the account-settings page to request or initiate deletion of their account where the feature is operational. You may also request access, correction, or deletion by emailing us. Some information may need to be retained where necessary for legal, security or legitimate recordkeeping reasons. Deleted accounts lose associated access, while certain content or records may be subject to legal retention or technical backup schedules.</p>
+<h2>Choices and privacy requests</h2><p>You can limit optional profile details, choose what initiative information to submit, and contact us about your records. We may require verification before fulfilling a request. You may also have rights under applicable privacy laws.</p>
+<h2>Changes to this notice</h2><p>We may update this policy as the apps, vendors, locations of processing and privacy practices develop. Material changes should be communicated through appropriate channels.</p>
+<h2>Contact</h2><p>Questions or privacy requests: <a className="ascTextLink" href="mailto:contact@theascendersclub.com">contact@theascendersclub.com</a></p>
+<p><Link className="ascTextLink" href="/settings">Account settings</Link></p>
+</section></main>;}
