@@ -1,0 +1,1 @@
+import type {Metadata} from "next";import MediaEditor from "./MediaEditor";export const metadata:Metadata={title:"Ascend Media Studio",robots:{index:false,follow:false}};export default function MediaStudioPage(){return <MediaEditor/>;}
