@@ -17,7 +17,7 @@ export default function AcademyCourseClient({slug}:{slug:string}){
  const [busy,setBusy]=useState(false);
  const [message,setMessage]=useState("");
  useEffect(()=>{
-  if(!supabase){setMessage("Academy database connection unavailable.");setLoading(false);return;}
+  if(!supabase){queueMicrotask(()=>{setMessage("Academy database connection unavailable.");setLoading(false);});return;}
   let active=true;
   async function load(){
    if(!supabase)return;
@@ -36,7 +36,7 @@ export default function AcademyCourseClient({slug}:{slug:string}){
    if(user){setUserId(user.id);const progress=await supabase.from("ascend_academy_lesson_completions").select("lesson_id").eq("user_id",user.id);if(active&&!progress.error)setComplete(new Set((progress.data||[]).map(x=>x.lesson_id)));}
    setLoading(false);
   }
-  void load();
+  queueMicrotask(()=>{if(active)void load();});
   return()=>{active=false;};
  },[slug,supabase]);
  const current=lessons.find(x=>x.id===selected)||null;
