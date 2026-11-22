@@ -1,6 +1,7 @@
 "use client";
 
 import {FormEvent,useEffect,useMemo,useState} from "react";
+import Link from "next/link";
 import {ArrowRight,CheckCircle2,Compass,ExternalLink,Globe2,LogIn,MapPin,Plus,Search,ShieldCheck,Users} from "lucide-react";
 import type {User} from "@supabase/supabase-js";
 import {createBrowserSupabaseClient} from "../lib/supabaseBrowser";
