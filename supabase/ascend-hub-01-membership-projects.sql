@@ -57,7 +57,7 @@ set search_path = '' as $$
 $$;
 revoke all on function public.is_ascend_hub_admin() from public;
 revoke all on function public.is_ascend_hub_approved() from public;
-grant execute on function public.is_ascend_hub_admin() to authenticated;
+grant execute on function public.is_ascend_hub_admin() to anon,authenticated; -- anonymous callers return false
 grant execute on function public.is_ascend_hub_approved() to authenticated;
 
 alter table public.ascend_hub_admins enable row level security;
