@@ -3,6 +3,7 @@ import {useEffect,useMemo,useState} from "react";
 import Link from "next/link";
 import {ArrowLeft,Check,RefreshCcw,Shield, X} from "lucide-react";
 import {createBrowserSupabaseClient} from "../../lib/supabaseBrowser";
+import "./admin.css";
 
 type Application={user_id:string;display_name:string;organization:string;discipline:string;country:string;city:string;bio:string;website:string;status:string;created_at:string};
 type Initiative={id:string;title:string;owner_id:string;discipline:string;country:string;description:string;status:string;created_at:string};
