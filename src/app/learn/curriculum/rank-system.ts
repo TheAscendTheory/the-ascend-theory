@@ -1,21 +1,9 @@
-import { academyModules } from "./academy-curriculum";
-
+// Tier illustrations and historical rank names retained as reference ONLY.
+// Academy courses and legacy curriculum content have been retired; do not
+// couple the new interdisciplinary Academy to these reference ranks.
 export type AcademyRankStatus = {
-  completedModules: number;
-  currentRank: string;
-  nextRank: string;
-  progressLabel: string;
-  initials: string;
-  tone: string;
-  iconSrc: string | null;
+ completedModules:number;currentRank:string;nextRank:string;progressLabel:string;initials:string;tone:string;iconSrc:string|null;
 };
-
-const tierMeaning: Record<string, string> = {
-  I: "Gold tier: full command of this rank stage.",
-  II: "Silver tier: developing command of this rank stage.",
-  III: "Bronze tier: first proof of this rank stage.",
-};
-
 const rankTones = [
   "slate",
   "bronze",
@@ -34,7 +22,6 @@ const rankTones = [
   "platinum",
   "ascender",
 ];
-
 const rankIconFiles = [
   "01_initiate_i_bronze.png",
   "02_initiate_ii_silver.png",
@@ -85,76 +72,39 @@ const rankIconFiles = [
   "47_ascender_ii_silver.png",
   "48_ascender_iii_gold_prestige.png",
 ];
-
-export function rankIconSrc(moduleNumber: number) {
-  const file = rankIconFiles[moduleNumber - 1];
-  return file ? `/ranks/${file}` : null;
+const historicalTiers=["Initiate","Apprentice","Builder","Analyst","Operator","Strategist","Allocator","Valuator","Technician","Specialist","Tactician","Risk Architect","Cognitive Sovereign","Institutionalist","Market Strategist","Ascender"].flatMap(name=>["I","II","III"].map(tier=>`${name} ${tier}`));
+export function rankIconSrc(moduleNumber:number){
+ const file=rankIconFiles[moduleNumber-1];return file?`/ranks/${file}`:null;
 }
-
-export const academyRankGuide = academyModules.map((module, index) => ({
-  rank: module.rank,
-  moduleTitle: module.title,
-  moduleNumber: index + 1,
-  stageName: module.rank.replace(/\s+(I|II|III)$/u, ""),
-  tier: module.rank.match(/\b(I|II|III)\b/u)?.[1] || "",
-  unlockText:
-    index === 0
-      ? "Complete the first Academy module."
-      : `Complete modules 1-${index + 1} in locked order.`,
-  iconMeaning:
-    tierMeaning[module.rank.match(/\b(I|II|III)\b/u)?.[1] || ""] ||
-    "Final prestige badge for completing the full Academy path.",
-  iconText: rankInitials(module.rank),
-  iconSrc: rankIconSrc(index + 1),
-  tone: rankTones[Math.floor(index / 3)] || "ascender",
+export function rankInitials(rank:string){
+ const words=rank.replace(/\b(I|II|III)\b/g,"").trim().split(/\s+/);
+ const base=words.map(word=>word[0]).join("").slice(0,2).toUpperCase();
+ const tier=rank.match(/\b(I|II|III)\b/)?.[1]||"";
+ return `${base||"A"}${tier?tier.replaceAll("I","1"):""}`;
+}
+export const academyRankGuide=historicalTiers.map((rank,index)=>({
+ rank,moduleTitle:"Historical rank reference",moduleNumber:index+1,
+ stageName:rank.replace(/\s+(I|II|III)$/u,""),
+ tier:rank.match(/\b(I|II|III)\b/u)?.[1]||"",
+ unlockText:"Historical concept only; not part of the rebuilt Academy.",
+ iconMeaning:"Reference artwork from the prior Academy tier system.",
+ iconText:rankInitials(rank),iconSrc:rankIconSrc(index+1),
+ tone:rankTones[Math.floor(index/3)]||"ascender"
 }));
-
-export function rankInitials(rank: string) {
-  const words = rank.replace(/\b(I|II|III)\b/g, "").trim().split(/\s+/);
-  const base = words.map((word) => word[0]).join("").slice(0, 2).toUpperCase();
-  const tier = rank.match(/\b(I|II|III)\b/)?.[1] || "";
-  return `${base || "A"}${tier ? tier.replaceAll("I", "1") : ""}`;
+export function rankStatusFromCompleted(completedModules:number):AcademyRankStatus{
+ const safeCompleted=Math.max(0,Math.min(completedModules,historicalTiers.length));
+ const rank=safeCompleted>0?historicalTiers[safeCompleted-1]:"New Ascender";
+ return {completedModules:safeCompleted,currentRank:rank,
+ nextRank:historicalTiers[safeCompleted]||"Ascender III complete",
+ progressLabel:`${safeCompleted}/${historicalTiers.length} historical tiers`,
+ initials:rankInitials(rank),tone:rankTones[Math.floor(Math.max(0,safeCompleted-1)/3)]||"slate",
+ iconSrc:safeCompleted>0?rankIconSrc(safeCompleted):null};
 }
-
-export function rankStatusFromCompleted(completedModules: number): AcademyRankStatus {
-  const safeCompleted = Math.max(0, Math.min(completedModules, academyModules.length));
-  const currentIndex = safeCompleted > 0 ? safeCompleted - 1 : -1;
-  const currentModule = currentIndex >= 0 ? academyModules[currentIndex] : null;
-  const nextModule = academyModules[safeCompleted] || null;
-  const currentRank = currentModule?.rank || "New Ascender";
-  const groupIndex = currentIndex >= 0 ? Math.floor(currentIndex / 3) : 0;
-
-  return {
-    completedModules: safeCompleted,
-    currentRank,
-    nextRank: nextModule?.rank || "Ascender III complete",
-    progressLabel: `${safeCompleted}/${academyModules.length} modules`,
-    initials: rankInitials(currentRank),
-    tone: currentModule ? rankTones[groupIndex] || "ascender" : "slate",
-    iconSrc: currentModule ? rankIconSrc(currentIndex + 1) : null,
-  };
-}
-
-export function rankStatusFromLevel(level: string | null | undefined): AcademyRankStatus {
-  const rankLevel = level || "New Ascender";
-  const completedMatch = rankLevel.match(/(\d+)\s*\/\s*48/i);
-
-  if (completedMatch) {
-    return rankStatusFromCompleted(Number(completedMatch[1]));
-  }
-
-  const rankGuideItem = academyRankGuide.find((rank) => rank.rank === rankLevel);
-  const completedModules = rankGuideItem?.moduleNumber || 0;
-  const nextRank = academyRankGuide[completedModules]?.rank || "Ascender III complete";
-
-  return {
-    ...rankStatusFromCompleted(0),
-    completedModules,
-    currentRank: rankLevel,
-    nextRank,
-    progressLabel: `${completedModules}/${academyModules.length} modules`,
-    initials: rankInitials(rankLevel),
-    tone: rankGuideItem?.tone || "slate",
-    iconSrc: rankGuideItem?.iconSrc || null,
-  };
+export function rankStatusFromLevel(level:string|null|undefined):AcademyRankStatus{
+ const rankLevel=level||"New Ascender";
+ const completedMatch=rankLevel.match(/(\d+)\s*\/\s*48/i);
+ if(completedMatch)return rankStatusFromCompleted(Number(completedMatch[1]));
+ const item=academyRankGuide.find(entry=>entry.rank===rankLevel);
+ const status=rankStatusFromCompleted(item?.moduleNumber||0);
+ return {...status,currentRank:rankLevel,initials:rankInitials(rankLevel)};
 }
