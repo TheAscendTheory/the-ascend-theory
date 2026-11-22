@@ -80,3 +80,12 @@
 @media(max-width:900px){.ascHubAccess{grid-template-columns:1fr}.ascHubHeroMark{display:none}.ascHubDirectory{grid-template-columns:1fr}.ascHubMap{position:relative;top:0}.ascHubResults{max-height:none}.ascHubPeople{grid-template-columns:1fr}}
 @media(max-width:650px){.ascHubHero{padding-top:65px}.ascHubAccess{gap:25px}.ascHubForm{padding:22px}.ascHubToolbar{align-items:start;flex-direction:column}.ascHubFilters{grid-template-columns:1fr}.ascHubPrinciples{grid-template-columns:1fr;gap:7px}.ascHubFields{grid-template-columns:1fr}.ascHubPeople{padding:15px 0}.ascHubMap iframe{height:310px}}
 @media(prefers-reduced-motion:reduce){.ascHubOrbit{animation:none!important}.ascHubResult{transition:none!important}}
+
+/* Community safety: reporting, blocking and account controls */
+.ascHubSafetyActions{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0 0}
+.ascHubSafetyAction,.ascHubSafetyActions button{border:1px solid #748d79;background:#fff;color:#1f492e;padding:9px 12px;font-size:12px;cursor:pointer}
+.ascHubSafetyAction:hover,.ascHubSafetyActions button:hover{border-color:#000;background:#f0f7f1}
+.ascHubModalBackdrop{position:fixed;inset:0;z-index:2400;background:#000b;display:flex;align-items:center;justify-content:center;padding:20px}
+.ascHubReportDialog{width:min(500px,100%);max-height:92vh;overflow:auto;box-shadow:0 20px 90px #0006}
+.ascHubReportDialog>button:last-child{background:#fff;color:#000}
+.ascHubSignedIn a{color:#164e2b;text-decoration:underline;margin-right:12px}
