@@ -24,6 +24,10 @@ jobs:
   native:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [hub, academy, media]
     defaults:
       run:
         working-directory: apps/native
@@ -41,10 +45,10 @@ jobs:
       - name: Bundle iOS application JavaScript
         run: npx expo export --platform ios
         env:
-          APP_VARIANT: hub
-          EXPO_PUBLIC_APP_VARIANT: hub
+          APP_VARIANT: ${{ matrix.variant }}
+          EXPO_PUBLIC_APP_VARIANT: ${{ matrix.variant }}
       - name: Bundle Android application JavaScript
         run: npx expo export --platform android
         env:
-          APP_VARIANT: academy
-          EXPO_PUBLIC_APP_VARIANT: academy
+          APP_VARIANT: ${{ matrix.variant }}
+          EXPO_PUBLIC_APP_VARIANT: ${{ matrix.variant }}
