@@ -63,3 +63,26 @@ IMPORTANT: The SQL schema is written but NOT applied. No Supabase connector with
 [ ] Create Academy content model and new syllabus
 [ ] Build Media CMS and accessible library
 [ ] Create iOS/Android app code and submit to stores separately
+
+## Expanded implementation / release status (Nov 22)
+Three web apps now have functional source implementations behind existing app routes. The initial Hub and Academy entries are not the only code: Hub user applications/directories/review/report/block, Academy interdisciplinary course catalogue/reader/editor/progress, and Media published catalogue/player/editor have been committed. No sample courses, projects or films have been invented.
+
+Three Expo-native product variants also exist under apps/native for iOS and Android (Hub, Academy, Media), each with distinct product IDs. Source supports OTP-code sign-in, native Hub projects and collaboration, Academy reading/progress, Media catalogue/playback, and account deletion. GitHub Actions CI independently validates Expo dependencies, TypeScript, and iOS/Android JavaScript bundles; those are not signed device builds, app-store submissions, or installed applications.
+
+Additional database SQL:
+- supabase/ascend-hub-04-moderation-and-blocks.sql for UGC reports and blocks
+- supabase/ascend-academy-03-course-platform.sql for courses, lessons, and learner progress
+- supabase/ascend-media-02-editorial-policies.sql for restricted publishing
+Apply after supabase/ascend-hub-01-membership-projects.sql, respecting dependencies and existing production schema.
+
+Privacy policy, community participation terms, account deletion endpoint, account settings, moderation review UI and web-app manifest have been added on this branch. They require real configuration and testing.
+
+**NOT READY TO CLAIM LIVE YET:**
+1. Supabase connector is not installed/connected, so no verified migration, permissions, administrator account, OTP email template, row-level policy acceptance testing or account deletion key deployment. Never expose service-role keys in client builds.
+2. Vercel rate-limit has prevented preview deployments for this PR; GitHub Actions CI runs independently, and its current result must be checked for the latest commit.
+3. Expo native JS bundle success does not equal a signed iOS/Android binary; store developer accounts, EAS project, app icons/assets, screenshots, privacy/deletion verification, and Apple/Google review remain.
+4. New Academy syllabus and actual content are founder/team decisions; rights-cleared filmed Media productions and real Hub members/projects must be supplied/approved. Blank catalogue is not evidence of a populated usable learning/media platform.
+5. The old Academy course files were deleted from this branch. Rank images and decoupled tier reference logic remain. /learn redirects to /academy.
+6. The visual direction on main stays white canvas, black sacred geometry and restrained green; do not merge unverified backend without testing.
+
+Test with anonymous/pending/approved/admin accounts, SQL RLS checks, moderator review, completion syncing, media publishing and account deletion in a safe test environment before promoting the branch.
