@@ -34,7 +34,7 @@ export default function HubAdminClient(){
   setMembers((a.data||[]) as Application[]);setProjects((b.data||[]) as Initiative[]);setReports((c.data||[]) as Report[]);
   setLoading(false);
  }
- useEffect(()=>{void refresh();/* refresh on arrival; admin role checked on every write by RLS */},[]);
+ useEffect(()=>{queueMicrotask(()=>{void refresh();});/* admin role checked on every write by RLS */},[]);
  async function moderate(table:"ascend_hub_members"|"ascend_hub_projects",id:string,status:"approved"|"declined"){
   if(!supabase||!allowed)return;
   setBusy(id);setError("");
