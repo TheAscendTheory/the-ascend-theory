@@ -1,0 +1,33 @@
+import {StyleSheet} from "react-native";
+export const palette={black:"#000000",white:"#ffffff",green:"#256d3d",ink:"#0b0f0c",muted:"#58665b",line:"#b8c6bc",wash:"#f5f9f6"};
+export const styles=StyleSheet.create({
+ root:{flex:1,backgroundColor:palette.white},
+ safe:{flex:1,backgroundColor:palette.white},
+ header:{borderBottomWidth:1,borderBottomColor:palette.black,paddingHorizontal:22,paddingTop:12,paddingBottom:18,flexDirection:"row",alignItems:"center",justifyContent:"space-between"},
+ headerBrand:{fontSize:14,fontWeight:"800",letterSpacing:2,color:palette.black},
+ headerTag:{fontSize:10,letterSpacing:2,color:palette.green,marginTop:5},
+ body:{flex:1,paddingHorizontal:22},
+ eyebrow:{fontSize:11,letterSpacing:2,color:palette.green,fontWeight:"800",textTransform:"uppercase",marginTop:30,marginBottom:14},
+ hero:{fontSize:48,color:palette.black,fontWeight:"800",letterSpacing:-2.4,lineHeight:52,marginBottom:18},
+ intro:{fontSize:16,color:palette.muted,lineHeight:25,marginBottom:25},
+ section:{fontSize:27,fontWeight:"800",letterSpacing:-1,color:palette.black,marginVertical:17},
+ panel:{borderWidth:1,borderColor:palette.line,backgroundColor:palette.white,padding:19,marginBottom:14},
+ panelSelected:{borderColor:palette.black,borderWidth:2},
+ panelTitle:{fontSize:20,fontWeight:"750",letterSpacing:-.6,color:palette.black,marginBottom:8},
+ detail:{fontSize:14,lineHeight:22,color:palette.muted},
+ meta:{fontSize:11,textTransform:"uppercase",letterSpacing:1.5,color:palette.green,fontWeight:"800",marginBottom:8},
+ textInput:{borderWidth:1,borderColor:palette.line,minHeight:50,paddingHorizontal:14,marginBottom:13,color:palette.black,backgroundColor:palette.white,fontSize:15},
+ textArea:{borderWidth:1,borderColor:palette.line,minHeight:110,padding:14,marginBottom:13,color:palette.black,backgroundColor:palette.white,textAlignVertical:"top",fontSize:15},
+ button:{backgroundColor:palette.black,borderWidth:1,borderColor:palette.black,paddingHorizontal:19,paddingVertical:17,alignItems:"center",justifyContent:"center",marginTop:9,marginBottom:10},
+ buttonText:{color:"#fff",fontWeight:"800",fontSize:14},
+ secondaryButton:{backgroundColor:palette.white,borderWidth:1,borderColor:palette.black,paddingHorizontal:17,paddingVertical:14,alignItems:"center",marginBottom:12},
+ secondaryText:{color:palette.black,fontWeight:"750"},
+ notice:{padding:15,borderLeftWidth:3,borderLeftColor:palette.green,backgroundColor:palette.wash,marginVertical:18},
+ noticeText:{color:"#174a27",lineHeight:21,fontSize:13},
+ segmented:{flexDirection:"row",gap:10,marginVertical:16},
+ tab:{paddingVertical:11,paddingHorizontal:18,borderWidth:1,borderColor:palette.line,backgroundColor:palette.white},
+ tabOn:{backgroundColor:palette.black,borderColor:palette.black},
+ tabText:{color:palette.black,fontWeight:"700"},
+ tabTextOn:{color:palette.white},
+ spacer:{height:26}
+});
