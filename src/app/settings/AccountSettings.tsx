@@ -14,7 +14,7 @@ export default function AccountSettings(){
  const [error,setError]=useState("");
  const [deleted,setDeleted]=useState(false);
  useEffect(()=>{
-  if(!client){setLoading(false);return;}
+  if(!client){queueMicrotask(()=>setLoading(false));return;}
   let active=true;
   client.auth.getUser().then(({data})=>{if(active){setUser(data.user);setLoading(false);}});
   const {data:{subscription}}=client.auth.onAuthStateChange((_event,session)=>{if(active){setUser(session?.user||null);setLoading(false);}});
