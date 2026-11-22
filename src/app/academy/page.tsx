@@ -23,7 +23,7 @@ export default function AcademyPage(){
    <section className="ascWrap ascFeatureNote">
      <p className="ascOverline">PLATFORM DEVELOPMENT</p>
      <h2>Building the next learning experience.</h2>
-     <p>The previous finance and trading curriculum is retired from the public Academy. We are creating a new content structure rather than publishing unfinished lessons. Learning modules will appear when they are ready to be used.</p>
+     <p>The Academy is being redesigned. Learning paths and modules will be published once their content, assessments and user experience are ready.</p>
      <Link href="/hub" className="ascTextLink">Explore Ascend Hub <Layers3 size={16} aria-hidden="true"/></Link>
    </section>
  </main>;
