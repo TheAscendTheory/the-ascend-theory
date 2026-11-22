@@ -23,3 +23,11 @@ The Ascenders Club is a broad international changemaker collective. The active p
 - The three active platforms are named **Ascend Hub**, **Ascend Academy**, and **Ascend Media**. Future ventures may use Ascend naming but are not currently active product commitments.
 - Preserve theascendersclub.com as the primary public domain. Do not rename the organization to Ascend.
 - This update supersedes the earlier plural-platform naming in the original development plan.
+
+## Creative direction correction — 2026-11-22
+- Founder explicitly rejected the generic initial redesign and Unicode symbols used as interface decoration.
+- Preserve and extend the creative identity of the original black-and-gold website: sacred geometry, layered optical illusion, colour manipulation and cinematic interactions.
+- Interactive visual language must extend throughout: page-to-page transitions, button feedback, hover/focus states and slide transitions; not just a decorative hero background.
+- Current visual-restoration PR adds concentric and intersecting-circle SVG art, orbital motion, subtle chromatic gradients, dimensional responsive cards, Lucide interface icons, page transitions and a three-scene interactive optical sequence with swipe/tap controls.
+- Reduced-motion preferences are supported; no flashing/strobing effects.
+- This is a new draft design iteration, NOT an approved final direction or a production launch. Review actual mobile and desktop previews before merge.
