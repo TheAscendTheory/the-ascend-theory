@@ -36,7 +36,7 @@ export default function HubClient(){
  const [setupMissing,setSetupMissing]=useState(false);
 
  useEffect(()=>{
-   if(!supabase){setLoading(false);setSetupMissing(true);return;}
+   if(!supabase){queueMicrotask(()=>{setLoading(false);setSetupMissing(true);});return;}
    let current=true;
    async function load(currentUser:User|null){
      if(!supabase)return;
