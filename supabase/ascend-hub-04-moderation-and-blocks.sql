@@ -44,3 +44,7 @@ create policy "Hub blocks own insert" on public.ascend_hub_blocks for insert
 drop policy if exists "Hub blocks own delete" on public.ascend_hub_blocks;
 create policy "Hub blocks own delete" on public.ascend_hub_blocks for delete
  to authenticated using(blocker_id=(select auth.uid()));
+
+-- Explicit API grants, restricted by the policies above.
+grant select,insert,update on public.ascend_hub_reports to authenticated;
+grant select,insert,delete on public.ascend_hub_blocks to authenticated;
