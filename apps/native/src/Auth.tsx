@@ -54,3 +54,33 @@ export function SignIn({title="Secure access"}:{title?:string}){
  </View>;
 }
 export function SignOut(){return <TouchableOpacity accessibilityRole="button" style={styles.secondaryButton} onPress={()=>api?.auth.signOut().catch(e=>Alert.alert("Sign-out error",String(e)))}><Text style={styles.secondaryText}>Sign out</Text></TouchableOpacity>}
+
+export function AccountControls(){
+ const [busy,setBusy]=useState(false);
+ const [message,setMessage]=useState("");
+ async function executeDeletion(){
+  if(!api)return;
+  setBusy(true);setMessage("");
+  try{
+   const {data:{session}}=await api.auth.getSession();
+   if(!session){setMessage("Sign in again to delete your account.");return;}
+   const response=await fetch("https://theascendersclub.com/api/account/delete",{
+    method:"POST",
+    headers:{"Content-Type":"application/json",Authorization:`Bearer ${session.access_token}`},
+    body:JSON.stringify({confirm:"DELETE"})
+   });
+   const body=await response.json();
+   if(!response.ok){setMessage(body.error||"Deletion is unavailable. Contact contact@theascendersclub.com.");return;}
+   await api.auth.signOut();setMessage("Your account was deleted.");
+  }catch{setMessage("Unable to contact the deletion service. Email contact@theascendersclub.com.");}
+  finally{setBusy(false);}
+ }
+ return <View style={[styles.panel,{marginTop:28}]}>
+  <Text style={styles.panelTitle}>Account and privacy</Text>
+  <Text style={styles.detail}>You can request immediate account deletion. This permanently removes your sign-in identity and associated records. Contact contact@theascendersclub.com with privacy questions.</Text>
+  <TouchableOpacity accessibilityRole="button" disabled={busy} style={[styles.secondaryButton,{marginTop:18}]} onPress={()=>Alert.alert("Permanently delete your account?","This cannot be undone and removes access to all Ascend apps.",[{text:"Cancel",style:"cancel"},{text:"Delete account",style:"destructive",onPress:()=>void executeDeletion()}])}>
+   <Text style={styles.secondaryText}>{busy?"Deleting…":"Permanently delete account"}</Text>
+  </TouchableOpacity>
+  {message?<View style={styles.notice}><Text style={styles.noticeText}>{message}</Text></View>:null}
+ </View>;
+}
