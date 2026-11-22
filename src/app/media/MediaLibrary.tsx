@@ -16,7 +16,7 @@ export default function MediaLibrary(){
  const [loading,setLoading]=useState(true);
  const [message,setMessage]=useState("");
  useEffect(()=>{
-  if(!supabase){setMessage("Media catalogue connection is not configured.");setLoading(false);return;}
+  if(!supabase){queueMicrotask(()=>{setMessage("Media catalogue connection is not configured.");setLoading(false);});return;}
   let current=true;
   supabase.from("ascend_media_items").select("id,title,description,kind,source,source_url,thumbnail_url,access_level,created_at").eq("published",true).eq("access_level","free").order("created_at",{ascending:false}).limit(100).then(({data,error})=>{
    if(!current)return;
