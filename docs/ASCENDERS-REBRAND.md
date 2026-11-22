@@ -31,3 +31,6 @@ The Ascenders Club is a broad international changemaker collective. The active p
 - Current visual-restoration PR adds concentric and intersecting-circle SVG art, orbital motion, subtle chromatic gradients, dimensional responsive cards, Lucide interface icons, page transitions and a three-scene interactive optical sequence with swipe/tap controls.
 - Reduced-motion preferences are supported; no flashing/strobing effects.
 - This is a new draft design iteration, NOT an approved final direction or a production launch. Review actual mobile and desktop previews before merge.
+
+## Colour variation — 2026-11-22
+Founder approved the restored geometry and interactions, requested another published colour variation: absolute black backgrounds, dominant luminous white, and small green accents. Preserve sacred geometry, interactive optical sequences, motion, transitions, and proper UI icons. Implemented as a final scoped stylesheet `ascenders-monochrome.css` loaded after `ascenders-art.css` and `optical-interactions.css`, avoiding invasive rewrites. Review legibility, visual contrast, mobile breakpoints, and rendered scenes. This is a colour experiment, not a commitment to replace the geometric design language.
