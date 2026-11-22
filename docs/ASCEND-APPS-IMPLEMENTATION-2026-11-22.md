@@ -39,7 +39,7 @@ IMPORTANT: The SQL schema is written but NOT applied. No Supabase connector with
 ## Academy decision update
 - Old finance/trading curriculum retired from public route. /learn redirects to /academy.
 - Academy public copy now describes a forthcoming interdisciplinary platform, without resurrecting the old financial lessons.
-- KEEP existing rank artwork under public/ranks and rank-system logic for conceptual reference only. Old lesson files are kept in source control for safe extraction until remaining imports are audited; they are not served through /learn.
+- KEEP existing rank artwork under public/ranks and rank-system logic for conceptual reference only. Old AcademyExperience and both curriculum files were deleted from this development branch; Git commit history retains recoverable source. The rank-system was decoupled from the old lessons and now retains static tiers and icon references. No historical content is served through /learn.
 - Do not infer the new Academy syllabus. User will determine revised content and philosophy.
 
 ## Media
