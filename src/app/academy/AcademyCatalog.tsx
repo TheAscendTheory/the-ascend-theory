@@ -13,7 +13,7 @@ export default function AcademyCatalog(){
  const [query,setQuery]=useState("");
  const [topic,setTopic]=useState("All disciplines");
  useEffect(()=>{
-  if(!supabase){setLoading(false);setError("Academy database connection is not configured.");return;}
+  if(!supabase){queueMicrotask(()=>{setLoading(false);setError("Academy database connection is not configured.");});return;}
   let active=true;
   supabase.from("ascend_academy_courses").select("id,slug,title,summary,discipline,cover_url,published").eq("published",true).order("created_at",{ascending:false}).limit(100).then(({data,error})=>{
    if(!active)return;
