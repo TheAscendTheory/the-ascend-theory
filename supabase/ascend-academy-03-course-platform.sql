@@ -83,3 +83,10 @@ drop policy if exists "Learners remove own completion" on public.ascend_academy_
 create policy "Learners remove own completion"
  on public.ascend_academy_lesson_completions for delete to authenticated
  using(user_id=(select auth.uid()));
+
+-- Explicit API grants, restricted by the policies above.
+grant select,insert,update on public.ascend_academy_courses to authenticated;
+grant select on public.ascend_academy_courses to anon;
+grant select,insert,update on public.ascend_academy_lessons to authenticated;
+grant select on public.ascend_academy_lessons to anon;
+grant select,insert,delete on public.ascend_academy_lesson_completions to authenticated;
