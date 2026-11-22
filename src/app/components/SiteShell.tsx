@@ -9,6 +9,7 @@ import "./ascenders.css";
 import "./ascenders-art.css";
 import "./optical-interactions.css";
 import "./ascenders-monochrome.css";
+import "./ascenders-white-canvas.css";
 
 const links=[{label:"Our Story",href:"/about"},{label:"Ascend Hub",href:"/hub"},{label:"Academy",href:"/academy"},{label:"Media",href:"/media"},{label:"Contact",href:"/contact"}];
 

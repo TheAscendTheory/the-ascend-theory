@@ -1,0 +1,237 @@
+/*
+ ASCENDERS / WHITE CANVAS
+ High-contrast light-mode optical design. Black sacred geometry on true white.
+ The existing geometry, slide interaction and route transitions remain in place.
+ This is the last imported art-direction layer; prior colourways live in Git history.
+*/
+.ascSite {
+  --gold:#183d2a;
+  --bright:#050505;
+  --dim:#555d58;
+  --night:#ffffff;
+  --line:rgba(0,0,0,.24);
+  --spectral-gold:#090909;
+  --spectral-indigo:#506a61;
+  --spectral-teal:#347d53;
+  color:#000!important;
+  background:#fff!important;
+  color-scheme:light;
+}
+.ascSite .ascHeader {
+  background:rgba(255,255,255,.91);
+  border-bottom:1px solid rgba(0,0,0,.24);
+  box-shadow:0 12px 38px rgba(0,0,0,.045);
+  backdrop-filter:blur(22px);
+}
+.ascBrand {color:#000!important}
+.ascBrandLogo {filter:grayscale(1) brightness(.12) contrast(2)}
+.ascNav a {color:#252525}
+.ascNav a:hover,.ascNav a[aria-current=page] {color:#000}
+.ascNav a::after {background:linear-gradient(90deg,transparent,#000,#508e65,transparent)}
+.ascMenu {border-color:rgba(0,0,0,.65);color:#000;background:#fff}
+.ascMobileNav {background:rgba(255,255,255,.98);border-color:rgba(0,0,0,.28)}
+.ascMobileNav a {color:#050505}
+.ascMobileNav a:hover {color:#246a3c}
+.ascNavCta,.ascButton {
+  background:#000!important;
+  color:#fff!important;
+  border:1px solid #000!important;
+  box-shadow:0 9px 28px rgba(0,0,0,.11)!important;
+}
+.ascButton:hover,.ascNavCta:hover {
+  box-shadow:0 11px 32px rgba(0,0,0,.22),0 0 0 2px rgba(55,125,80,.17)!important;
+}
+.ascButtonOutline {
+  background:#fff!important;
+  color:#000!important;
+  border:1px solid #000!important;
+  box-shadow:none!important;
+}
+.ascButton::before,.ascNavCta::before {
+  background:conic-gradient(from 22deg,transparent 0deg,rgba(169,235,190,.5) 38deg,transparent 85deg,transparent 200deg,rgba(255,255,255,.22) 250deg,transparent 290deg);
+}
+.ascHero {
+  background:
+    radial-gradient(ellipse at 77% 47%,rgba(95,139,104,.085),transparent 48%),
+    #fff!important;
+}
+.ascHero::before {
+  background:
+    linear-gradient(90deg,#fff 0%,rgba(255,255,255,.97) 28%,transparent 80%),
+    linear-gradient(0deg,#fff 0%,transparent 27%);
+}
+.ascDottedField {
+  background-image:radial-gradient(circle,rgba(0,0,0,.37) .7px,transparent 1px);
+  opacity:.58;
+}
+.ascGeometry {
+  filter:drop-shadow(0 0 24px rgba(0,0,0,.045)) drop-shadow(12px 2px 24px rgba(32,88,49,.07));
+  opacity:.98;
+}
+.ascGeometry #ascLine stop:first-child {stop-color:#000;stop-opacity:.22}
+.ascGeometry #ascLine stop:nth-child(2) {stop-color:#000;stop-opacity:.88}
+.ascGeometry #ascLine stop:last-child {stop-color:#000;stop-opacity:.3}
+.ascGeometry #ascCore stop:first-child {stop-color:#000;stop-opacity:.05}
+.ascGeometry #ascCore stop:last-child {stop-color:#000;stop-opacity:0}
+.ascGeometry svg circle[stroke="#f1d692"] {stroke:#000}
+.ascGeometry svg circle[fill="#f1d692"] {fill:#000}
+.ascGeometry::before {
+  background:repeating-conic-gradient(from 12deg,transparent 0 5deg,rgba(0,0,0,.20) 5.25deg 5.5deg,transparent 5.7deg 11deg);
+}
+.ascGeometry::after {
+  border-color:rgba(0,0,0,.40);
+  box-shadow:0 0 0 1px rgba(35,111,57,.18),0 0 45px rgba(0,0,0,.055);
+}
+.ascKicker,.ascOverline {color:#245d3b!important}
+.ascHero h1 {color:#000!important;text-shadow:none!important}
+.ascSite em {color:#080808}
+.ascHero h1 em,.ascSection h2 em,.ascClosing h2 em {
+  background:linear-gradient(110deg,#000 0%,#050505 44%,#387e4c 62%,#050505 84%,#000 100%);
+  background-size:220% 100%;
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+.ascHeroIntro {color:#151515!important}
+.ascHeroFooter {color:#333;border-top:1px solid rgba(0,0,0,.28)}
+.ascSection {background:#fff!important}
+.ascSection h2,.ascInnerHero h1,.ascClosing h2 {color:#000}
+.ascSection p,.ascInnerHero>p:not(.ascOverline),.ascClosing>div>p:not(.ascOverline) {color:#282e2a!important}
+.ascTextLink {color:#050505!important;border-color:#0c0c0c}
+.ascTextLink:hover {color:#246b3e!important}
+.ascAlt {
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(74,142,90,.075),transparent 53%),
+    #f8faf8!important;
+  border-top:1px solid rgba(0,0,0,.18);
+  border-bottom:1px solid rgba(0,0,0,.18);
+}
+.ascCard {
+  background:linear-gradient(145deg,#fff,#f5f8f5 85%)!important;
+  border:1px solid rgba(0,0,0,.46)!important;
+  box-shadow:inset 0 1px #fff,0 10px 20px rgba(0,0,0,.03);
+  color:#000!important;
+}
+.ascCard::before {
+  border-color:rgba(0,0,0,.23);
+  box-shadow:0 0 0 45px rgba(0,0,0,.032),0 0 0 95px rgba(49,120,68,.019);
+}
+.ascCard::after {
+  background:
+    repeating-radial-gradient(circle at 90% 12%,transparent 0 16px,rgba(0,0,0,.16) 17px 18px,transparent 19px 34px),
+    conic-gradient(from 105deg at 85% 15%,transparent,rgba(57,124,75,.12) 110deg,transparent 190deg,rgba(0,0,0,.08) 260deg,transparent);
+}
+.ascCard:hover {
+  background:linear-gradient(145deg,#fff,#ecf5ee)!important;
+  border-color:#000!important;
+  box-shadow:0 22px 60px rgba(0,0,0,.10),0 0 30px rgba(40,120,64,.045);
+}
+.ascCard .ascNum,.ascCard .ascOverline {color:#225d38!important}
+.ascCard .ascCardIcon {color:#000}
+.ascCard:hover .ascCardIcon,.ascCard:focus-visible .ascCardIcon {
+  color:#000;
+  filter:drop-shadow(4px 0 8px rgba(30,114,53,.22)) drop-shadow(-3px 0 7px rgba(0,0,0,.10));
+}
+.ascCard h3 {color:#000}
+.ascCard p {color:#29352c!important}
+.ascCard>span:last-child {color:#000}
+.ascClosing {
+  background:radial-gradient(ellipse at center,rgba(90,150,105,.08),transparent 67%),#fff!important;
+  border-top:1px solid rgba(0,0,0,.24);
+}
+.ascFooter {background:#fff!important;border-top:1px solid rgba(0,0,0,.32)}
+.ascFooter h3,.ascFooter h4 {color:#000!important}
+.ascFooter p,.ascFooter a {color:#303c32!important}
+.ascFooter a:hover {color:#216139!important}
+.ascFooterBottom {border-color:rgba(0,0,0,.2);color:#565c57}
+.ascInnerHero:after {
+  border-color:rgba(0,0,0,.32);
+  box-shadow:0 0 0 40px rgba(0,0,0,.035),0 0 0 80px rgba(58,137,82,.025);
+}
+.ascFeatureGrid article {
+  background:linear-gradient(130deg,#fff,#f5f8f5)!important;
+  border:1px solid rgba(0,0,0,.36)!important;
+}
+.ascFeatureGrid article:hover {border-color:#000!important}
+.ascFeatureGrid article h2 {color:#000}
+.ascFeatureGrid article p {color:#313b33!important}
+.ascFeatureGrid article::after {
+  border-color:rgba(0,0,0,.22);
+  box-shadow:0 0 0 23px rgba(0,0,0,.037),0 0 0 47px rgba(45,132,76,.03);
+}
+.ascFeatureNote {border-color:rgba(0,0,0,.34)}
+.ascFeatureNote h2 {color:#000}
+.ascFeatureNote p {color:#29352f}
+.ascSite .ascContactLink {color:#000!important}
+.ascPageTransition::before {
+  background:repeating-radial-gradient(circle at 85% 16%,transparent 0 44px,rgba(0,0,0,.15) 45px 46px,transparent 47px 91px);
+}
+.ascPerception {background:#fff!important;border-block:1px solid rgba(0,0,0,.26)}
+.ascPerceptionTop>span {color:#505b52}
+.ascPerceptionStage {
+  background:linear-gradient(135deg,#fff,#f4f8f5)!important;
+  border:1px solid rgba(0,0,0,.53)!important;
+}
+.ascPerceptionStage::after {
+  background:linear-gradient(90deg,#fff 5%,rgba(255,255,255,.96) 35%,rgba(255,255,255,.12) 100%);
+}
+.ascPatternLayerA {
+  background:
+    repeating-conic-gradient(from 0deg,transparent 0 10deg,rgba(0,0,0,.40) 10.1deg 10.4deg,transparent 10.5deg 20deg),
+    repeating-radial-gradient(circle,transparent 0 28px,rgba(0,0,0,.38) 29px 30px,transparent 31px 58px);
+}
+.ascPatternLayerB {
+  background:
+    repeating-conic-gradient(from 0deg,transparent 0 7deg,rgba(38,126,63,.28) 7.25deg 7.65deg,transparent 7.9deg 14deg),
+    repeating-radial-gradient(circle,transparent 0 20px,rgba(0,0,0,.21) 21px 22px,transparent 23px 43px);
+}
+.ascPatternCore {
+  border-color:#000;
+  box-shadow:0 0 0 25px rgba(0,0,0,.045),0 0 0 55px rgba(53,130,77,.05),0 0 65px rgba(0,0,0,.07);
+}
+.ascPattern-perspective .ascPatternLayerA {
+  background:
+    repeating-linear-gradient(15deg,transparent 0 22px,rgba(0,0,0,.31) 23px 24px,transparent 25px 46px),
+    repeating-linear-gradient(165deg,transparent 0 22px,rgba(0,0,0,.27) 23px 24px,transparent 25px 46px);
+}
+.ascPattern-perspective .ascPatternLayerB {
+  background:repeating-conic-gradient(from 20deg,transparent 0 10deg,rgba(55,132,76,.26) 10.3deg 10.8deg,transparent 11deg 20deg);
+}
+.ascPattern-perception .ascPatternLayerA {
+  background:repeating-radial-gradient(ellipse at center,transparent 0 11px,rgba(0,0,0,.38) 12px 13px,transparent 14px 27px);
+}
+.ascPattern-perception .ascPatternLayerB {
+  background:repeating-radial-gradient(ellipse at center,transparent 0 12px,rgba(39,136,69,.29) 13px 14px,transparent 15px 29px);
+}
+.ascPerceptionContent h2 {color:#000}
+.ascPerceptionContent p:not(.ascOverline) {color:#29342c!important}
+.ascPerceptionTabs button,.ascPerceptionArrows button {
+  color:#000;
+  background:#fff;
+  border:1px solid rgba(0,0,0,.46);
+}
+.ascPerceptionTabs button span {color:#246f40}
+.ascPerceptionTabs button.isSelected {
+  background:#000;
+  color:#fff;
+  border-color:#000;
+}
+.ascPerceptionTabs button.isSelected span {color:#b6e7c7}
+.ascPerceptionTabs button:hover,.ascPerceptionArrows button:hover {
+  background:#000;
+  color:#fff;
+  border-color:#000;
+}
+.ascPerceptionTabs button:focus-visible,.ascPerceptionArrows button:focus-visible,.ascButton:focus-visible,.ascCard:focus-visible {
+  outline:3px solid #2a7848;
+  outline-offset:3px;
+}
+@media(max-width:760px) {
+ .ascPerceptionStage::after {
+   background:linear-gradient(0deg,#fff 7%,rgba(255,255,255,.97) 44%,rgba(255,255,255,.22) 100%);
+ }
+}
+@media(prefers-reduced-motion:reduce) {
+ .ascHero h1 em,.ascSection h2 em,.ascClosing h2 em {animation:none!important}
+}
