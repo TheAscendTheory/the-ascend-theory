@@ -32,3 +32,36 @@
 .ascMobileNav{backdrop-filter:blur(18px)}
 @media(hover:none){.ascCard:hover{transform:none}.ascCard:hover::after{transform:none;opacity:.23}.ascFeatureGrid article:hover{transform:none}}
 @media(prefers-reduced-motion:reduce){.ascSite *, .ascSite *::before, .ascSite *::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}.ascGeometry::before,.ascGeometry::after{animation:none!important}}
+
+/* Interactive perceptual sequence — three distinct geometric lenses */
+.ascPerception{padding:90px 0 105px;background:#050706;border-block:1px solid rgba(218,171,78,.24)}
+.ascPerceptionTop{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}
+.ascPerceptionTop>span{color:#aa9671;font-size:11px;letter-spacing:.16em}
+.ascPerceptionStage{isolation:isolate;min-height:470px;position:relative;overflow:hidden;border:1px solid rgba(226,187,96,.33);background:linear-gradient(130deg,#13110d,#070909 70%);display:flex;align-items:center;padding:clamp(28px,6vw,80px)}
+.ascPerceptionStage::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#080a08 5%,rgba(7,8,7,.92) 35%,rgba(7,8,7,.1) 100%)}
+.ascPerceptionPattern{position:absolute;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
+.ascPatternLayer{position:absolute;width:580px;height:580px;right:-35px;top:50%;margin-top:-290px;border-radius:50%;transition:transform .85s cubic-bezier(.22,1,.36,1),opacity .6s;will-change:transform}
+.ascPatternLayerA{opacity:.75;background:repeating-conic-gradient(from 0deg,transparent 0 10deg,rgba(224,181,89,.18) 10.1deg 10.4deg,transparent 10.5deg 20deg),repeating-radial-gradient(circle,transparent 0 28px,rgba(225,190,114,.3) 29px 30px,transparent 31px 58px);animation:ascOpticalRotate 85s linear infinite}
+.ascPatternLayerB{opacity:.5;transform:scale(.78) rotate(20deg);background:repeating-conic-gradient(from 0deg,transparent 0 7deg,rgba(87,184,172,.28) 7.25deg 7.65deg,transparent 7.9deg 14deg),repeating-radial-gradient(circle,transparent 0 20px,rgba(154,127,209,.24) 21px 22px,transparent 23px 43px);animation:ascOpticalReverse 97s linear infinite}
+.ascPatternCore{position:absolute;width:90px;height:90px;right:210px;top:calc(50% - 45px);border:1px solid #e4c27d;border-radius:50%;box-shadow:0 0 0 25px rgba(185,145,73,.06),0 0 0 55px rgba(105,154,159,.04),0 0 65px rgba(202,160,72,.17)}
+.ascPattern-perspective .ascPatternLayerA{background:repeating-linear-gradient(15deg,transparent 0 22px,rgba(218,178,90,.28) 23px 24px,transparent 25px 46px),repeating-linear-gradient(165deg,transparent 0 22px,rgba(218,178,90,.21) 23px 24px,transparent 25px 46px);border-radius:0;transform:perspective(700px) rotateY(20deg) rotateZ(45deg)}
+.ascPattern-perspective .ascPatternLayerB{background:repeating-conic-gradient(from 20deg,transparent 0 10deg,rgba(165,133,224,.2) 10.3deg 10.8deg,transparent 11deg 20deg);clip-path:polygon(50% 0,100% 100%,0 100%);border-radius:0}
+.ascPattern-perception .ascPatternLayerA{background:repeating-radial-gradient(ellipse at center,transparent 0 11px,rgba(230,179,87,.31) 12px 13px,transparent 14px 27px);transform:scaleX(1.18) rotate(25deg)}
+.ascPattern-perception .ascPatternLayerB{background:repeating-radial-gradient(ellipse at center,transparent 0 12px,rgba(86,187,183,.29) 13px 14px,transparent 15px 29px);transform:scaleX(.75) rotate(-27deg)}
+.ascPerceptionContent{position:relative;z-index:2;width:min(540px,100%)}
+.ascPerceptionContent h2{font-size:clamp(43px,5.7vw,75px);letter-spacing:-.05em;font-weight:690;line-height:1.04;margin:14px 0 20px}
+.ascPerceptionContent p:not(.ascOverline){font-size:17px;line-height:1.85;color:#d8cebb;max-width:480px}
+.ascPerceptionContent .ascTextLink{display:inline-flex;align-items:center;gap:10px}
+.ascPerceptionControls{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:22px}
+.ascPerceptionTabs{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.ascPerceptionTabs button,.ascPerceptionArrows button{cursor:pointer;color:#bfb097;background:#11130f;border:1px solid rgba(219,178,99,.22);transition:background .3s,color .3s,border-color .3s,transform .3s}
+.ascPerceptionTabs button{padding:13px 15px;text-transform:uppercase;font-size:10px;letter-spacing:.13em}
+.ascPerceptionTabs button span{color:#c79c4b;margin-right:6px}
+.ascPerceptionTabs button.isSelected{border-color:#e2bd79;background:rgba(183,138,61,.15);color:#fff0c9}
+.ascPerceptionArrows{display:flex;gap:8px}
+.ascPerceptionArrows button{width:46px;height:46px;display:grid;place-items:center;border-radius:50%}
+.ascPerceptionArrows button:hover,.ascPerceptionTabs button:hover{background:#322718;color:#f4d18d;border-color:#dab26b}
+.ascPerceptionArrows button:active,.ascPerceptionTabs button:active{transform:scale(.94)}
+@keyframes ascOpticalReverse{to{transform:rotate(-360deg)}}
+@media(max-width:760px){.ascPerceptionStage{min-height:480px;align-items:end;padding:34px 26px 50px}.ascPerceptionStage::after{background:linear-gradient(0deg,#070807 7%,rgba(7,8,7,.92) 42%,rgba(7,8,7,.26) 100%)}.ascPatternLayer{right:-250px;top:27%}.ascPatternCore{right:12%;top:12%}.ascPerceptionControls{flex-direction:column;align-items:stretch}.ascPerceptionArrows{justify-content:flex-end}.ascPerceptionTabs{gap:6px}.ascPerceptionTabs button{font-size:9px;padding:11px 9px}.ascPerception{padding:65px 0}}
+@media(prefers-reduced-motion:reduce){.ascPatternLayerA,.ascPatternLayerB{animation:none!important}}
