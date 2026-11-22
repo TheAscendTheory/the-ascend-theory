@@ -2,23 +2,49 @@ name: Ascend Apps CI
 on:
   pull_request:
     branches: [main]
-  push:
-    branches: [ascend-hub-functional-foundation]
+  workflow_dispatch:
 jobs:
-  validate:
+  web:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
-      - name: Install dependencies
+      - name: Install website
         run: npm ci
-      - name: TypeScript check
+      - name: Type check website
         run: npx tsc --noEmit
-      - name: Build Next.js
+      - name: Build website
         run: npm run build
+      - name: Lint website
+        run: npm run lint
+  native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: apps/native
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install mobile
+        run: npm install --no-fund --no-audit
+      - name: Validate Expo dependencies
+        run: npx expo install --check
+      - name: Type check native apps
+        run: npx tsc --noEmit
+      - name: Bundle iOS application JavaScript
+        run: npx expo export --platform ios
+        env:
+          APP_VARIANT: hub
+          EXPO_PUBLIC_APP_VARIANT: hub
+      - name: Bundle Android application JavaScript
+        run: npx expo export --platform android
+        env:
+          APP_VARIANT: academy
+          EXPO_PUBLIC_APP_VARIANT: academy
