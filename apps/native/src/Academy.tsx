@@ -3,7 +3,7 @@ import {ScrollView,Text,TextInput,TouchableOpacity,View} from "react-native";
 import type {User} from "@supabase/supabase-js";
 import {api} from "./supabase";
 import {palette,styles} from "./theme";
-import {SignIn,SignOut} from "./Auth";
+import {SignIn,SignOut,AccountControls} from "./Auth";
 type Course={id:string;slug:string;title:string;summary:string;discipline:string};
 type Lesson={id:string;course_id:string;title:string;content:string;sequence:number};
 export default function NativeAcademy({user}:{user:User|null}){
@@ -68,7 +68,7 @@ export default function NativeAcademy({user}:{user:User|null}){
    {lessons.map((item,i)=><TouchableOpacity accessibilityRole="button" key={item.id} onPress={()=>setLesson(item)} style={[styles.panel,lesson?.id===item.id?styles.panelSelected:null]}><Text style={styles.meta}>{String(i+1).padStart(2,"0")} / {done.has(item.id)?"COMPLETED":"LESSON"}</Text><Text style={styles.panelTitle}>{item.title}</Text></TouchableOpacity>)}
    {lesson?<View style={styles.panel}><Text style={styles.meta}>CURRENT LESSON</Text><Text style={styles.section}>{lesson.title}</Text><Text style={[styles.detail,{fontSize:16,lineHeight:27}]}>{lesson.content}</Text>{!user?<SignIn title="Sign in to save your progress"/>:<TouchableOpacity accessibilityRole="button" disabled={busy||done.has(lesson.id)} style={[styles.button,{opacity:busy||done.has(lesson.id)?.5:1}]} onPress={()=>void complete()}><Text style={styles.buttonText}>{done.has(lesson.id)?"Lesson completed":busy?"Saving…":"Mark lesson complete"}</Text></TouchableOpacity>}</View>:<Text style={styles.detail}>No lessons are published in this course yet.</Text>}
   </>}
-  {user?<SignOut/>:null}
+  {user?<><AccountControls/><SignOut/></>:null}
   {message?<View style={styles.notice}><Text style={styles.noticeText}>{message}</Text></View>:null}
   <View style={styles.spacer}/>
  </ScrollView>;
