@@ -27,5 +27,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: standalone/hub
+      - name: Allow artifact indexing
+        run: sleep 20
       - id: deploy
         uses: actions/deploy-pages@v4
