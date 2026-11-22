@@ -37,4 +37,4 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          curl --silent --show-error --max-time 20 -o /tmp/auth-response.txt -w "%{http_code}"             "https://iigetmiputlcdthhhpps.supabase.co/auth/v1/health" | grep -Eq '^200$'
+          curl --silent --show-error --max-time 20 -H "apikey: sb_publishable_CXx9TuAZeTcjx6wCeMUFJg_2RIHFMNo" -o /tmp/auth-response.txt -w "%{http_code}"             "https://iigetmiputlcdthhhpps.supabase.co/auth/v1/health" | grep -Eq '^200$'
