@@ -1,0 +1,1 @@
+import type {Metadata} from "next";import AcademyStudio from "./AcademyStudio";export const metadata:Metadata={title:"Ascend Academy Studio",robots:{index:false,follow:false}};export default function AcademyStudioPage(){return <AcademyStudio/>;}
