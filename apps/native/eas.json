@@ -1,0 +1,53 @@
+{
+  "cli": {
+    "version": ">= 16.0.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development-hub": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "hub",
+        "EXPO_PUBLIC_APP_VARIANT": "hub"
+      }
+    },
+    "development-academy": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "academy",
+        "EXPO_PUBLIC_APP_VARIANT": "academy"
+      }
+    },
+    "development-media": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "media",
+        "EXPO_PUBLIC_APP_VARIANT": "media"
+      }
+    },
+    "production-hub": {
+      "env": {
+        "APP_VARIANT": "hub",
+        "EXPO_PUBLIC_APP_VARIANT": "hub"
+      }
+    },
+    "production-academy": {
+      "env": {
+        "APP_VARIANT": "academy",
+        "EXPO_PUBLIC_APP_VARIANT": "academy"
+      }
+    },
+    "production-media": {
+      "env": {
+        "APP_VARIANT": "media",
+        "EXPO_PUBLIC_APP_VARIANT": "media"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
