@@ -1,0 +1,27 @@
+name: Verify live Ascend Hub Pages
+on:
+  push:
+    branches: [ascend-hub-functional-foundation]
+    paths: [.github/workflows/ascend-hub-pages-health.yml]
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify public HTML page, not raw code
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://theascendtheory.github.io/the-ascend-theory/"
+          for i in 1 2 3 4 5; do
+            code=$(curl --location --silent --max-time 20 -D /tmp/headers.txt -o /tmp/page.html -w '%{http_code}' "$URL" || true)
+            if [[ "$code" == "200" ]] && grep -qi '^content-type: text/html' /tmp/headers.txt && grep -q '<title>Ascend Hub' /tmp/page.html; then break; fi
+            sleep 5
+          done
+          [[ "$code" == "200" ]]
+          grep -qi '^content-type: text/html' /tmp/headers.txt
+          grep -q '<title>Ascend Hub' /tmp/page.html
+          grep -q 'Join the Club' /tmp/page.html
+          grep -q 'ascend_hub_members' /tmp/page.html
+          echo "Live public browser page verified successfully"
