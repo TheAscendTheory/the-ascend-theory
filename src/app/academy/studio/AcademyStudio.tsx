@@ -39,7 +39,7 @@ export default function AcademyStudio(){
   setSelected(previous=>previous||(c.data?.[0]?.id||""));
   setLoading(false);
  }
- useEffect(()=>{void refresh();},[]);
+ useEffect(()=>{queueMicrotask(()=>{void refresh();});},[]);
  async function createCourse(e:FormEvent<HTMLFormElement>){
   e.preventDefault();if(!client||!allowed||!userId)return;
   const slug=courseDraft.slug.trim().toLowerCase();
