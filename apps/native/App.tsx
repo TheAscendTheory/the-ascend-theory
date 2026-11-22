@@ -15,7 +15,7 @@ export default function App(){
  const {user,checking}=useIdentity();
  const brand=labels[VARIANT]||labels.hub;
  return <SafeAreaView style={styles.root}>
-  <StatusBar barStyle="dark-content" backgroundColor={palette.white}/>
+  <StatusBar barStyle="dark-content"/>
   <View style={styles.header}>
    <View><Text style={styles.headerBrand}>{brand.name}</Text><Text style={styles.headerTag}>{brand.descriptor} / THE ASCENDERS CLUB</Text></View>
    <View accessibilityLabel="Intersecting circle geometry" style={{width:39,height:39,position:"relative"}}>
