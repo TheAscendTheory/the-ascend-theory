@@ -28,7 +28,7 @@ export default function MediaEditor(){
   const {data,error}=await client.from("ascend_media_items").select("id,title,description,kind,source,source_url,thumbnail_url,access_level,published,created_at").order("created_at",{ascending:false}).limit(150);
   setItems((data||[]) as Item[]);if(error)setStatus(error.message);setLoading(false);
  }
- useEffect(()=>{void load();},[]);
+ useEffect(()=>{queueMicrotask(()=>{void load();});},[]);
  async function submit(e:FormEvent<HTMLFormElement>){
   e.preventDefault();if(!client||!allowed)return;
   if(form.title.trim().length<3||!externalUrl(form.source_url)){setStatus("Enter a title and valid HTTPS media source.");return;}
