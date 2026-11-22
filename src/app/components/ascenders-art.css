@@ -1,0 +1,62 @@
+
+/* Ascenders visual system: black, gilded geometry, movement, dimensional depth.
+   Layers on the existing functional ascenders.css for a safe visual-only iteration. */
+.ascSite{--gold:#d9b66a;--bright:#ffe2a0;--dim:#afa48d;--night:#050605;--line:rgba(216,181,105,.26);color:#f2eee3;background:var(--night);font-family:Arial,Helvetica,sans-serif}
+.ascHeader{position:sticky;top:0;z-index:80;height:82px;background:rgba(5,6,5,.82);backdrop-filter:blur(22px);border-bottom:1px solid var(--line);padding-inline:max(4.5vw,22px);box-shadow:0 12px 50px #0007}
+.ascBrand{font-size:13px;letter-spacing:.22em;color:#f4e8d2;gap:13px}
+.ascBrandLogo{display:block;width:45px;height:45px;object-fit:contain;filter:drop-shadow(0 0 12px #d6a14c66)}
+.ascNav{gap:23px}
+.ascNav a{font-size:11px;letter-spacing:.14em;color:#c4bbaa;transition:color .2s}
+.ascNav a:hover,.ascNav a[aria-current=page]{color:var(--bright)}
+.ascNavCta,.ascButton{background:linear-gradient(110deg,#c69c4c,#f3d899 48%,#b98c36);color:#17110a!important;border:1px solid #f0d69255;border-radius:999px;min-height:49px;padding:13px 24px;box-shadow:0 10px 36px #7d4a151c;transition:transform .25s,box-shadow .25s}
+.ascButton:hover,.ascNavCta:hover{transform:translateY(-2px);box-shadow:0 15px 40px #c59f3950}
+.ascButton svg,.ascNavCta svg{width:16px;height:16px}
+.ascButtonOutline{background:rgba(9,9,8,.55)!important;border:1px solid #c4a46588;color:#efdcb6!important;box-shadow:none!important}
+.ascMenu{border-color:#bd9b60;color:#e9d8b7}
+.ascHero{min-height:calc(100svh - 82px);padding:90px 5.8vw 35px;display:flex;justify-content:center;align-items:flex-start;background:radial-gradient(ellipse at 72% 46%,rgba(97,66,24,.18),transparent 45%),#060706;isolation:isolate;overflow:hidden}
+.ascHero:after{display:none}
+.ascDottedField{position:absolute;inset:0;z-index:-2;pointer-events:none;background-image:radial-gradient(circle,rgba(239,205,124,.21) .7px,transparent .9px);background-size:26px 26px;mask-image:linear-gradient(90deg,#0007,#000 50%,#0007);opacity:.46}
+.ascHero::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#030403 0%,#030403de 32%,transparent 73%),linear-gradient(0deg,#030403 0%,transparent 25%);z-index:-1}
+.ascHeroContent{z-index:3;max-width:920px;position:relative;margin-top:clamp(95px,12vh,175px);margin-bottom:150px}
+.ascHero h1{font-size:clamp(64px,10.4vw,154px);font-weight:850;letter-spacing:-.065em;line-height:.94;margin:28px 0 30px;text-transform:uppercase;text-shadow:0 10px 40px #000}
+.ascHero h1 em{font-weight:400;letter-spacing:-.055em;color:#e5bc6a;text-transform:none}
+.ascKicker,.ascOverline{font-size:11px;letter-spacing:.27em;font-weight:750;color:#d7b56f}
+.ascHeroIntro{font-size:clamp(17px,2vw,21px);max-width:580px;color:#e5dfd2;line-height:1.8}
+.ascHeroFooter{position:absolute;left:5.8vw;right:5.8vw;bottom:32px;color:#b7a987;border-top:1px solid #c7a15b44;padding-top:22px;font-size:10px;letter-spacing:.22em}
+.ascGeometry{position:absolute;width:min(70vw,870px);aspect-ratio:1;right:-6vw;top:50%;transform:translateY(-52%);pointer-events:none;z-index:0;opacity:.9;filter:drop-shadow(0 0 38px #edb34b22)}
+.ascGeometry svg{width:100%;height:100%;overflow:visible}
+.ascOrbitA{transform-origin:50% 50%;animation:ascOrbit 65s linear infinite}
+.ascOrbitB{transform-origin:50% 50%;animation:ascOrbit 85s linear infinite reverse}
+.ascOrbitC{transform-origin:50% 50%;animation:ascOrbit 105s linear infinite}
+.ascPulse{animation:ascPulse 5s ease-in-out infinite}
+@keyframes ascOrbit{to{transform:rotate(360deg)}}
+@keyframes ascPulse{50%{opacity:.55;transform:scale(.985)}}
+.ascHero .ascActions{margin-top:35px}
+.ascSection{padding:115px 0}
+.ascSplit{gap:11%}
+.ascSection h2,.ascInnerHero h1,.ascClosing h2{font-size:clamp(48px,6.2vw,87px);font-weight:720;letter-spacing:-.055em}
+.ascSite em{color:#e8bd68;font-family:Georgia,serif}
+.ascSection p,.ascInnerHero>p:not(.ascOverline),.ascClosing>div>p:not(.ascOverline){color:#d0cabd}
+.ascTextLink{color:#f2cf86;border-color:#b38d48}
+.ascAlt{background:radial-gradient(ellipse at 50% 0,#261e1166,transparent 48%),#0c0d0b;border-top:1px solid #ab87401f;border-bottom:1px solid #ab87401f}
+.ascCards{gap:18px}
+.ascCard{background:linear-gradient(145deg,#1a1814,#0b0d0b 68%);border:1px solid #ad873c50;box-shadow:inset 0 1px #e2c78a19;min-height:415px;position:relative;overflow:hidden;border-radius:2px}
+.ascCard:before{content:"";position:absolute;top:-160px;right:-140px;width:340px;height:340px;border:1px solid #ca9e4c3d;border-radius:50%;box-shadow:0 0 0 45px #ae85300c,0 0 0 95px #ae853006;pointer-events:none}
+.ascCard:hover{background:linear-gradient(145deg,#292116,#11130e);border-color:#e2b961}
+.ascCard .ascNum,.ascCard .ascOverline{color:#c9a35b}
+.ascCard .ascCardIcon{color:#e6bc65}
+.ascCard h3{font-weight:700}
+.ascCard p{color:#c9c1af}
+.ascCard>span:last-child{color:#e8c477}
+.ascClosing{background:radial-gradient(ellipse at 50% 30%,#42331c66,transparent 65%),#080908;border-top:1px solid #9f80434a}
+.ascFooter{background:#050605;border-top:1px solid #ac8b4f4b}
+.ascFooter a:hover{color:#efd18e}
+.ascInnerHero{position:relative;overflow:hidden}
+.ascInnerHero:after{content:"";position:absolute;width:min(60vw,510px);aspect-ratio:1;right:3%;top:-35%;border:1px solid #c79d4d44;border-radius:50%;box-shadow:0 0 0 40px #bc8c320a,0 0 0 80px #c09c3f0b;pointer-events:none}
+.ascFeatureGrid article{background:linear-gradient(125deg,#211b11,#0f100d);border-color:#b48c4357}
+.ascFeatureNote{border-color:#b38d4850}
+.ascSite .ascContactLink{color:#e9bd63}
+@media(max-width:1100px){.ascNav{gap:13px}.ascNav a{letter-spacing:.05em;font-size:10px}.ascGeometry{right:-22vw;width:80vw;opacity:.75}}
+@media(max-width:900px){.ascNav,.ascNavCta{display:none}.ascMenu{display:block}.ascHeader{height:74px}.ascMobileNav{background:#10100df7;border-color:#ad8d4b65}.ascHero{min-height:730px;padding-top:55px}.ascHeroContent{margin-top:130px;margin-bottom:160px}.ascGeometry{width:105vw;right:-50vw;opacity:.45}.ascHero::before{background:linear-gradient(90deg,#030403e8,transparent 90%),linear-gradient(0deg,#030403,transparent 24%)}.ascCards,.ascFeatureGrid{grid-template-columns:1fr}.ascCard{min-height:300px}}
+@media(max-width:550px){.ascBrand{font-size:11px;letter-spacing:.1em}.ascBrandLogo{width:37px;height:37px}.ascHero{min-height:700px}.ascHeroContent{margin-top:100px}.ascHero h1{font-size:clamp(61px,15vw,85px)}.ascHeroIntro{max-width:350px}.ascGeometry{width:140vw;right:-87vw;opacity:.45}.ascHeroFooter span:nth-child(2){display:none}}
+@media(prefers-reduced-motion:reduce){.ascOrbitA,.ascOrbitB,.ascOrbitC,.ascPulse{animation:none!important}.ascCard,.ascButton{transition:none!important}}
