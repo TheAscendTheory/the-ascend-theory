@@ -1,0 +1,12 @@
+
+.ascHubAdminSection{padding:20px 0 40px;border-top:1px solid #bccbc0}
+.ascHubAdminSection h2{display:flex;align-items:center;gap:12px;letter-spacing:-.04em;font-size:28px;margin:10px 0 25px}
+.ascHubAdminCard{display:flex;justify-content:space-between;align-items:center;gap:30px;border:1px solid #c6d2c8;padding:25px;margin:0 0 14px;background:#fff}
+.ascHubAdminCard strong{font-size:21px}
+.ascHubAdminCard p{font-size:14px;line-height:1.7;color:#2b3b30}
+.ascHubAdminCard small{color:#607265}
+.ascHubAdminActions{display:flex;gap:8px;flex-wrap:wrap}
+.ascHubAdminActions button{display:flex;align-items:center;gap:7px;cursor:pointer;background:#fff;border:1px solid #070907;color:#070907;padding:12px 17px;font-size:13px;font-weight:700}
+.ascHubAdminActions button:first-child{background:#000;color:#fff}
+.ascHubAdminActions button:disabled{opacity:.5;cursor:wait}
+@media(max-width:700px){.ascHubAdminCard{align-items:stretch;flex-direction:column}.ascHubAdminActions button{flex:1;justify-content:center}}
