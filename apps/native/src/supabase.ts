@@ -11,7 +11,7 @@ export const api:SupabaseClient|null=url&&key?createClient(url,key,{
 
 if(api){
  AppState.addEventListener("change",state=>{
-  if(state==="active")api.startAutoRefresh();
-  else api.stopAutoRefresh();
+  if(state==="active")api.auth.startAutoRefresh();
+  else api.auth.stopAutoRefresh();
  });
 }
