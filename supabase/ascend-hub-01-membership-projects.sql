@@ -115,3 +115,9 @@ create policy "Hub admins moderate projects" on public.ascend_hub_projects
 -- where user_id='REPLACE_WITH_APPLICANT_UUID';
 -- update public.ascend_hub_projects set status='approved',updated_at=now()
 -- where id='REPLACE_WITH_PROJECT_UUID';
+
+-- Explicit API grants, restricted further by RLS.
+revoke all on public.ascend_hub_admins from anon, authenticated;
+grant select on public.ascend_hub_admins to authenticated;
+grant select,insert,update on public.ascend_hub_members to authenticated;
+grant select,insert,update on public.ascend_hub_projects to authenticated;
