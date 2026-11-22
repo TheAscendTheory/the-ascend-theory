@@ -1,26 +1,5 @@
-import type { Metadata } from "next";
-import AcademyExperience from "./AcademyExperience";
+import {redirect} from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Ascend Academy",
-  description:
-    "Ascend Academy is a structured financial literacy, markets, trading, systems, and self-development curriculum with lessons, quizzes, XP, badges, and account levels.",
-};
-
-export default function LearnPage() {
-  return (
-    <main className="academyPage">
-      <section className="academyHero">
-        <p className="eyebrow">Ascend Academy</p>
-        <h1>LEARN THE SYSTEM.</h1>
-        <p>
-          A structured learning path from first principles to advanced market
-          thinking, built with lessons, quizzes, grades, badges, XP, and account
-          levels.
-        </p>
-      </section>
-
-      <AcademyExperience />
-    </main>
-  );
-}
+// Legacy curriculum retired from public access during the Academy redesign.
+// Rank artwork and tier models remain in the repository for future reference.
+export default function RetiredAcademyRoute(){redirect("/academy");}
