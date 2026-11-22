@@ -86,3 +86,26 @@ Privacy policy, community participation terms, account deletion endpoint, accoun
 6. The visual direction on main stays white canvas, black sacred geometry and restrained green; do not merge unverified backend without testing.
 
 Test with anonymous/pending/approved/admin accounts, SQL RLS checks, moderator review, completion syncing, media publishing and account deletion in a safe test environment before promoting the branch.
+
+## Verified backend and deployment update — November 22, 2026
+- The Supabase integration was authorized. Confirmed project: TheAscendTheory's Project, id iigetmiputlcdthhhpps, healthy, PostgreSQL 17.
+- Production database was inspected. Existing media table and prior historic tables were retained, no destructive schema resets.
+- Applied four versioned migrations successfully:
+  1. 20261122195708 ascend_hub_membership_projects_20261122
+  2. ascend_media_editorial_20261122
+  3. ascend_academy_courses_20261122
+  4. ascend_hub_moderation_20261122
+- Applied a fifth hardening migration ascend_hub_anon_rpc_security_20261122; corresponding file tracked at supabase/ascend-apps-05-anonymous-policy-hardening.sql.
+- Supabase now has all eight new Hub/Academy tables, RLS enabled. Media editorial RLS policies installed.
+- Explicit grants for new tables were tested and incorporated into original SQL source files for reproducibility.
+- Security scan verified that newly added admin-check functions are no longer anonymously executable. Signed-in executable SECURITY DEFINER functions are intentionally still reported, and require periodic review. Legacy RLS warnings were already present.
+- SQL transaction rollback test with the one existing verified Auth user confirmed pending application insertion works; the user could not self-approve; admin check and approved check returned false. No lasting test accounts/content were created.
+- The one existing Auth user was NOT promoted to administrator without ownership verification. Founder administrator setup is still pending.
+- Vercel team access was authorized. Both Vercel projects and existing production deployments were verified.
+- Preview deployment dpl_8y2LfJaLDWNnZ4DpRRBqt54aJutX is READY at https://theascendtheory-m263df98t-the-ascend-theory-s-projects.vercel.app, commit 26a1ac9720164d1142602d2b80bcbcaae04bdffe. All /hub, /academy, /media paths returned HTTP 200 when fetched using protected deployment access.
+- Configured branch-scoped preview environment values NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, using the legitimate Supabase project URL and a public publishable key. No service-role key was exposed to the client.
+- CRITICAL: Those preview env vars were created AFTER the READY deployment was built. Since NEXT_PUBLIC variables are compiled into Next.js browser code, a NEW BUILD is required before these three apps can use Supabase.
+- The attempted forced new Vercel deployment was rejected with HTTP 402, api-deployments-free-per-day, over 100 deployments per day; Vercel supplied retryAfter 86400 seconds. Previous checks also indicated Vercel build-rate-limit. DO NOT CLAIM preview is functional for real data until rebuilt and E2E-tested.
+- Existing public site production deployments were not changed.
+- Latest GitHub CI run 45062183153 passed all jobs: web build/lint/typecheck and all three native variants' iOS+Android JS bundles.
+- Remaining launch gates: Vercel quota reset or billing upgrade to build preview, confirm existing Auth account belongs to authorized founder/admin, configure email OTP template/native auth, test RLS with distinct member identities, seed actual rights-cleared content, validate iPhone browser and signed native binaries, and configure store developer accounts.
