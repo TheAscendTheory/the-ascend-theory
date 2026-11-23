@@ -1,0 +1,23 @@
+name: Ascend Academy and Media live endpoints
+on:
+  push:
+    branches: [ascend-hub-functional-foundation]
+    paths: [.github/workflows/ascend-learning-media-smoke.yml]
+  workflow_dispatch:
+jobs:
+  public-apps:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Verify both deployed app pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="https://theascendtheory.github.io/the-ascend-theory"
+          for app in academy media; do
+            HTTP=$(curl -L -sS --max-time 25 -D "/tmp/$app.headers" -o "/tmp/$app.html" -w '%{http_code}' "$ROOT/$app/")
+            test "$HTTP" = "200"
+            grep -iq '^content-type: text/html' "/tmp/$app.headers"
+            grep -q "Ascend ${app^}" "/tmp/$app.html"
+            grep -q "ascend_${app}_\|ascend_media_items" "/tmp/$app.html"
+            echo "$app public app HTTP 200 text/html"
+          done
