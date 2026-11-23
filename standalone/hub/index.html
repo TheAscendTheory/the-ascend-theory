@@ -40,15 +40,15 @@
  .section{padding:16px 0 48px}.wrap{padding-left:16px;padding-right:16px}
  .hub-header{align-items:flex-start;margin:8px 0 17px}.hub-header h1{font-size:32px}.hub-header p{font-size:12px}
  .hub-header .button{font-size:12px;min-height:38px;padding:9px 11px}
- .hub-layout{display:block}.hub-side{display:none}.hub-mobile-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:17px;background:white;border:1px solid var(--line);padding:4px;border-radius:10px}
- .hub-mobile-nav button{min-width:0;border:0;background:transparent;color:var(--mute);padding:11px 5px;font-size:12px;border-radius:7px;font-weight:600}
+ .hub-layout{display:block}.hub-side{display:none}.hub-mobile-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-bottom:17px;background:white;border:1px solid var(--line);padding:4px;border-radius:10px}
+ .hub-mobile-nav button{min-width:0;border:0;background:transparent;color:var(--mute);padding:11px 2px;font-size:11px;border-radius:7px;font-weight:600}
  .hub-mobile-nav button.active{background:var(--ink);color:white}
  .hub-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
  .hub-controls input{grid-column:1/-1}.hub-map{min-height:290px}.hub-map iframe{height:290px}
  .hub-list-head{margin:18px 0 11px}.hub-cards,.hub-guide{grid-template-columns:1fr}
  .hub-locked{flex-wrap:wrap}.hub-locked .button{margin-left:0;width:100%}
 }
-</style></head><body><header class="top"><div class="wrap"><div class="identity"><div class="mark">✧</div><div class="brand">ASCEND HUB<small>THE ASCENDERS CLUB</small></div></div><div class="right"><span class="chip">OPEN TO EXPLORE</span><button class="button secondary hidden" id="signout" type="button">Sign out</button></div></div></header><main><section class="hero"><div class="wrap"><div class="eyebrow">CONNECT · COLLABORATE · CULTIVATE</div><h1>Ascend <em>Hub.</em></h1><p>Explore real projects and discover collaboration opportunities across borders and disciplines. Browse freely; apply when you're ready to participate.</p></div></section><section class="section"><div class="wrap"><div id="status" class="status hidden" role="status"></div><div id="loading" class="skeleton">Connecting securely…</div><div id="content"></div></div></section></main><footer class="foot"><div class="wrap">© THE ASCENDERS CLUB · PRIVATE MEMBER NETWORK · <a href="mailto:contact@theascendtheory.com">CONTACT</a></div></footer>
+.hub-activity-card{border:1px solid var(--line);background:#fff;border-radius:12px;padding:20px}.hub-activity-card h3{font:400 23px Georgia,serif;margin:14px 0 8px}.hub-activity-card p{color:var(--mute);font-size:13px;line-height:1.55}.activity-meta{margin:9px 0;color:var(--forest);font-size:12px}.hub-controls button{min-width:0}@media(max-width:760px){.hub-controls #eventSearch{grid-column:1/-1}.hub-controls #nearbyToggle{font-size:12px;padding:9px}.hub-activity-card{padding:17px}}</style></head><body><header class="top"><div class="wrap"><div class="identity"><div class="mark">✧</div><div class="brand">ASCEND HUB<small>THE ASCENDERS CLUB</small></div></div><div class="right"><span class="chip">OPEN TO EXPLORE</span><button class="button secondary hidden" id="signout" type="button">Sign out</button></div></div></header><main><section class="hero"><div class="wrap"><div class="eyebrow">CONNECT · COLLABORATE · CULTIVATE</div><h1>Ascend <em>Hub.</em></h1><p>Explore real projects and discover collaboration opportunities across borders and disciplines. Browse freely; apply when you're ready to participate.</p></div></section><section class="section"><div class="wrap"><div id="status" class="status hidden" role="status"></div><div id="loading" class="skeleton">Connecting securely…</div><div id="content"></div></div></section></main><footer class="foot"><div class="wrap">© THE ASCENDERS CLUB · PRIVATE MEMBER NETWORK · <a href="mailto:contact@theascendtheory.com">CONTACT</a></div></footer>
 <script type="module">
 import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.4/+esm';
 const supabase=createClient('https://iigetmiputlcdthhhpps.supabase.co',"sb_publishable_CXx9TuAZeTcjx6wCeMUFJg_2RIHFMNo",{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
@@ -62,12 +62,15 @@ const b=(label,cls='')=>'<button class="button '+cls+'" type="submit">'+label+'<
 const field=(name,title,required=false,type='text',max=180)=>'<label for="'+name+'">'+title+'</label><input class="input" id="'+name+'" name="'+name+'" type="'+type+'" maxlength="'+max+'" '+(required?'required':'')+'/>';
 const area=(name,title,max=1500)=>'<label for="'+name+'">'+title+'</label><textarea id="'+name+'" name="'+name+'" maxlength="'+max+'"></textarea>';
 const formData=form=>Object.fromEntries(new FormData(form));
-let user=null,membership=null,isAdmin=false,members=[],projects=[],tab='projects',search='',blocked=new Set(),publicProjects=[],publicMode=true,publicTab='overview',publicQuery='',publicDiscipline='All fields',publicCountry='All locations';
+let user=null,membership=null,isAdmin=false,members=[],projects=[],tab='projects',search='',blocked=new Set(),publicProjects=[],publicMode=true,publicTab='happening',publicEvents=[],eventQuery='',eventCategory='All types',nearbyOnly=false,userCoords=null,publicQuery='',publicDiscipline='All fields',publicCountry='All locations';
 
 async function loadPublicProjects(){
  const {data,error}=await supabase.from('ascend_hub_projects').select('id,title,description,discipline,country,city,latitude,longitude,website,looking_for').eq('status','approved').order('created_at',{ascending:false}).limit(150);
  publicProjects=data||[];
  if(error)message('Public projects are temporarily unavailable. Please try again later.',true);
+ const res=await supabase.from('ascend_hub_events').select('id,title,description,category,venue,city,country,latitude,longitude,starts_at,ends_at,is_online,link_url').eq('status','approved').gte('starts_at',new Date(Date.now()-86400000).toISOString()).order('starts_at').limit(150);
+ publicEvents=res.data||[];
+ if(res.error)message('Public event listings are temporarily unavailable.',true);
 }
 function exploreAction(){
  if(!user){publicMode=false;render();return}
@@ -76,14 +79,14 @@ function exploreAction(){
  else message('Membership approval is required to collaborate with other members.');
 }
 
-const publicTabs=[['overview','Overview'],['projects','Projects'],['people','People']];
+const publicTabs=[['happening','Happening'],['projects','Projects'],['people','People'],['overview','About']];
 const WORLD_EMBED='https://www.openstreetmap.org/export/embed.html?bbox=-168%2C-65%2C168%2C78&layer=mapnik';
 function setPublicTab(t){publicTab=t;renderPublic()}
 function renderPublic(){
  el('loading').className='hidden';
- const title=publicTab==='projects'?'Project discovery':publicTab==='people'?'People & collaboration':'Explore the network';
- const subtitle=publicTab==='projects'?'Find publicly approved initiatives across disciplines and locations.':publicTab==='people'?'A curated worldwide network, with member privacy protected.':'A practical space to find initiatives, identify opportunities, and connect with changemakers.';
- const side=publicTabs.map(([id,label])=>'<button type="button" data-hub-tab="'+id+'" class="'+(publicTab===id?'active':'')+'">'+(id==='overview'?'◉':id==='projects'?'⌖':'♧')+' &nbsp;'+label+'</button>').join('');
+ const title=publicTab==='happening'?"What's happening":publicTab==='projects'?'Project discovery':publicTab==='people'?'People & collaboration':'Explore the network';
+ const subtitle=publicTab==='happening'?'Events, workshops and projects worth discovering—near you or worldwide.':publicTab==='projects'?'Find publicly approved initiatives across disciplines and locations.':publicTab==='people'?'A curated worldwide network, with member privacy protected.':'A practical space to find initiatives, identify opportunities, and connect with changemakers.';
+ const side=publicTabs.map(([id,label])=>'<button type="button" data-hub-tab="'+id+'" class="'+(publicTab===id?'active':'')+'">'+(id==='happening'?'◉':id==='overview'?'✦':id==='projects'?'⌖':'♧')+' &nbsp;'+label+'</button>').join('');
  el('content').innerHTML='<div class="hub-header"><div><div class="hub-meta">THE ASCENDERS CLUB / HUB</div><h1>'+title+'</h1><p>'+subtitle+'</p></div><button type="button" class="button green" id="hubJoin">'+(membership?.status==='pending'?'Pending review':'Apply to join')+'</button></div><div class="hub-mobile-nav" aria-label="Hub navigation">'+publicTabs.map(([id,label])=>'<button type="button" data-hub-tab="'+id+'" class="'+(publicTab===id?'active':'')+'">'+label+'</button>').join('')+'</div><div class="hub-layout"><aside class="hub-side"><div class="hub-side-label">DISCOVER</div>'+side+'<div class="hub-side-label">YOUR ACCESS</div><div class="hub-side-note">Exploration is public.<br>Participation requires approved membership.</div></aside><div class="hub-main" id="hubWorkspace"></div></div>';
  el('hubJoin').onclick=exploreAction;
  document.querySelectorAll('[data-hub-tab]').forEach(b=>b.onclick=()=>setPublicTab(b.dataset.hubTab));
@@ -135,10 +138,44 @@ function renderPeopleExplorer(){
 function renderOverview(){
  return '<div class="hub-toolrow"><h2>Explore what is possible</h2><span class="pill">Public access</span></div><div class="hub-guide"><article class="card"><span class="tag">01 / DISCOVER</span><h3>Explore initiatives.</h3><p>Browse approved real projects across fields and countries. Search and geographic navigation are available to everyone.</p><button type="button" class="button secondary" data-open-tab="projects">Browse projects</button></article><article class="card"><span class="tag">02 / CONNECT</span><h3>Find your people.</h3><p>Understand the global network and the disciplines represented. Personal directory access follows approval.</p><button type="button" class="button secondary" data-open-tab="people">Explore people</button></article><article class="card"><span class="tag">03 / CONTRIBUTE</span><h3>Build together.</h3><p>Submit a membership application to propose initiatives and access collaboration features once approved.</p><button type="button" class="button secondary" data-public-join>Join the network</button></article></div><div class="hub-toolrow"><h2>Global activity map</h2><span class="pill">Interactive</span></div>'+mapPanel(publicProjects)+'<div class="hub-list-head"><h3>Recently approved initiatives</h3><button type="button" class="button secondary" data-open-tab="projects">Explore all projects</button></div>'+(publicProjects.length?publicCards(publicProjects.slice(0,4)):'<div class="hub-empty"><span class="tag">COMMUNITY LAUNCH</span><h3>No published projects yet.</h3><p>The Hub is accepting its first verified projects. The map is available to explore, and approved initiatives will appear automatically once published. Nothing here is presented as activity that has not happened.</p></div>')+publicAccessBanner();
 }
+function kmBetween(lat1,lon1,lat2,lon2){
+ const a=(lat2-lat1)*Math.PI/180,b=(lon2-lon1)*Math.PI/180;
+ const h=Math.sin(a/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(b/2)**2;
+ return 12742*Math.asin(Math.min(1,Math.sqrt(h)));
+}
+function filteredEvents(){
+ return publicEvents.filter(e=>{
+ const txt=[e.title,e.description,e.category,e.city,e.country,e.venue].join(' ').toLowerCase();
+ if(!txt.includes(eventQuery.toLowerCase()))return false;
+ if(eventCategory!=='All types'&&e.category!==eventCategory)return false;
+ if(nearbyOnly&&userCoords){if(e.latitude===null||e.longitude===null)return false;return kmBetween(userCoords.lat,userCoords.lon,Number(e.latitude),Number(e.longitude))<=100;}
+ return true;
+ });
+}
+function eventCard(e){
+ const date=new Date(e.starts_at);
+ const when=Number.isNaN(+date)?'Time to be announced':date.toLocaleString(undefined,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+ const place=e.is_online?'Online':[e.venue,e.city,e.country].filter(Boolean).join(', ')||'Location to be confirmed';
+ const url=safeLink(e.link_url);
+ return '<article class="hub-activity-card"><span class="tag">'+htmlEscape(e.category||'EVENT')+'</span><h3>'+htmlEscape(e.title)+'</h3><p>'+htmlEscape(e.description)+'</p><div class="activity-meta">◷ '+htmlEscape(when)+'</div><div class="activity-meta">⌖ '+htmlEscape(place)+'</div><div class="actions">'+(url?'<a class="button secondary" href="'+htmlEscape(url)+'" rel="noopener noreferrer" target="_blank">View details ↗</a>':'<button class="button secondary" type="button" data-public-join>Request details · Members</button>')+'</div></article>';
+}
+function renderHappening(){
+ const data=filteredEvents(),categories=['All types',...new Set(publicEvents.map(e=>e.category).filter(Boolean))];
+ const now=new Date();
+ return '<div class="hub-toolrow"><h2>Discover what’s happening</h2><span class="pill">'+data.length+' approved activities</span></div><div class="hub-controls"><input class="input" id="eventSearch" placeholder="Search events, workshops, places…" aria-label="Search activities" value="'+htmlEscape(eventQuery)+'"><select class="input" id="eventCategory" aria-label="Activity category">'+categories.map(v=>'<option value="'+htmlEscape(v)+'" '+(v===eventCategory?'selected':'')+'>'+htmlEscape(v)+'</option>').join('')+'</select><button class="button secondary" type="button" id="nearbyToggle">'+(nearbyOnly?'✓ Within 100 km':'⌖ Near me')+'</button></div><div class="hub-map">'+mapEmbed(null)+'<div class="hub-map-info"><span>EXPLORE THE WORLD · PAN & ZOOM</span><span>'+data.filter(x=>x.latitude!=null&&x.longitude!=null).length+' mapped</span></div></div><div class="hub-list-head"><h3>Upcoming activities</h3><span class="hub-subtle">'+now.toLocaleDateString(undefined,{month:'short',year:'numeric'})+'</span></div>'+(data.length?'<div class="hub-cards">'+data.map(eventCard).join('')+'</div>':'<div class="hub-empty"><span class="tag">LIVE DIRECTORY · NO LISTINGS YET</span><h3>'+(publicEvents.length?'No activities match these filters.':'The first activities are being curated.')+'</h3><p>'+ (publicEvents.length?'Try another category, location or search.':'Approved workshops, meetups, events and initiatives will appear here with their real dates and locations. You can explore the map now without signing up.')+'</p></div>')+publicAccessBanner();
+}
 function renderPublicScreen(){
  const root=el('hubWorkspace');if(!root)return;
- root.innerHTML=publicTab==='projects'?renderProjectExplorer():publicTab==='people'?renderPeopleExplorer():renderOverview();
+ root.innerHTML=publicTab==='happening'?renderHappening():publicTab==='projects'?renderProjectExplorer():publicTab==='people'?renderPeopleExplorer():renderOverview();
  attachPublicJoin();
+ if(el('eventSearch'))el('eventSearch').oninput=e=>{eventQuery=e.target.value;const pos=e.target.selectionStart;renderPublicScreen();const n=el('eventSearch');n.focus();n.setSelectionRange(pos,pos)};
+ if(el('eventCategory'))el('eventCategory').onchange=e=>{eventCategory=e.target.value;renderPublicScreen()};
+ if(el('nearbyToggle'))el('nearbyToggle').onclick=()=>{
+  if(nearbyOnly){nearbyOnly=false;renderPublicScreen();return}
+  if(userCoords){nearbyOnly=true;renderPublicScreen();return}
+  if(!navigator.geolocation){message('Location is unavailable here. Search by city instead.',true);return}
+  navigator.geolocation.getCurrentPosition(p=>{userCoords={lat:p.coords.latitude,lon:p.coords.longitude};nearbyOnly=true;renderPublicScreen()},()=>message('Location permission was not granted. You can still search globally.',true),{timeout:10000,maximumAge:300000});
+ };
  document.querySelectorAll('[data-open-tab]').forEach(b=>b.onclick=()=>setPublicTab(b.dataset.openTab));
  const searchInput=el('projectSearch');
  if(searchInput)searchInput.oninput=e=>{publicQuery=e.target.value;const pos=e.target.selectionStart;renderPublicScreen();const n=el('projectSearch');n.focus();n.setSelectionRange(pos,pos)};
