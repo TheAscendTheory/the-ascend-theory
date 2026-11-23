@@ -1,5 +1,53 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f8faf6"><title>Ascend Hub · The Ascenders Club</title><style>
 :root{--paper:#f8faf6;--ink:#171d18;--mute:#637168;--line:#dce3da;--forest:#284e38;--soft:#e9efe8}*{box-sizing:border-box}html{background:var(--paper)}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}a{color:inherit}.wrap{max-width:1000px;margin:0 auto;padding:0 23px}.top{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.top .wrap{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:15px}.identity{display:flex;align-items:center;gap:11px}.mark{width:37px;height:37px;border:1.6px solid var(--ink);display:grid;place-items:center;border-radius:100%;font-size:20px}.brand{font-size:12px;font-weight:750;letter-spacing:.15em;line-height:1.45}.brand small{display:block;font-size:9px;font-weight:500;letter-spacing:.2em;color:var(--mute)}.top .right{display:flex;align-items:center;gap:9px}.chip{font-size:11px;color:var(--forest);border:1px solid var(--line);border-radius:100px;padding:7px 10px}.hero{padding:65px 0 34px;border-bottom:1px solid var(--line)}.eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);font-weight:750}.hero h1{font-family:Georgia,serif;font-size:clamp(54px,10vw,100px);font-weight:400;letter-spacing:-.07em;line-height:1;margin:18px 0}.hero h1 em{color:var(--forest);font-weight:400}.hero p{max-width:570px;line-height:1.65;color:var(--mute);font-size:16px}.section{padding:34px 0 90px}.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:25px;margin-bottom:18px}.panel h2{font-family:Georgia,serif;font-size:30px;font-weight:400;letter-spacing:-.03em;margin:0 0 10px}.panel h3{font-size:17px;margin:0 0 8px}.panel p,.muted{color:var(--mute);line-height:1.6}.actions{display:flex;gap:10px;flex-wrap:wrap}.button{background:var(--ink);color:white;border:1px solid var(--ink);border-radius:7px;padding:12px 17px;font-weight:600;font-size:13px;min-height:43px}.button:disabled{opacity:.6;cursor:wait}.button.secondary{background:white;color:var(--ink);border-color:var(--line)}.button.green{background:var(--forest);border-color:var(--forest)}.input,textarea{display:block;width:100%;border:1px solid #cfdbcf;border-radius:7px;padding:12px;background:white;color:var(--ink);outline-color:var(--forest);min-height:44px}.input:focus,textarea:focus{border-color:var(--forest)}textarea{min-height:105px;resize:vertical}label{display:block;font-size:12px;font-weight:650;margin:15px 0 7px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 17px}.nav{display:flex;gap:7px;overflow:auto;margin:0 0 24px;padding:0 0 8px}.nav button{border:1px solid var(--line);background:white;padding:11px 17px;white-space:nowrap;border-radius:100px;font-size:13px}.nav button.active{background:var(--ink);color:white;border-color:var(--ink)}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.card{border:1px solid var(--line);border-radius:10px;background:white;padding:20px}.card h3{font-family:Georgia,serif;font-size:24px;font-weight:400;margin:13px 0 10px}.card p{font-size:14px;color:var(--mute);line-height:1.55}.tag{display:inline-block;color:var(--forest);background:var(--soft);border-radius:5px;font-size:11px;padding:6px 9px}.status{border-radius:8px;border:1px solid #c5d7c7;background:#eff6ef;color:#264b34;padding:12px 14px;margin-bottom:22px;line-height:1.45;font-size:13px}.status.error{background:#fff1ed;border-color:#e9c5be;color:#7e3326}.foot{border-top:1px solid var(--line);padding:27px 0;font-size:12px;color:var(--mute)}.hidden{display:none!important}.skeleton{padding:25px;border:1px dashed var(--line);border-radius:9px;color:var(--mute)}.tiny{font-size:12px!important}.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.notice{margin:18px 0;color:var(--mute);font-size:13px}.results{margin:14px 0}.pill{border:1px solid var(--line);border-radius:100px;padding:6px 10px;color:var(--mute);font-size:12px}.toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:18px}.toolbar input{min-width:0}@media(max-width:600px){.top .wrap{min-height:62px}.brand{font-size:10px}.brand small{font-size:8px}.hero{padding:47px 0 26px}.hero h1{font-size:64px}.panel{padding:19px}.formgrid,.cards{grid-template-columns:1fr}.chip{display:none}.section{padding-top:24px}.toolbar{grid-template-columns:1fr}}
+
+/* Hub application shell: mobile-first workspace, not a marketing landing page. */
+.hero{display:none}.section{padding:25px 0 70px}.wrap{max-width:1240px}.top .wrap{min-height:66px}
+.hub-header{display:flex;justify-content:space-between;gap:16px;align-items:center;margin:4px 0 22px}
+.hub-header h1{font:400 clamp(29px,4vw,43px)/1.08 Georgia,serif;letter-spacing:-.045em;margin:7px 0}
+.hub-header p{font-size:13px;color:var(--mute);margin:0;line-height:1.5}
+.hub-layout{display:grid;grid-template-columns:205px minmax(0,1fr);gap:26px}
+.hub-side{border:1px solid var(--line);background:white;border-radius:12px;padding:12px;align-self:start;position:sticky;top:86px}
+.hub-side-label{padding:12px 12px 8px;font-size:10px;font-weight:750;letter-spacing:.16em;color:var(--mute)}
+.hub-side button{display:flex;align-items:center;gap:12px;min-height:44px;width:100%;text-align:left;background:transparent;color:var(--ink);border:0;border-radius:8px;padding:11px 12px;font-size:14px;white-space:nowrap}
+.hub-side button.active{background:var(--soft);color:var(--forest);font-weight:750}
+.hub-side button:hover{background:#f1f4ef}.hub-side-note{border-top:1px solid var(--line);padding:15px 12px;font-size:12px;color:var(--mute);line-height:1.5}
+.hub-main{min-width:0}.hub-toolrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.hub-toolrow h2{font:400 26px Georgia,serif;letter-spacing:-.03em;margin:0}
+.hub-controls{display:grid;grid-template-columns:minmax(0,1fr) 170px 170px;gap:9px;margin-bottom:13px}
+.hub-controls .input{margin:0;min-width:0;font-size:13px}
+.hub-map{position:relative;overflow:hidden;min-height:340px;border:1px solid var(--line);border-radius:12px;background:#e7edeb}
+.hub-map iframe{display:block;width:100%;height:340px;border:0}
+.hub-map-info{position:absolute;top:12px;left:12px;right:12px;pointer-events:none;display:flex;justify-content:space-between;gap:8px}
+.hub-map-info span{background:#fffefa;border:1px solid #d9dfd7;box-shadow:0 2px 10px #00000013;border-radius:7px;font-size:11px;padding:9px 12px;color:var(--ink)}
+.hub-list-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:22px 0 13px}
+.hub-list-head h3{font-size:16px;margin:0}.hub-empty{border:1px solid var(--line);background:white;border-radius:11px;padding:23px}
+.hub-empty h3{font:400 24px Georgia,serif;margin:12px 0}.hub-empty p{font-size:13px;color:var(--mute);line-height:1.6;max-width:500px}
+.hub-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.hub-cards article{border:1px solid var(--line);background:white;border-radius:10px;padding:17px}
+.hub-cards article h3{font:400 22px Georgia,serif;margin:10px 0}
+.hub-cards article p{font-size:13px;line-height:1.5;color:var(--mute)}
+.hub-locked{display:flex;align-items:center;gap:12px;background:#f2f4ef;border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:16px}
+.hub-locked strong{font-size:13px}.hub-locked p{font-size:12px;color:var(--mute);margin:4px 0 0;line-height:1.4}
+.hub-locked .button{margin-left:auto;flex-shrink:0}
+.hub-guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:18px}
+.hub-guide .card{padding:20px}.hub-guide h3{font-size:23px}.hub-guide .card p{font-size:13px}
+.hub-meta{font-size:11px;font-weight:750;letter-spacing:.12em;color:var(--forest);text-transform:uppercase}
+.hub-mobile-nav{display:none}
+.hub-sidefoot{font-size:11px;color:var(--mute);margin-top:18px}
+.hub-subtle{color:var(--mute);font-size:13px;line-height:1.6}
+@media(max-width:760px){
+ .section{padding:16px 0 48px}.wrap{padding-left:16px;padding-right:16px}
+ .hub-header{align-items:flex-start;margin:8px 0 17px}.hub-header h1{font-size:32px}.hub-header p{font-size:12px}
+ .hub-header .button{font-size:12px;min-height:38px;padding:9px 11px}
+ .hub-layout{display:block}.hub-side{display:none}.hub-mobile-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:17px;background:white;border:1px solid var(--line);padding:4px;border-radius:10px}
+ .hub-mobile-nav button{min-width:0;border:0;background:transparent;color:var(--mute);padding:11px 5px;font-size:12px;border-radius:7px;font-weight:600}
+ .hub-mobile-nav button.active{background:var(--ink);color:white}
+ .hub-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .hub-controls input{grid-column:1/-1}.hub-map{min-height:290px}.hub-map iframe{height:290px}
+ .hub-list-head{margin:18px 0 11px}.hub-cards,.hub-guide{grid-template-columns:1fr}
+ .hub-locked{flex-wrap:wrap}.hub-locked .button{margin-left:0;width:100%}
+}
 </style></head><body><header class="top"><div class="wrap"><div class="identity"><div class="mark">✧</div><div class="brand">ASCEND HUB<small>THE ASCENDERS CLUB</small></div></div><div class="right"><span class="chip">OPEN TO EXPLORE</span><button class="button secondary hidden" id="signout" type="button">Sign out</button></div></div></header><main><section class="hero"><div class="wrap"><div class="eyebrow">CONNECT · COLLABORATE · CULTIVATE</div><h1>Ascend <em>Hub.</em></h1><p>Explore real projects and discover collaboration opportunities across borders and disciplines. Browse freely; apply when you're ready to participate.</p></div></section><section class="section"><div class="wrap"><div id="status" class="status hidden" role="status"></div><div id="loading" class="skeleton">Connecting securely…</div><div id="content"></div></div></section></main><footer class="foot"><div class="wrap">© THE ASCENDERS CLUB · PRIVATE MEMBER NETWORK · <a href="mailto:contact@theascendtheory.com">CONTACT</a></div></footer>
 <script type="module">
 import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.4/+esm';
@@ -14,7 +62,7 @@ const b=(label,cls='')=>'<button class="button '+cls+'" type="submit">'+label+'<
 const field=(name,title,required=false,type='text',max=180)=>'<label for="'+name+'">'+title+'</label><input class="input" id="'+name+'" name="'+name+'" type="'+type+'" maxlength="'+max+'" '+(required?'required':'')+'/>';
 const area=(name,title,max=1500)=>'<label for="'+name+'">'+title+'</label><textarea id="'+name+'" name="'+name+'" maxlength="'+max+'"></textarea>';
 const formData=form=>Object.fromEntries(new FormData(form));
-let user=null,membership=null,isAdmin=false,members=[],projects=[],tab='projects',search='',blocked=new Set(),publicProjects=[],publicMode=true,publicTab='how',publicQuery='',publicDiscipline='All fields',publicCountry='All locations';
+let user=null,membership=null,isAdmin=false,members=[],projects=[],tab='projects',search='',blocked=new Set(),publicProjects=[],publicMode=true,publicTab='overview',publicQuery='',publicDiscipline='All fields',publicCountry='All locations';
 
 async function loadPublicProjects(){
  const {data,error}=await supabase.from('ascend_hub_projects').select('id,title,description,discipline,country,city,latitude,longitude,website,looking_for').eq('status','approved').order('created_at',{ascending:false}).limit(150);
@@ -27,40 +75,76 @@ function exploreAction(){
  if(membership.status==='pending')message('Your application is pending review. You can still explore public projects.');
  else message('Membership approval is required to collaborate with other members.');
 }
+
+const publicTabs=[['overview','Overview'],['projects','Projects'],['people','People']];
+const WORLD_EMBED='https://www.openstreetmap.org/export/embed.html?bbox=-168%2C-65%2C168%2C78&layer=mapnik';
+function setPublicTab(t){publicTab=t;renderPublic()}
 function renderPublic(){
- const intro='<div class="panel" style="background:#eaf0e8"><div class="eyebrow">OPEN DISCOVERY · PRIVATE PARTICIPATION</div><h2>Explore before you join.</h2><p>See the work and possibilities first. Browse publicly approved initiatives without creating an account. Membership approval is needed to contact fellow Ascenders, submit initiatives or participate in the network.</p><div class="actions"><button type="button" class="button green" id="publicJoin">'+(user?(membership?.status==='pending'?'Application under review':'Apply for membership'):'Request membership')+'</button><span class="pill">Browsing is open to everyone</span></div></div>';
- const tabs=['how','projects','people'];
- const controls='<div class="nav" aria-label="Explore the Hub">'+tabs.map(v=>'<button type="button" data-public-tab="'+v+'" class="'+(publicTab===v?'active':'')+'">'+({projects:'Explore projects',people:'Discover people',how:'Explore the Hub'}[v])+'</button>').join('')+'</div>';
- el('content').innerHTML=intro+controls+'<div id="publicScreen"></div>';
- el('publicJoin').onclick=exploreAction;
- document.querySelectorAll('[data-public-tab]').forEach(b=>b.onclick=()=>{publicTab=b.dataset.publicTab;renderPublic()});
+ el('loading').className='hidden';
+ const title=publicTab==='projects'?'Project discovery':publicTab==='people'?'People & collaboration':'Explore the network';
+ const subtitle=publicTab==='projects'?'Find publicly approved initiatives across disciplines and locations.':publicTab==='people'?'A curated worldwide network, with member privacy protected.':'A practical space to find initiatives, identify opportunities, and connect with changemakers.';
+ const side=publicTabs.map(([id,label])=>'<button type="button" data-hub-tab="'+id+'" class="'+(publicTab===id?'active':'')+'">'+(id==='overview'?'◉':id==='projects'?'⌖':'♧')+' &nbsp;'+label+'</button>').join('');
+ el('content').innerHTML='<div class="hub-header"><div><div class="hub-meta">THE ASCENDERS CLUB / HUB</div><h1>'+title+'</h1><p>'+subtitle+'</p></div><button type="button" class="button green" id="hubJoin">'+(membership?.status==='pending'?'Pending review':'Apply to join')+'</button></div><div class="hub-mobile-nav" aria-label="Hub navigation">'+publicTabs.map(([id,label])=>'<button type="button" data-hub-tab="'+id+'" class="'+(publicTab===id?'active':'')+'">'+label+'</button>').join('')+'</div><div class="hub-layout"><aside class="hub-side"><div class="hub-side-label">DISCOVER</div>'+side+'<div class="hub-side-label">YOUR ACCESS</div><div class="hub-side-note">Exploration is public.<br>Participation requires approved membership.</div></aside><div class="hub-main" id="hubWorkspace"></div></div>';
+ el('hubJoin').onclick=exploreAction;
+ document.querySelectorAll('[data-hub-tab]').forEach(b=>b.onclick=()=>setPublicTab(b.dataset.hubTab));
  renderPublicScreen();
 }
-function renderPublicScreen(){
- const root=el('publicScreen');if(!root)return;
- if(publicTab==='people'){
-  root.innerHTML='<div class="panel"><div class="eyebrow">GLOBAL COLLABORATION</div><h2>Meet people building what matters.</h2><p>Ascend Hub brings together independent changemakers, grassroots initiatives, educators, artists, researchers, entrepreneurs and organizations. It is not limited to one field, country or level of recognition.</p><div class="cards" style="margin:24px 0"><article class="card"><span class="tag">DISCOVER</span><h3>Find your people.</h3><p>Approved members search the verified directory by field, place and area of work.</p></article><article class="card"><span class="tag">CONNECT</span><h3>Work together.</h3><p>Find shared interests and opportunities to collaborate across disciplines and borders.</p></article></div><p class="tiny">Member biographies and contact information are not exposed to the public without permission. Member-to-member access requires Club approval.</p><button class="button green" id="peopleJoin">Request member access</button></div>';
-  el('peopleJoin').onclick=exploreAction;return;
- }
- if(publicTab==='how'){
-  root.innerHTML='<div class="eyebrow">THE PROCESS</div><div class="cards" style="margin:16px 0 22px"><article class="card"><span class="tag">01 · OPEN</span><h3>Discover freely.</h3><p>Explore publicly approved projects and areas of collaboration. No email or account required.</p></article><article class="card"><span class="tag">02 · APPLY</span><h3>Introduce yourself.</h3><p>Submit a membership application describing who you are and what you are working on.</p></article><article class="card"><span class="tag">03 · REVIEW</span><h3>A curated community.</h3><p>The Club reviews applications and projects to keep the directory intentional and relevant.</p></article><article class="card"><span class="tag">04 · PARTICIPATE</span><h3>Build together.</h3><p>Approved members explore the full network, submit initiatives and participate in collaboration opportunities.</p></article></div><div class="panel"><h2>One network. Many disciplines.</h2><p>Explore meaningful work in education, science, arts, ecology, technology, food systems, health, social impact and beyond. There is no popularity or prestige threshold for applying.</p><button id="howJoin" class="button green">Apply to the Club</button></div>';
-  el('howJoin').onclick=exploreAction;return;
- }
+function publicAccessBanner(){
+ return '<div class="hub-locked"><div><strong>Ready to participate?</strong><p>Join the review process to submit projects and collaborate with other members.</p></div><button type="button" class="button green" data-public-join>Apply for access</button></div>';
+}
+function attachPublicJoin(){
+ document.querySelectorAll('[data-public-join]').forEach(b=>b.onclick=exploreAction);
+}
+function mapEmbed(p){
+ if(!p)return '<iframe loading="lazy" title="Explore locations worldwide on an interactive map" referrerpolicy="no-referrer" src="'+WORLD_EMBED+'"></iframe>';
+ const lat=Number(p.latitude),lon=Number(p.longitude);
+ if(!Number.isFinite(lat)||!Number.isFinite(lon))return '<iframe loading="lazy" title="Worldwide map" src="'+WORLD_EMBED+'"></iframe>';
+ const delta=1.5,bbox=[lon-delta,lat-delta,lon+delta,lat+delta].join(',');
+ return '<iframe loading="lazy" title="Location of '+htmlEscape(p.title)+'" referrerpolicy="no-referrer" src="https://www.openstreetmap.org/export/embed.html?bbox='+encodeURIComponent(bbox)+'&amp;layer=mapnik&amp;marker='+encodeURIComponent(lat+','+lon)+'"></iframe>';
+}
+function mapPanel(list){
+ const withCoords=list.filter(p=>p.latitude!==null&&p.longitude!==null);
+ return '<div class="hub-map" id="hubMap">'+mapEmbed(null)+'<div class="hub-map-info"><span>WORLD MAP · PAN & ZOOM</span><span>'+withCoords.length+' located initiatives</span></div></div>'+(withCoords.length?'<div class="actions" style="margin-top:10px">'+withCoords.slice(0,20).map((p,i)=>'<button type="button" class="button secondary" data-geo="'+i+'">'+htmlEscape(p.title)+'</button>').join('')+'</div>':'');
+}
+function bindMap(list){
+ const located=list.filter(p=>p.latitude!==null&&p.longitude!==null);
+ document.querySelectorAll('[data-geo]').forEach(b=>b.onclick=()=>{
+ const p=located[Number(b.dataset.geo)];if(!p)return;
+ const node=el('hubMap');if(node){node.innerHTML=mapEmbed(p)+'<div class="hub-map-info"><span>'+htmlEscape(p.title)+'</span><span>'+htmlEscape([p.city,p.country].filter(Boolean).join(', '))+'</span></div>'}
+ });
+}
+function projectFilterRow(){
+ const f=(key,values,current)=>'<select class="input" id="'+key+'" aria-label="Filter projects">'+values.map(v=>'<option value="'+htmlEscape(v)+'" '+(v===current?'selected':'')+'>'+htmlEscape(v)+'</option>').join('')+'</select>';
  const disciplines=['All fields',...new Set(publicProjects.map(p=>p.discipline).filter(Boolean))].sort((a,b)=>a==='All fields'?-1:b==='All fields'?1:a.localeCompare(b));
  const countries=['All locations',...new Set(publicProjects.map(p=>p.country).filter(Boolean))].sort((a,b)=>a==='All locations'?-1:b==='All locations'?1:a.localeCompare(b));
- const result=publicProjects.filter(p=>(publicDiscipline==='All fields'||p.discipline===publicDiscipline)&&(publicCountry==='All locations'||p.country===publicCountry)&&[p.title,p.description,p.discipline,p.country,p.city,p.looking_for].join(' ').toLowerCase().includes(publicQuery.toLowerCase()));
- const select=(id,values,selected)=>'<select class="input" id="'+id+'" aria-label="'+(id==='pubDiscipline'?'Filter by field':'Filter by location')+'">'+values.map(v=>'<option '+(v===selected?'selected':'')+' value="'+htmlEscape(v)+'">'+htmlEscape(v)+'</option>').join('')+'</select>';
- const mapProjects=result.filter(p=>p.latitude!==null&&p.longitude!==null);
- const mapSection=mapProjects.length?'<div class="panel"><div class="eyebrow">GEOGRAPHIC DISCOVERY</div><h2>Explore the world.</h2><p>Choose an initiative to view its location.</p><div id="mapButtons" class="actions">'+mapProjects.slice(0,25).map((p,i)=>'<button class="button secondary" type="button" data-map="'+i+'">'+htmlEscape(p.title)+'</button>').join('')+'</div><div id="publicMap"></div></div>':'';
- root.innerHTML='<div class="row"><div><div class="eyebrow">PUBLIC PROJECT DIRECTORY</div><h2 style="font-family:Georgia,serif;font-weight:400;font-size:34px;margin:9px 0 18px">Discover initiatives.</h2></div><span class="pill">'+result.length+' published</span></div><div class="panel"><label for="publicSearch">Search by project, field, place or objective</label><input class="input" id="publicSearch" type="search" placeholder="Search initiatives worldwide" value="'+htmlEscape(publicQuery)+'"><div class="formgrid"><div><label for="pubDiscipline">Field</label>'+select('pubDiscipline',disciplines,publicDiscipline)+'</div><div><label for="pubCountry">Location</label>'+select('pubCountry',countries,publicCountry)+'</div></div></div>'+(result.length?'<div class="cards" style="margin-bottom:21px">'+result.map(p=>'<article class="card"><span class="tag">'+htmlEscape(p.discipline||'INITIATIVE')+'</span><h3>'+htmlEscape(p.title)+'</h3><p>'+htmlEscape(p.description)+'</p><p class="tiny">⌖ '+htmlEscape([p.city,p.country].filter(Boolean).join(', ')||'Worldwide')+'</p>'+(p.looking_for?'<p class="tiny"><b>Seeking:</b> '+htmlEscape(p.looking_for)+'</p>':'')+link(p.website,'Read project details')+'<div style="margin-top:18px"><button class="button secondary" type="button" data-join>Connect with project · Members only</button></div></article>').join('')+'</div>':'<div class="panel"><span class="tag">LAUNCHING THE NETWORK</span><h2>'+ (publicProjects.length?'No projects match these filters.':'The public directory is being curated.')+'</h2><p>'+ (publicProjects.length?'Adjust the filters to discover other approved initiatives.':'There are no publicly approved projects yet. We will show genuine initiatives here as they are reviewed and published—never invented member profiles or fake projects.')+'</p><button type="button" id="learnHow" class="button secondary">See how collaboration works</button></div>')+mapSection+'<div class="panel"><h2>Want to take part?</h2><p>Browsing is public. To create a profile, contact collaborators or submit a project, request membership and receive approval.</p><button class="button green" id="joinFromProjects">Request membership</button></div>';
- el('publicSearch').oninput=e=>{publicQuery=e.target.value;const pos=e.target.selectionStart;renderPublicScreen();const input=el('publicSearch');input.focus();input.setSelectionRange(pos,pos)};
- el('pubDiscipline').onchange=e=>{publicDiscipline=e.target.value;renderPublicScreen()};
- el('pubCountry').onchange=e=>{publicCountry=e.target.value;renderPublicScreen()};
- if(el('learnHow'))el('learnHow').onclick=()=>{publicTab='how';renderPublic()};
- el('joinFromProjects').onclick=exploreAction;
- document.querySelectorAll('[data-join]').forEach(b=>b.onclick=exploreAction);
- const mapRoot=el('publicMap');
- if(mapRoot){document.querySelectorAll('[data-map]').forEach(b=>b.onclick=()=>{const p=mapProjects[Number(b.dataset.map)];if(!p)return;const lat=Number(p.latitude),lon=Number(p.longitude);if(!Number.isFinite(lat)||!Number.isFinite(lon))return;mapRoot.innerHTML='<iframe title="Map of '+htmlEscape(p.title)+'" loading="lazy" width="100%" height="300" style="margin-top:14px;border:1px solid #dce3da;border-radius:8px" referrerpolicy="no-referrer" src="https://www.openstreetmap.org/export/embed.html?bbox='+encodeURIComponent((lon-1.4)+','+(lat-1)+','+(lon+1.4)+','+(lat+1))+'&amp;layer=mapnik&amp;marker='+encodeURIComponent(lat+','+lon)+'"></iframe>';});}
+ return '<div class="hub-controls"><input class="input" type="search" aria-label="Search projects" id="projectSearch" placeholder="Search initiatives, places or disciplines" value="'+htmlEscape(publicQuery)+'">'+f('projectField',disciplines,publicDiscipline)+f('projectPlace',countries,publicCountry)+'</div>';
+}
+function filteredPublic(){
+ return publicProjects.filter(p=>(publicDiscipline==='All fields'||p.discipline===publicDiscipline)&&(publicCountry==='All locations'||p.country===publicCountry)&&[p.title,p.description,p.discipline,p.country,p.city,p.looking_for].join(' ').toLowerCase().includes(publicQuery.toLowerCase()));
+}
+function publicCards(list){
+ return '<div class="hub-cards">'+list.map(p=>'<article><span class="tag">'+htmlEscape(p.discipline||'INITIATIVE')+'</span><h3>'+htmlEscape(p.title)+'</h3><p>'+htmlEscape(p.description)+'</p><p class="tiny">⌖ '+htmlEscape([p.city,p.country].filter(Boolean).join(', ')||'Worldwide')+'</p>'+(p.looking_for?'<p class="tiny"><b>Seeking:</b> '+htmlEscape(p.looking_for)+'</p>':'')+link(p.website,'View project site')+'<div class="actions" style="margin-top:13px"><button type="button" data-public-join class="button secondary">Collaborate · Members only</button></div></article>').join('')+'</div>';
+}
+function renderProjectExplorer(){
+ const result=filteredPublic();
+ return '<div class="hub-toolrow"><h2>World explorer</h2><span class="pill">'+result.length+' published initiatives</span></div>'+projectFilterRow()+mapPanel(result)+'<div class="hub-list-head"><h3>Approved projects</h3><span class="hub-subtle">Real listings only</span></div>'+(result.length?publicCards(result):'<div class="hub-empty"><span class="tag">'+(publicProjects.length?'NO MATCHES':'PUBLIC DIRECTORY · OPEN FOR EXPLORATION')+'</span><h3>'+(publicProjects.length?'No projects match these filters.':'Building the first public collection.')+'</h3><p>'+(publicProjects.length?'Try a different field or location to find relevant initiatives.':'The map and filters are operational. Public project listings will appear as real initiatives are reviewed and approved. No sample organizations or fabricated profiles have been inserted.')+'</p></div>')+publicAccessBanner();
+}
+function renderPeopleExplorer(){
+ return '<div class="hub-toolrow"><h2>People directory</h2><span class="pill">Verified member access</span></div><div class="hub-map">'+mapEmbed(null)+'<div class="hub-map-info"><span>WORLDWIDE CONNECTIONS</span><span>Member coordinates private</span></div></div><div class="hub-list-head"><h3>Find people by their work</h3></div><div class="hub-guide"><article class="card"><span class="tag">DISCOVER</span><h3>Fields of work</h3><p>Find collaborators across research, creative practice, enterprise, ecology, education and more.</p></article><article class="card"><span class="tag">CONNECT</span><h3>Shared purpose</h3><p>Approved members can search profiles and discover common interests and initiatives.</p></article><article class="card"><span class="tag">PROTECT</span><h3>Curated access</h3><p>Personal profiles and direct collaboration are only available to approved members.</p></article></div><div class="hub-empty"><span class="tag">PRIVATE BY DESIGN</span><h3>Member profiles are not publicly listed.</h3><p>Visitor exploration is open, but we do not display personal information without member approval and publication consent.</p></div>'+publicAccessBanner();
+}
+function renderOverview(){
+ return '<div class="hub-toolrow"><h2>Explore what is possible</h2><span class="pill">Public access</span></div><div class="hub-guide"><article class="card"><span class="tag">01 / DISCOVER</span><h3>Explore initiatives.</h3><p>Browse approved real projects across fields and countries. Search and geographic navigation are available to everyone.</p><button type="button" class="button secondary" data-open-tab="projects">Browse projects</button></article><article class="card"><span class="tag">02 / CONNECT</span><h3>Find your people.</h3><p>Understand the global network and the disciplines represented. Personal directory access follows approval.</p><button type="button" class="button secondary" data-open-tab="people">Explore people</button></article><article class="card"><span class="tag">03 / CONTRIBUTE</span><h3>Build together.</h3><p>Submit a membership application to propose initiatives and access collaboration features once approved.</p><button type="button" class="button secondary" data-public-join>Join the network</button></article></div><div class="hub-toolrow"><h2>Global activity map</h2><span class="pill">Interactive</span></div>'+mapPanel(publicProjects)+'<div class="hub-list-head"><h3>Recently approved initiatives</h3><button type="button" class="button secondary" data-open-tab="projects">Explore all projects</button></div>'+(publicProjects.length?publicCards(publicProjects.slice(0,4)):'<div class="hub-empty"><span class="tag">COMMUNITY LAUNCH</span><h3>No published projects yet.</h3><p>The Hub is accepting its first verified projects. The map is available to explore, and approved initiatives will appear automatically once published. Nothing here is presented as activity that has not happened.</p></div>')+publicAccessBanner();
+}
+function renderPublicScreen(){
+ const root=el('hubWorkspace');if(!root)return;
+ root.innerHTML=publicTab==='projects'?renderProjectExplorer():publicTab==='people'?renderPeopleExplorer():renderOverview();
+ attachPublicJoin();
+ document.querySelectorAll('[data-open-tab]').forEach(b=>b.onclick=()=>setPublicTab(b.dataset.openTab));
+ const searchInput=el('projectSearch');
+ if(searchInput)searchInput.oninput=e=>{publicQuery=e.target.value;const pos=e.target.selectionStart;renderPublicScreen();const n=el('projectSearch');n.focus();n.setSelectionRange(pos,pos)};
+ if(el('projectField'))el('projectField').onchange=e=>{publicDiscipline=e.target.value;renderPublicScreen()};
+ if(el('projectPlace'))el('projectPlace').onchange=e=>{publicCountry=e.target.value;renderPublicScreen()};
+ bindMap(publicTab==='projects'?filteredPublic():publicProjects);
 }
 
 function render(){
