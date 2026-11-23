@@ -13,7 +13,7 @@ module.exports={
   userInterfaceStyle:"light",
   ios:{bundleIdentifier:app.id,supportsTablet:true,buildNumber:"1"},
   android:{package:app.id,versionCode:1},
-  plugins:[],
+  plugins:variant==="media"?[["expo-video",{supportsBackgroundPlayback:true,supportsPictureInPicture:true}]]:[],
   extra:{variant}
  }
 };
