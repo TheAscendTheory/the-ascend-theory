@@ -14,7 +14,7 @@ const b=(label,cls='')=>'<button class="button '+cls+'" type="submit">'+label+'<
 const field=(name,title,required=false,type='text',max=180)=>'<label for="'+name+'">'+title+'</label><input class="input" id="'+name+'" name="'+name+'" type="'+type+'" maxlength="'+max+'" '+(required?'required':'')+'/>';
 const area=(name,title,max=1500)=>'<label for="'+name+'">'+title+'</label><textarea id="'+name+'" name="'+name+'" maxlength="'+max+'"></textarea>';
 const formData=form=>Object.fromEntries(new FormData(form));
-let user=null,membership=null,isAdmin=false,members=[],projects=[],tab='projects',search='',blocked=new Set(),publicProjects=[],publicMode=true,publicTab='projects',publicQuery='',publicDiscipline='All fields',publicCountry='All locations';
+let user=null,membership=null,isAdmin=false,members=[],projects=[],tab='projects',search='',blocked=new Set(),publicProjects=[],publicMode=true,publicTab='how',publicQuery='',publicDiscipline='All fields',publicCountry='All locations';
 
 async function loadPublicProjects(){
  const {data,error}=await supabase.from('ascend_hub_projects').select('id,title,description,discipline,country,city,latitude,longitude,website,looking_for').eq('status','approved').order('created_at',{ascending:false}).limit(150);
@@ -29,8 +29,8 @@ function exploreAction(){
 }
 function renderPublic(){
  const intro='<div class="panel" style="background:#eaf0e8"><div class="eyebrow">OPEN DISCOVERY · PRIVATE PARTICIPATION</div><h2>Explore before you join.</h2><p>See the work and possibilities first. Browse publicly approved initiatives without creating an account. Membership approval is needed to contact fellow Ascenders, submit initiatives or participate in the network.</p><div class="actions"><button type="button" class="button green" id="publicJoin">'+(user?(membership?.status==='pending'?'Application under review':'Apply for membership'):'Request membership')+'</button><span class="pill">Browsing is open to everyone</span></div></div>';
- const tabs=['projects','people','how'];
- const controls='<div class="nav" aria-label="Explore the Hub">'+tabs.map(v=>'<button type="button" data-public-tab="'+v+'" class="'+(publicTab===v?'active':'')+'">'+({projects:'Explore projects',people:'Discover people',how:'How the Hub works'}[v])+'</button>').join('')+'</div>';
+ const tabs=['how','projects','people'];
+ const controls='<div class="nav" aria-label="Explore the Hub">'+tabs.map(v=>'<button type="button" data-public-tab="'+v+'" class="'+(publicTab===v?'active':'')+'">'+({projects:'Explore projects',people:'Discover people',how:'Explore the Hub'}[v])+'</button>').join('')+'</div>';
  el('content').innerHTML=intro+controls+'<div id="publicScreen"></div>';
  el('publicJoin').onclick=exploreAction;
  document.querySelectorAll('[data-public-tab]').forEach(b=>b.onclick=()=>{publicTab=b.dataset.publicTab;renderPublic()});
