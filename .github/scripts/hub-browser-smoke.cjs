@@ -1,0 +1,22 @@
+const {chromium}=require('playwright');
+(async()=>{
+ const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+ const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ const exceptions=[];
+ page.on('pageerror',e=>exceptions.push(e.message));
+ await page.goto('https://theascendtheory.github.io/the-ascend-theory/',{waitUntil:'domcontentloaded',timeout:35000});
+ await page.getByText('Explore before you join.').waitFor({timeout:30000});
+ if(await page.locator('input#email').count())throw Error('Site blocks discovery behind email');
+ await page.getByRole('button',{name:'Explore projects'}).click();
+ await page.locator('#publicSearch').waitFor();
+ await page.locator('#publicSearch').fill('education');
+ await page.getByRole('button',{name:'Discover people'}).click();
+ await page.getByText('Meet people building what matters.').waitFor();
+ await page.getByRole('button',{name:'Request member access'}).click();
+ await page.locator('#email').waitFor();
+ await page.getByRole('button',{name:'Back to exploration'}).click();
+ await page.getByText('Explore before you join.').waitFor();
+ if(exceptions.length)throw Error('Browser errors: '+exceptions.join('; '));
+ console.log('PASS: Mobile browser visitors explore without login; membership gate appears only when joining.');
+ await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});
