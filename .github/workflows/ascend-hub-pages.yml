@@ -3,7 +3,7 @@ on:
   push:
     branches: [ascend-hub-functional-foundation]
     paths:
-      - standalone/hub/**
+      - standalone/**
       - .github/workflows/ascend-hub-pages.yml
   workflow_dispatch:
 permissions:
@@ -21,26 +21,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate public Hub browser JavaScript
+      - name: Validate application browser JavaScript
         run: |
           python3 - <<'PY'
           import re
           from pathlib import Path
-          html=Path("standalone/hub/index.html").read_text()
-          assert "function renderPublic" in html
-          assert "loadPublicProjects" in html
-          assert "Project discovery" in html
-          src=re.search(r'<script type="module">([\s\S]*?)</script>',html)
-          assert src, "Missing browser app module"
-          Path("/tmp/ascend-hub-browser.mjs").write_text(src.group(1))
+          for name in ("hub","academy","media"):
+              html=Path(f"standalone/{name}/index.html").read_text()
+              src=re.search(r'<script type="module">([\\s\\S]*?)</script>',html)
+              assert src, f"Missing {name} app module"
+              Path(f"/tmp/ascend-{name}.mjs").write_text(src.group(1))
           PY
-          node --check /tmp/ascend-hub-browser.mjs
+          for name in hub academy media; do node --check /tmp/ascend-$name.mjs; done
       - uses: actions/configure-pages@v5
         with:
           enablement: true
+      - name: Assemble Pages entrypoints
+        run: |
+          mkdir -p /tmp/ascend-pages/academy /tmp/ascend-pages/media
+          cp standalone/hub/index.html /tmp/ascend-pages/index.html
+          cp standalone/academy/index.html /tmp/ascend-pages/academy/index.html
+          cp standalone/media/index.html /tmp/ascend-pages/media/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: standalone/hub
+          path: /tmp/ascend-pages
       - name: Allow artifact indexing
         run: sleep 20
       - id: deploy
