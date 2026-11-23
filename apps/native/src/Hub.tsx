@@ -89,6 +89,7 @@ export default function NativeHub({user}:{user:User|null}){
  }
  function button(text:string,cb:()=>void,secondary=false){return <TouchableOpacity accessibilityRole="button" onPress={cb} style={secondary?styles.secondaryButton:styles.button}><Text style={secondary?styles.secondaryText:styles.buttonText}>{text}</Text></TouchableOpacity>;}
  if(browsePublic&&(!user||membership?.status!=="approved"&&!loading))return <HubDiscover onApply={()=>setBrowsePublic(false)}/>;
+ if(user&&membership?.status==="approved"&&tab==="discover")return <View style={{flex:1}}><TouchableOpacity accessibilityRole="button" style={styles.secondaryButton} onPress={()=>setTab("projects")}><Text style={styles.secondaryText}>← Member workspace</Text></TouchableOpacity><HubDiscover onApply={()=>setTab("profile")}/></View>;
  return <ScrollView style={styles.body} keyboardShouldPersistTaps="handled">
   <Text style={styles.eyebrow}>ASCEND HUB / CONNECTION</Text><Text style={styles.hero}>WE RISE TOGETHER.</Text><Text style={styles.intro}>A curated world of changemakers, opportunities and shared work.</Text>
   {!user?<SignIn title="Apply to join Ascend Hub"/>:loading?<Text style={styles.detail}>Loading your secure membership…</Text>:membership?.status!=="approved"?
