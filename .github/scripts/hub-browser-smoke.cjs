@@ -8,7 +8,7 @@ const {chromium}=require('playwright');
  await page.goto('https://theascendtheory.github.io/the-ascend-theory/',{waitUntil:'domcontentloaded',timeout:45000});
  await page.getByRole('heading',{name:"What's happening"}).waitFor({timeout:30000});
  if(await page.locator('input#email').count())throw Error('Email is gating public exploration');
- await page.getByRole('heading',{name:"Discover what's happening"}).waitFor();
+ await page.locator('#eventSearch').waitFor();
  await page.locator('.hub-map iframe').first().waitFor();
  await page.getByRole('button',{name:'Projects',exact:true}).first().click();
  await page.locator('#projectSearch').waitFor();
