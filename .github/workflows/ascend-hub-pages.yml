@@ -29,7 +29,7 @@ jobs:
           html=Path("standalone/hub/index.html").read_text()
           assert "function renderPublic" in html
           assert "loadPublicProjects" in html
-          assert "Explore projects" in html
+          assert "Project discovery" in html
           src=re.search(r'<script type="module">([\s\S]*?)</script>',html)
           assert src, "Missing browser app module"
           Path("/tmp/ascend-hub-browser.mjs").write_text(src.group(1))
