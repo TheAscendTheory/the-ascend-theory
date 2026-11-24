@@ -1,8 +1,28 @@
 import {useEffect,useRef,useState} from "react";
-import {Image,Linking,ScrollView,Text,TextInput,TouchableOpacity,View} from "react-native";
+import {Image,Linking,ScrollView,Text,TextInput,TouchableOpacity,View,StyleSheet} from "react-native";
 import {useVideoPlayer,VideoView} from "expo-video";
 import {api} from "./supabase";
 import {styles,palette} from "./theme";
+const mediaUI=StyleSheet.create({...styles,
+body:{...styles.body,backgroundColor:"#091019"},
+eyebrow:{...styles.eyebrow,color:"#8fe7d1"},
+hero:{...styles.hero,color:"#f2f6f8",fontWeight:"900",letterSpacing:-2.5},
+intro:{...styles.intro,color:"#a5b9c6"},
+section:{...styles.section,color:"#f2faf9"},
+panel:{...styles.panel,backgroundColor:"#182530",borderColor:"#304654",borderRadius:15},
+panelSelected:{...styles.panelSelected,borderColor:"#8de6d1"},
+panelTitle:{...styles.panelTitle,color:"#f5f8fa"},
+detail:{...styles.detail,color:"#adc0ca"},
+meta:{...styles.meta,color:"#7fe1c9"},
+textInput:{...styles.textInput,backgroundColor:"#15232d",color:"#f0f7f6",borderColor:"#42616a",borderRadius:28},
+button:{...styles.button,backgroundColor:"#9df3df",borderColor:"#9df3df",borderRadius:28},
+buttonText:{...styles.buttonText,color:"#0a2921"},
+secondaryButton:{...styles.secondaryButton,backgroundColor:"#21323f",borderColor:"#41616a",borderRadius:24},
+secondaryText:{...styles.secondaryText,color:"#e4f4f2"},
+notice:{...styles.notice,backgroundColor:"#213e41",borderLeftColor:"#8adcc9"},
+noticeText:{...styles.noticeText,color:"#d2f4ee"}
+});
+
 
 type Media={id:string;title:string;description:string;kind:string;source:"youtube"|"file";source_url:string;thumbnail_url:string|null;access_level:string};
 type Playlist={id:string;title:string;description:string;thumbnail_url:string|null;published:boolean};
@@ -41,19 +61,19 @@ function MediaPlayer({queue,index,onNext,onBack}:{queue:Media[];index:number;onN
   return()=>subscription.remove();
  },[player,index,queue.length,onNext]);
  if(!item)return null;
- return <View style={styles.panel}>
-  <Text style={styles.meta}>NOW PLAYING · {index+1} OF {queue.length}</Text>
+ return <View style={mediaUI.panel}>
+  <Text style={mediaUI.meta}>NOW PLAYING · {index+1} OF {queue.length}</Text>
   {isVideo(item)?<VideoView player={player} nativeControls contentFit="contain" allowsPictureInPicture style={{height:230,width:"100%",backgroundColor:"#101510",marginVertical:15}}/>:<View style={{height:180,backgroundColor:palette.wash,alignItems:"center",justifyContent:"center",marginVertical:15}}>
    {validUrl(item.thumbnail_url)?<Image source={{uri:item.thumbnail_url!}} style={{width:"100%",height:"100%"}} resizeMode="cover"/>:<Text style={{fontSize:52,color:palette.green}}>♫</Text>}
   </View>}
-  <Text style={styles.panelTitle}>{item.title}</Text><Text style={styles.detail}>{item.description}</Text>
-  {error?<Text style={styles.detail}>Playback error: {error}</Text>:null}
+  <Text style={mediaUI.panelTitle}>{item.title}</Text><Text style={mediaUI.detail}>{item.description}</Text>
+  {error?<Text style={mediaUI.detail}>Playback error: {error}</Text>:null}
   <View style={{flexDirection:"row",gap:10,marginTop:18,flexWrap:"wrap"}}>
-   <TouchableOpacity accessibilityRole="button" style={styles.secondaryButton} onPress={onBack}><Text style={styles.secondaryText}>← Library</Text></TouchableOpacity>
-   <TouchableOpacity accessibilityRole="button" style={styles.secondaryButton} onPress={()=>{if(player.playing){player.pause();setPaused(true)}else{player.play();setPaused(false)}}}><Text style={styles.secondaryText}>{paused?"▶ Play":"Ⅱ Pause"}</Text></TouchableOpacity>
-   <TouchableOpacity accessibilityRole="button" style={styles.secondaryButton} disabled={index===queue.length-1} onPress={onNext}><Text style={styles.secondaryText}>Next →</Text></TouchableOpacity>
+   <TouchableOpacity accessibilityRole="button" style={mediaUI.secondaryButton} onPress={onBack}><Text style={mediaUI.secondaryText}>← Library</Text></TouchableOpacity>
+   <TouchableOpacity accessibilityRole="button" style={mediaUI.secondaryButton} onPress={()=>{if(player.playing){player.pause();setPaused(true)}else{player.play();setPaused(false)}}}><Text style={mediaUI.secondaryText}>{paused?"▶ Play":"Ⅱ Pause"}</Text></TouchableOpacity>
+   <TouchableOpacity accessibilityRole="button" style={mediaUI.secondaryButton} disabled={index===queue.length-1} onPress={onNext}><Text style={mediaUI.secondaryText}>Next →</Text></TouchableOpacity>
   </View>
-  <Text style={[styles.detail,{marginTop:14,fontSize:12}]}>Playback uses hosted audio or video sources. Background audio and lock-screen controls require a signed native build and real-device verification. Automatic queue transitions may be affected by operating-system background suspension.</Text>
+  <Text style={[mediaUI.detail,{marginTop:14,fontSize:12}]}>Playback uses hosted audio or video sources. Background audio and lock-screen controls require a signed native build and real-device verification. Automatic queue transitions may be affected by operating-system background suspension.</Text>
  </View>;
 }
 export default function NativeMedia(){
@@ -102,27 +122,27 @@ export default function NativeMedia(){
  const next=()=>setActiveIndex(i=>Math.min(i+1,selection.length-1));
  const categories=["all",...new Set(items.map(m=>m.kind))];
  const visible=items.filter(m=>(filter==="all"||m.kind===filter)&&[m.title,m.description,m.kind].join(" ").toLowerCase().includes(search.toLowerCase()));
- return <ScrollView style={styles.body} keyboardShouldPersistTaps="handled">
-  <Text style={styles.eyebrow}>ASCEND MEDIA / WATCH & LISTEN · DEMO MODE</Text>
-  <Text style={styles.hero}>STORIES WITHOUT LIMITS.</Text>
-  <Text style={styles.intro}>Film, interviews, documentaries and podcasts in one library. Your listening and viewing share a single experience.</Text>
+ return <ScrollView style={mediaUI.body} keyboardShouldPersistTaps="handled">
+  <Text style={mediaUI.eyebrow}>ASCEND MEDIA / WATCH & LISTEN · DEMO MODE</Text>
+  <Text style={mediaUI.hero}>STORIES WITHOUT LIMITS.</Text>
+  <Text style={mediaUI.intro}>Film, interviews, documentaries and podcasts in one library. Your listening and viewing share a single experience.</Text>
   {selection.length>0?<MediaPlayer queue={selection} index={activeIndex} onNext={next} onBack={()=>{setSelection([]);setActiveIndex(0)}}/>:
   <>
-   <TextInput style={styles.textInput} placeholder="Search films, music and podcasts" placeholderTextColor="#67796b" value={search} onChangeText={setSearch}/>
+   <TextInput style={mediaUI.textInput} placeholder="Search films, music and podcasts" placeholderTextColor="#67796b" value={search} onChangeText={setSearch}/>
    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginVertical:12}}>
-    {categories.map(c=><TouchableOpacity accessibilityRole="button" key={c} onPress={()=>setFilter(c)} style={[styles.secondaryButton,{marginRight:8,backgroundColor:filter===c?palette.wash:undefined}]}><Text style={styles.secondaryText}>{c==="all"?"All formats":c}</Text></TouchableOpacity>)}
+    {categories.map(c=><TouchableOpacity accessibilityRole="button" key={c} onPress={()=>setFilter(c)} style={[mediaUI.secondaryButton,{marginRight:8,backgroundColor:filter===c?palette.wash:undefined}]}><Text style={mediaUI.secondaryText}>{c==="all"?"All formats":c}</Text></TouchableOpacity>)}
    </ScrollView>
-   {playlists.length>0?<><Text style={styles.section}>Curated playlists</Text>{playlists.map(p=>{
+   {playlists.length>0?<><Text style={mediaUI.section}>Curated playlists</Text>{playlists.map(p=>{
     const queue=entries.filter(x=>x.playlist_id===p.id).sort((x,y)=>x.sequence-y.sequence).map(e=>items.find(i=>i.id===e.media_id)).filter((x):x is Media=>!!x);
-    return <TouchableOpacity accessibilityRole="button" key={p.id} style={styles.panel} onPress={()=>void playSelection(queue)}><Text style={styles.meta}>MIXED MEDIA · {queue.length} TITLES</Text><Text style={styles.panelTitle}>{p.title}</Text><Text style={styles.detail}>{p.description}</Text><Text style={styles.meta}>▶ PLAY COLLECTION</Text></TouchableOpacity>;
+    return <TouchableOpacity accessibilityRole="button" key={p.id} style={mediaUI.panel} onPress={()=>void playSelection(queue)}><Text style={mediaUI.meta}>MIXED MEDIA · {queue.length} TITLES</Text><Text style={mediaUI.panelTitle}>{p.title}</Text><Text style={mediaUI.detail}>{p.description}</Text><Text style={mediaUI.meta}>▶ PLAY COLLECTION</Text></TouchableOpacity>;
    })}</>:null}
-   <Text style={styles.section}>Browse releases</Text>
-   {loading?<Text style={styles.detail}>Loading media…</Text>:visible.length===0?<View style={styles.panel}><Text style={styles.panelTitle}>No published releases yet.</Text><Text style={styles.detail}>The library will show original films and audio after real editorial publication.</Text></View>:visible.map(m=><TouchableOpacity accessibilityRole="button" key={m.id} onPress={()=>void selectItem(m)} style={styles.panel}>
+   <Text style={mediaUI.section}>Browse releases</Text>
+   {loading?<Text style={mediaUI.detail}>Loading media…</Text>:visible.length===0?<View style={mediaUI.panel}><Text style={mediaUI.panelTitle}>No published releases yet.</Text><Text style={mediaUI.detail}>The library will show original films and audio after real editorial publication.</Text></View>:visible.map(m=><TouchableOpacity accessibilityRole="button" key={m.id} onPress={()=>void selectItem(m)} style={mediaUI.panel}>
     {validUrl(m.thumbnail_url)?<Image source={{uri:m.thumbnail_url!}} style={{height:160,marginBottom:12}} resizeMode="cover"/>:<View style={{height:120,backgroundColor:palette.wash,marginBottom:12,alignItems:"center",justifyContent:"center"}}><Text style={{fontSize:34,color:palette.green}}>▷</Text></View>}
-    <Text style={styles.meta}>{m.id.startsWith("demo-")?"DEMO · "+m.kind.toUpperCase():m.kind.toUpperCase()}</Text><Text style={styles.panelTitle}>{m.title}</Text><Text style={styles.detail}>{m.description}</Text>
-    <Text style={[styles.detail,{marginTop:10,color:palette.ink,fontWeight:"700"}]}>{isDirect(m)?"Play in Ascend Media":"Open external source"}</Text>
+    <Text style={mediaUI.meta}>{m.id.startsWith("demo-")?"DEMO · "+m.kind.toUpperCase():m.kind.toUpperCase()}</Text><Text style={mediaUI.panelTitle}>{m.title}</Text><Text style={mediaUI.detail}>{m.description}</Text>
+    <Text style={[mediaUI.detail,{marginTop:10,color:palette.ink,fontWeight:"700"}]}>{isDirect(m)?"Play in Ascend Media":"Open external source"}</Text>
    </TouchableOpacity>)}
   </>}
-  {message?<View style={styles.notice}><Text style={styles.noticeText}>{message}</Text></View>:null}<View style={styles.spacer}/>
+  {message?<View style={mediaUI.notice}><Text style={mediaUI.noticeText}>{message}</Text></View>:null}<View style={mediaUI.spacer}/>
  </ScrollView>;
 }
