@@ -107,7 +107,7 @@ jobs:
           PLATFORM: ${{ matrix.platform }}
         run: |
           set -euo pipefail
-          npx --yes eas-cli@16.29.1 build \
+          npx --yes eas-cli@latest build \
             --platform "$PLATFORM" \
             --profile "preview-$APP_VARIANT" \
             --non-interactive \
