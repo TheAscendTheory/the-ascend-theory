@@ -4,7 +4,7 @@
 
 ## Separation and safety
 - Database fixtures live exclusively in public.ascend_demo_fixtures (RLS: public read-only). Do **not** create fake Supabase Auth accounts, approve synthetic members, publish dummy rows to real project/event/course/media tables, or write simulated activity to real tables.
-- 15 fixtures: Hub: 3 projects, 2 events, 2 fictional personas, 2 fictional portfolios; Academy: 3 courses with lesson format examples and practice quizzes; Media: 3 playable technical samples.
+- 15 fixtures: Hub: 3 projects, 2 events, 2 fictional personas, 2 fictional portfolios; Academy: 3 courses with reading, interactive practice, video and audio format examples plus penalty-free practice quizzes; Media: 3 playable technical samples.
 - All samples must be marked DEMO. The video/audio linked are externally hosted sample files and are not Ascenders original productions.
 - Browser Hub demo follows, connections and RSVP are **sessionStorage-only previews**, not actual network actions.
 - Academy demo grades are **sessionStorage-only**, never written to real Academy grades or memberships.
@@ -24,3 +24,8 @@
 - Hub: https://theascendtheory.github.io/the-ascend-theory/
 - Academy: https://theascendtheory.github.io/the-ascend-theory/academy/
 - Media: https://theascendtheory.github.io/the-ascend-theory/media/
+
+## Latest checks
+- SQL verified anonymous role can read fixture records and that the Systems Thinking demonstration has 3 alternate lesson modes (read, practice, listen).
+- Hub Pages mobile browser acceptance run 45322611195 passed following the temporary demo interaction additions. All three native app variants passed TypeScript and JavaScript-bundle CI in run 45322515732.
+- The Academy and Media real-browser demo tests use `.github/scripts/ascend-demo-browser-smoke.cjs` and `.github/workflows/ascend-demo-browser.yml`; report final status from the latest run rather than presuming success.
