@@ -32,3 +32,9 @@
 - Test media background/lock-screen playback on signed iPhone and Android; test Academy assessments, Hub email magic links, member approval, content uploads, payments and privacy.
 
 **Current launch state:** production Shop link fixed, actual Fourthwall live selling not verified. Native builds partially automated, not yet approved or published.
+
+## Android install milestone — Nov 23 evening / GitHub UTC Nov 24
+- GitHub Actions run 45310584756 successfully generated installable APK artifacts `ascend-academy-android-test-apk` (artifact 14882693850) and `ascend-media-android-test-apk` (artifact 14883363158). Both expire December 8, 2026. These are **internal testing APKs, not Play Store-signed release AABs**.
+- Hub failed intermittent Gradle repository plugin resolution; reran failed Hub job in run 45310584756 (second attempt). Do not claim complete until artifact exists.
+- Next technical release gate: Expo account and three EAS projects; Expo account-scoped token added as a GitHub Actions secret by owner, project UUIDs as repo variables; Apple Developer/iOS signing and TestFlight, Android Play store credentials. Actual iPhone install and background audio require signed physical-device tests.
+- Important: store work is paused at user's instruction. Focus only on mobile apps.
