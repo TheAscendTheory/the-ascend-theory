@@ -70,13 +70,19 @@ export default function NativeMedia(){
   if(!api){setMessage("Media catalogue connection unavailable.");setLoading(false);return}
   let current=true;
   async function load(){
-   const [a,b,c]=await Promise.all([
+   const [a,b,c,d]=await Promise.all([
     api!.from("ascend_media_items").select("id,title,description,kind,source,source_url,thumbnail_url,access_level").eq("published",true).eq("access_level","free").order("created_at",{ascending:false}).limit(200),
     api!.from("ascend_media_playlists").select("id,title,description,thumbnail_url,published").eq("published",true).limit(100),
-    api!.from("ascend_media_playlist_entries").select("playlist_id,media_id,sequence").order("sequence").limit(500)
+    api!.from("ascend_media_playlist_entries").select("playlist_id,media_id,sequence").order("sequence").limit(500),
+    api!.from("ascend_demo_fixtures").select("payload").eq("kind","media_item")
    ]);
    if(!current)return;
-   setItems((a.data||[]) as Media[]);setPlaylists((b.data||[]) as Playlist[]);setEntries((c.data||[]) as Entry[]);
+   const samples=((d.data||[]).map(x=>x.payload)) as Media[];
+   setItems([...(a.data||[]) as Media[],...samples]);
+   const samplePlaylist:Playlist={id:"demo-mixed-queue",title:"DEMO · Mixed film + audio collection",description:"Test the shared player with a sample video, podcast audio and another video. Fictional content.",thumbnail_url:null,published:true};
+   setPlaylists([...(b.data||[]) as Playlist[],...(samples.length?[samplePlaylist]:[])]);
+   const sampleEntries= samples.map((m,i)=>({playlist_id:"demo-mixed-queue",media_id:m.id,sequence:i}));
+   setEntries([...(c.data||[]) as Entry[],...sampleEntries]);
    if(a.error||b.error||c.error)setMessage(a.error?.message||b.error?.message||c.error?.message||"Could not read playlists");
    setLoading(false);
   }
@@ -97,7 +103,7 @@ export default function NativeMedia(){
  const categories=["all",...new Set(items.map(m=>m.kind))];
  const visible=items.filter(m=>(filter==="all"||m.kind===filter)&&[m.title,m.description,m.kind].join(" ").toLowerCase().includes(search.toLowerCase()));
  return <ScrollView style={styles.body} keyboardShouldPersistTaps="handled">
-  <Text style={styles.eyebrow}>ASCEND MEDIA / WATCH & LISTEN</Text>
+  <Text style={styles.eyebrow}>ASCEND MEDIA / WATCH & LISTEN · DEMO MODE</Text>
   <Text style={styles.hero}>STORIES WITHOUT LIMITS.</Text>
   <Text style={styles.intro}>Film, interviews, documentaries and podcasts in one library. Your listening and viewing share a single experience.</Text>
   {selection.length>0?<MediaPlayer queue={selection} index={activeIndex} onNext={next} onBack={()=>{setSelection([]);setActiveIndex(0)}}/>:
@@ -113,7 +119,7 @@ export default function NativeMedia(){
    <Text style={styles.section}>Browse releases</Text>
    {loading?<Text style={styles.detail}>Loading media…</Text>:visible.length===0?<View style={styles.panel}><Text style={styles.panelTitle}>No published releases yet.</Text><Text style={styles.detail}>The library will show original films and audio after real editorial publication.</Text></View>:visible.map(m=><TouchableOpacity accessibilityRole="button" key={m.id} onPress={()=>void selectItem(m)} style={styles.panel}>
     {validUrl(m.thumbnail_url)?<Image source={{uri:m.thumbnail_url!}} style={{height:160,marginBottom:12}} resizeMode="cover"/>:<View style={{height:120,backgroundColor:palette.wash,marginBottom:12,alignItems:"center",justifyContent:"center"}}><Text style={{fontSize:34,color:palette.green}}>▷</Text></View>}
-    <Text style={styles.meta}>{m.kind.toUpperCase()}</Text><Text style={styles.panelTitle}>{m.title}</Text><Text style={styles.detail}>{m.description}</Text>
+    <Text style={styles.meta}>{m.id.startsWith("demo-")?"DEMO · "+m.kind.toUpperCase():m.kind.toUpperCase()}</Text><Text style={styles.panelTitle}>{m.title}</Text><Text style={styles.detail}>{m.description}</Text>
     <Text style={[styles.detail,{marginTop:10,color:palette.ink,fontWeight:"700"}]}>{isDirect(m)?"Play in Ascend Media":"Open external source"}</Text>
    </TouchableOpacity>)}
   </>}
