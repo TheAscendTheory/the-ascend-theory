@@ -33,6 +33,7 @@ jobs:
               Path(f"/tmp/ascend-{name}.mjs").write_text(src.group(1))
           PY
           for name in hub academy media; do node --check /tmp/ascend-$name.mjs; done
+          node --check standalone/hub/map.js
       - uses: actions/configure-pages@v5
         with:
           enablement: true
@@ -40,6 +41,7 @@ jobs:
         run: |
           mkdir -p /tmp/ascend-pages/academy /tmp/ascend-pages/media
           cp standalone/hub/index.html /tmp/ascend-pages/index.html
+          cp standalone/hub/map.js /tmp/ascend-pages/map.js
           cp standalone/academy/index.html /tmp/ascend-pages/academy/index.html
           cp standalone/media/index.html /tmp/ascend-pages/media/index.html
       - uses: actions/upload-pages-artifact@v3
