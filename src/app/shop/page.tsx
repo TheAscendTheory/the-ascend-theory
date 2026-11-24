@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Shop",
   description:
-    "The Ascend Theory shop for apparel, accessories, notebooks, stickers, and community merchandise.",
+    "The Ascenders Club shop for apparel, accessories, notebooks, stickers, and community merchandise.",
 };
 
 const shopStandards = [
@@ -22,13 +22,13 @@ export default function ShopPage() {
         <h1>WEAR THE STANDARD.</h1>
 
         <p>
-          Enter the official Ascend Theory shop for apparel, accessories,
+          Enter the official Ascenders Club shop for apparel, accessories,
           notebooks, stickers, and brand pieces.
         </p>
 
         <div className="pageCtaActions">
           <a
-            href="https://shop.theascendtheory.com"
+            href="https://shop.theascendersclub.com"
             target="_blank"
             rel="noreferrer"
             className="pageCtaPrimary"
