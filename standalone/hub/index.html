@@ -93,6 +93,13 @@ function exploreAction(){
 const publicTabs=[['happening','Happening'],['projects','Projects'],['people','People'],['overview','About']];
 const WORLD_EMBED='https://www.openstreetmap.org/export/embed.html?bbox=-168%2C-65%2C168%2C78&layer=mapnik';
 function setPublicTab(t){publicTab=t;portfolioPerson=null;renderPublic()}
+const demoActionState=JSON.parse(sessionStorage.getItem('ascend_demo_actions')||'{}');
+function setDemoAction(id,kind){
+ const key=kind+':'+id;demoActionState[key]=!demoActionState[key];
+ sessionStorage.setItem('ascend_demo_actions',JSON.stringify(demoActionState));
+ renderPublicScreen();
+ message('DEMO ONLY: '+(demoActionState[key]?'Action previewed.':'Preview reset.')+' No real account, message, registration or connection was created.');
+}
 function renderPublic(){
  el('loading').className='hidden';
  const title=publicTab==='happening'?"What's happening":publicTab==='projects'?'Project discovery':publicTab==='people'?'People & collaboration':'Explore the network';
@@ -148,7 +155,7 @@ function personTile(p){
  return '<article class="hub-person-card"><div class="person-photo">'+(photo?'<img src="'+htmlEscape(photo)+'" alt="Profile photo of '+htmlEscape(p.display_name)+'">':'<span>'+htmlEscape((p.display_name||'?').slice(0,1).toUpperCase())+'</span>')+'</div><span class="tag">'+htmlEscape(p.discipline||'CHANGEMAKER')+'</span><h3>'+htmlEscape(p.display_name)+'</h3><p class="person-headline">'+htmlEscape(p.headline||p.organization||'Member of the Ascenders Club')+'</p><p class="tiny">⌖ '+htmlEscape([p.city,p.country].filter(Boolean).join(', ')||'Worldwide')+'</p><button class="button secondary" type="button" data-person="'+htmlEscape(p.user_id)+'">View profile</button></article>';
 }
 async function followPerson(id){
- if(id.startsWith('demo-')){message('DEMO ACTION: Following this fictional person is simulated. Real follows require approved accounts and real members.');return}
+ if(id.startsWith('demo-')){setDemoAction(id,'follow');return}
  if(!user||membership?.status!=='approved'){exploreAction();return}
  if(id===user.id)return;
  if(myFollows.has(id)){
@@ -163,7 +170,7 @@ async function followPerson(id){
  renderPublicScreen();
 }
 async function connectPerson(id){
- if(id.startsWith('demo-')){message('DEMO ACTION: Connection request preview only. No real message or request was sent.');return}
+ if(id.startsWith('demo-')){setDemoAction(id,'connect');return}
  if(!user||membership?.status!=='approved'){exploreAction();return}
  if(id===user.id)return;
  if(myConnections.some(c=>c.requester_id===user.id&&c.recipient_id===id&&['pending','accepted'].includes(c.status))){message('A connection is already pending or accepted.');return}
@@ -191,7 +198,7 @@ function renderPeopleExplorer(){
  if(portfolioPerson){
  const p=portfolioPerson;
  const photo=safeLink(p.photo_url),banner=safeLink(p.banner_url),website=safeLink(p.website_url);
- return '<div class="hub-person-detail"><button type="button" class="button secondary" id="backPeople">← All people</button><div class="profile-banner"'+(banner?' style="background-image:url('+encodeURI(banner)+')"':'')+'></div><div class="person-profile-top"><div class="person-photo large">'+(photo?'<img src="'+htmlEscape(photo)+'" alt="Profile photo of '+htmlEscape(p.display_name)+'">':htmlEscape((p.display_name||'?').slice(0,1).toUpperCase()))+'</div><div><div class="hub-meta">'+htmlEscape(p.discipline||'CHANGEMAKER')+'</div><h2>'+htmlEscape(p.display_name)+'</h2><p>'+htmlEscape(p.headline||p.organization||'')+'</p><span class="tiny">⌖ '+htmlEscape([p.city,p.country].filter(Boolean).join(', '))+'</span>'+(website?'<div>'+link(website,'Visit website')+'</div>':'')+'</div></div><div class="actions" style="margin:12px 0 20px">'+(user&&p.user_id===user.id?'':'<'+'button class="button secondary" type="button" data-follow="'+htmlEscape(p.user_id)+'">'+(myFollows.has(p.user_id)?'Following ✓':'Follow')+'</button><button class="button green" type="button" data-connect="'+htmlEscape(p.user_id)+'">'+(myConnections.some(c=>c.requester_id===user?.id&&c.recipient_id===p.user_id&&c.status==='pending')?'Requested':'Connect')+'</button>')+'</div><div class="panel"><h3>About</h3><p>'+htmlEscape(p.about||'No public biography yet.')+'</p>'+(p.featured_skills?.length?'<p class="tiny">FOCUS: '+htmlEscape(p.featured_skills.join(' · '))+'</p>':'')+'</div><div class="hub-list-head"><h3>Selected initiatives</h3><span class="pill">'+publicPortfolio.length+' shared</span></div>'+(publicPortfolio.length?'<div class="hub-cards">'+publicPortfolio.map(x=>'<article class="card"><span class="tag">'+htmlEscape(x.role_title||'INITIATIVE')+'</span><h3>'+htmlEscape(x.title)+'</h3><p>'+htmlEscape(x.summary)+'</p>'+(x.project_url?link(x.project_url,'Project website'):'')+'</article>').join('')+'</div>':'<div class="hub-empty"><p>This member has not chosen to showcase past initiatives.</p></div>')+publicAccessBanner()+'</div>';
+ return '<div class="hub-person-detail"><button type="button" class="button secondary" id="backPeople">← All people</button><div class="profile-banner"'+(banner?' style="background-image:url('+encodeURI(banner)+')"':'')+'></div><div class="person-profile-top"><div class="person-photo large">'+(photo?'<img src="'+htmlEscape(photo)+'" alt="Profile photo of '+htmlEscape(p.display_name)+'">':htmlEscape((p.display_name||'?').slice(0,1).toUpperCase()))+'</div><div><div class="hub-meta">'+htmlEscape(p.discipline||'CHANGEMAKER')+'</div><h2>'+htmlEscape(p.display_name)+'</h2><p>'+htmlEscape(p.headline||p.organization||'')+'</p><span class="tiny">⌖ '+htmlEscape([p.city,p.country].filter(Boolean).join(', '))+'</span>'+(website?'<div>'+link(website,'Visit website')+'</div>':'')+'</div></div><div class="actions" style="margin:12px 0 20px">'+(user&&p.user_id===user.id?'':'<'+'button class="button secondary" type="button" data-follow="'+htmlEscape(p.user_id)+'">'+(p.demo&&demoActionState['follow:'+p.user_id]?'Following ✓':myFollows.has(p.user_id)?'Following ✓':'Follow')+'</button><button class="button green" type="button" data-connect="'+htmlEscape(p.user_id)+'">'+(p.demo&&demoActionState['connect:'+p.user_id]?'Request sent ✓':myConnections.some(c=>c.requester_id===user?.id&&c.recipient_id===p.user_id&&c.status==='pending')?'Requested':'Connect')+'</button>')+'</div><div class="panel"><h3>About</h3><p>'+htmlEscape(p.about||'No public biography yet.')+'</p>'+(p.featured_skills?.length?'<p class="tiny">FOCUS: '+htmlEscape(p.featured_skills.join(' · '))+'</p>':'')+'</div><div class="hub-list-head"><h3>Selected initiatives</h3><span class="pill">'+publicPortfolio.length+' shared</span></div>'+(publicPortfolio.length?'<div class="hub-cards">'+publicPortfolio.map(x=>'<article class="card"><span class="tag">'+htmlEscape(x.role_title||'INITIATIVE')+'</span><h3>'+htmlEscape(x.title)+'</h3><p>'+htmlEscape(x.summary)+'</p>'+(x.project_url?link(x.project_url,'Project website'):'')+'</article>').join('')+'</div>':'<div class="hub-empty"><p>This member has not chosen to showcase past initiatives.</p></div>')+publicAccessBanner()+'</div>';
  }
  return '<div class="hub-toolrow"><h2>People & changemakers</h2><span class="pill">'+people.length+' public profiles</span></div><div class="hub-controls"><input class="input" id="peopleSearch" placeholder="Search names, skills, disciplines or cities…" aria-label="Find people" value="'+htmlEscape(peopleQuery)+'"><div class="pill" style="align-self:center">Public profiles only</div></div>'+(people.length?'<div class="hub-cards">'+people.map(personTile).join('')+'</div>':'<div class="hub-empty"><span class="tag">CURATED GLOBAL COMMUNITY</span><h3>'+(publicPeople.length?'No people match this search.':'Discover changemakers around the world.')+'</h3><p>'+(publicPeople.length?'Try another name, field or location.':'Approved members can optionally publish their professional biography, photo and selected past initiatives. Profiles will appear here as members choose to share them.')+'</p></div>')+publicAccessBanner();
 }
@@ -227,7 +234,7 @@ function eventCard(e){
  const when=Number.isNaN(+date)?'Time to be announced':date.toLocaleString(undefined,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
  const place=e.is_online?'Online':[e.venue,e.city,e.country].filter(Boolean).join(', ')||'Location to be confirmed';
  const url=safeLink(e.link_url);
- return '<article class="hub-activity-card"><span class="tag">'+htmlEscape(e.category||'EVENT')+'</span><h3>'+htmlEscape(e.title)+'</h3><p>'+htmlEscape(e.description)+'</p><div class="activity-meta">◷ '+htmlEscape(when)+'</div><div class="activity-meta">⌖ '+htmlEscape(place)+'</div><div class="actions">'+(url?'<a class="button secondary" href="'+htmlEscape(url)+'" rel="noopener noreferrer" target="_blank">View details ↗</a>':'<button class="button secondary" type="button" data-public-join>Request details · Members</button>')+'</div></article>';
+ return '<article class="hub-activity-card"><span class="tag">'+htmlEscape(e.category||'EVENT')+'</span><h3>'+htmlEscape(e.title)+'</h3><p>'+htmlEscape(e.description)+'</p><div class="activity-meta">◷ '+htmlEscape(when)+'</div><div class="activity-meta">⌖ '+htmlEscape(place)+'</div><div class="actions">'+(e.demo?'<button class="button secondary" type="button" data-demo-rsvp="'+htmlEscape(e.id)+'">'+(demoActionState['rsvp:'+e.id]?'Demo RSVP saved ✓':'Try demo RSVP')+'</button>':url?'<a class="button secondary" href="'+htmlEscape(url)+'" rel="noopener noreferrer" target="_blank">View details ↗</a>':'<button class="button secondary" type="button" data-public-join>Request details · Members</button>')+'</div></article>';
 }
 function renderHappening(){
  const data=filteredEvents(),categories=['All types',...new Set(publicEvents.map(e=>e.category).filter(Boolean))];
@@ -243,6 +250,7 @@ function renderPublicScreen(){
  if(el('backPeople'))el('backPeople').onclick=()=>{portfolioPerson=null;publicPortfolio=[];renderPublicScreen()};
  document.querySelectorAll('[data-follow]').forEach(b=>b.onclick=()=>{void followPerson(b.dataset.follow)});
  document.querySelectorAll('[data-connect]').forEach(b=>b.onclick=()=>{void connectPerson(b.dataset.connect)});
+ document.querySelectorAll('[data-demo-rsvp]').forEach(b=>b.onclick=()=>setDemoAction(b.dataset.demoRsvp,'rsvp'));
  if(el('eventSearch'))el('eventSearch').oninput=e=>{eventQuery=e.target.value;const pos=e.target.selectionStart;renderPublicScreen();const n=el('eventSearch');n.focus();n.setSelectionRange(pos,pos)};
  if(el('eventCategory'))el('eventCategory').onchange=e=>{eventCategory=e.target.value;renderPublicScreen()};
  if(el('nearbyToggle'))el('nearbyToggle').onclick=()=>{
