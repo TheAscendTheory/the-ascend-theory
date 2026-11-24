@@ -27,7 +27,7 @@ export default function PublicHub(){
  const visible=useMemo(()=>pins.filter(p=>(kind==="All"||p.kind===kind)&&[p.name,p.kind,p.city,p.country].join(" ").toLowerCase().includes(term.trim().toLowerCase())),[kind,term]);
  const selected=visible.find(p=>p.id===active)||visible[0]||null;
  const world=tileSize*2**zoom;const origin=project(center.lat,center.lng,zoom);
- const tiles=useMemo(()=>{const a:{x:number;y:number;src:string}[]=[];const tileCount=2**zoom;for(let x=0;x<tileCount;x++)for(let y=0;y<tileCount;y++)a.push({x:x*tileSize,y:y*tileSize,src:`https://tile.openstreetmap.org/${zoom}/${x}/${y}.png`});return a;},[zoom]);
+ const tiles=useMemo(()=>{const a:{x:number;y:number;src:string}[]=[];const count=2**zoom;const cx=Math.floor(origin.x/tileSize);const cy=Math.floor(origin.y/tileSize);for(let x=Math.max(0,cx-4);x<=Math.min(count-1,cx+4);x++)for(let y=Math.max(0,cy-3);y<=Math.min(count-1,cy+3);y++)a.push({x:x*tileSize,y:y*tileSize,src:`https://tile.openstreetmap.org/${zoom}/${x}/${y}.png`});return a;},[zoom,origin.x,origin.y]);
  function focus(p:Place){setActive(p.id);setCenter({lat:p.lat,lng:p.lng});setZoom(z=>Math.max(z,3));}
  return <main className={styles.root}>
    <header className={styles.heading}><div><p className={styles.overline}>ASCENDERS HUB / THE GLOBAL NETWORK</p><h1>Find your <em>connection.</em></h1><p>A world of people, initiatives and ideas. Discover where collaboration can begin.</p></div><div className={styles.geometry} aria-hidden="true"><span/><span/><span/></div></header>
