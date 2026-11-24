@@ -1,0 +1,38 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+const {chromium}=require("playwright");
+const base="https://theascendtheory.github.io/the-ascend-theory";
+async function check(){
+ const browser=await chromium.launch({headless:true,args:["--no-sandbox"]});
+ const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ const js=[];page.on("pageerror",e=>js.push(e.message));
+ await page.goto(base+"/academy/",{waitUntil:"domcontentloaded",timeout:40000});
+ await page.getByRole("button",{name:/Systems Thinking: See the Connections/}).waitFor({timeout:30000});
+ await page.getByRole("button",{name:/Systems Thinking: See the Connections/}).click();
+ await page.getByText("Seeing Systems",{exact:true}).first().waitFor();
+ await page.getByRole("button",{name:"Try different learning formats"}).click();
+ await page.getByRole("button",{name:"Practice",exact:true}).click();
+ await page.getByText("Which is an example of a feedback loop?").waitFor();
+ await page.getByRole("button",{name:"Take practice quiz"}).click();
+ await page.getByRole("button",{name:"View my marks"}).waitFor();
+ await page.locator('input[name="q0"][value="1"]').check();
+ await page.locator('input[name="q1"][value="0"]').check();
+ await page.getByRole("button",{name:"View my marks"}).click();
+ await page.getByText(/DEMO RESULT: 2 \/ 2 correct/).waitFor();
+ await page.getByRole("button",{name:"Try again"}).click();
+ await page.getByRole("button",{name:"View my marks"}).waitFor();
+ if(js.length)throw Error("Academy client errors: "+js.join(";"));
+ console.log("PASS: Academy demo courses, multi-format lesson, practice and grade/retry");
+ await page.goto(base+"/media/",{waitUntil:"domcontentloaded",timeout:40000});
+ await page.getByRole("button",{name:"Play demo collection"}).waitFor({timeout:30000});
+ await page.getByRole("button",{name:"Play demo collection"}).click();
+ await page.locator("#demoPlayerMedia").waitFor();
+ await page.getByRole("button",{name:"Next"}).click();
+ await page.locator("#demoPlayerMedia").waitFor();
+ await page.getByText("DEMO MIXED PLAYLIST").waitFor();
+ await page.getByRole("button",{name:"Close"}).click();
+ if(await page.locator("#player").count())throw Error("Media modal did not close");
+ if(js.length)throw Error("Browser client errors: "+js.join(";"));
+ console.log("PASS: Media demo list, mixed-media queue, next and close");
+ await browser.close();
+}
+check().catch(e=>{console.error(e);process.exit(1)});
