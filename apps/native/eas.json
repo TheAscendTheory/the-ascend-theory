@@ -45,6 +45,36 @@
         "APP_VARIANT": "media",
         "EXPO_PUBLIC_APP_VARIANT": "media"
       }
+    },
+    "preview-hub": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_VARIANT": "hub",
+        "EXPO_PUBLIC_APP_VARIANT": "hub"
+      }
+    },
+    "preview-academy": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_VARIANT": "academy",
+        "EXPO_PUBLIC_APP_VARIANT": "academy"
+      }
+    },
+    "preview-media": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "APP_VARIANT": "media",
+        "EXPO_PUBLIC_APP_VARIANT": "media"
+      }
     }
   },
   "submit": {
