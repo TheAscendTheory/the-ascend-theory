@@ -6,6 +6,12 @@ const VARIANTS = {
 const variant=process.env.APP_VARIANT || "hub";
 if(!Object.prototype.hasOwnProperty.call(VARIANTS,variant)){throw new Error("APP_VARIANT must be hub, academy or media");}
 const app=VARIANTS[variant];
+const projectIds={
+ hub:process.env.EXPO_PROJECT_ID_HUB,
+ academy:process.env.EXPO_PROJECT_ID_ACADEMY,
+ media:process.env.EXPO_PROJECT_ID_MEDIA
+};
+const projectId=projectIds[variant];
 module.exports={
  expo:{
   name:app.name,slug:app.slug,scheme:app.scheme,
@@ -14,6 +20,6 @@ module.exports={
   ios:{bundleIdentifier:app.id,supportsTablet:true,buildNumber:"1"},
   android:{package:app.id,versionCode:1},
   plugins:variant==="media"?[["expo-video",{supportsBackgroundPlayback:true,supportsPictureInPicture:true}]]:[],
-  extra:{variant}
+  extra:{variant,...(projectId?{eas:{projectId}}:{})}
  }
 };
