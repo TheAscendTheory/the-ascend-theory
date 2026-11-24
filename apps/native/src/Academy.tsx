@@ -1,9 +1,30 @@
 import {useEffect,useState} from "react";
-import {ScrollView,Text,TextInput,TouchableOpacity,View} from "react-native";
+import {ScrollView,Text,TextInput,TouchableOpacity,View,StyleSheet} from "react-native";
 import {useVideoPlayer,VideoView} from "expo-video";
 import type {User} from "@supabase/supabase-js";
 import {api} from "./supabase";
 import {palette,styles} from "./theme";
+const academyUI=StyleSheet.create({...styles,
+body:{...styles.body,backgroundColor:"#111712"},
+eyebrow:{...styles.eyebrow,color:"#c7b47b"},
+hero:{...styles.hero,color:"#f7f1e6",fontWeight:"400",letterSpacing:-2.5},
+intro:{...styles.intro,color:"#bbc6ba"},
+section:{...styles.section,color:"#f4f0e5",fontWeight:"500"},
+panel:{...styles.panel,backgroundColor:"#1b261f",borderColor:"#3a4b3d",borderRadius:14},
+panelSelected:{...styles.panelSelected,borderColor:"#c5ae78"},
+panelTitle:{...styles.panelTitle,color:"#f5f2ea",fontWeight:"500"},
+detail:{...styles.detail,color:"#c6d0c3"},
+meta:{...styles.meta,color:"#cfb985"},
+textInput:{...styles.textInput,backgroundColor:"#1d2920",color:"#f6f1e7",borderColor:"#405744",borderRadius:10},
+textArea:{...styles.textArea,backgroundColor:"#1d2920",color:"#f6f1e7",borderColor:"#405744",borderRadius:10},
+button:{...styles.button,backgroundColor:"#cbb680",borderColor:"#cbb680",borderRadius:9},
+buttonText:{...styles.buttonText,color:"#152015"},
+secondaryButton:{...styles.secondaryButton,backgroundColor:"#253528",borderColor:"#557052",borderRadius:9},
+secondaryText:{...styles.secondaryText,color:"#f0f1e7"},
+notice:{...styles.notice,backgroundColor:"#30402f",borderLeftColor:"#d0b77f"},
+noticeText:{...styles.noticeText,color:"#f0e4c9"}
+});
+
 import {SignIn,SignOut,AccountControls} from "./Auth";
 type Format="passage"|"video"|"audio"|"interactive";
 type DemoQuestion={prompt:string;choices:string[];answer:number};
@@ -119,35 +140,35 @@ export default function NativeAcademy({user}:{user:User|null}){
  }
  const visible=courses.filter(c=>[c.title,c.summary,c.discipline].join(" ").toLowerCase().includes(search.toLowerCase()));
  const formatsForLesson=formats.filter(f=>f.format===format);
- return <ScrollView style={styles.body} keyboardShouldPersistTaps="handled">
-  <Text style={styles.eyebrow}>ASCEND ACADEMY / KNOWLEDGE · DEMO MODE</Text>
-  <Text style={styles.hero}>LEARN YOUR WAY.</Text>
-  {!course?<><Text style={styles.intro}>Video lectures, written passages, audio and interactive practice—choose the way you understand best. No hearts, no punishment for trying again.</Text>
-   <TextInput style={styles.textInput} placeholder="Discover learning paths" placeholderTextColor="#687567" value={search} onChangeText={setSearch}/>
-   <Text style={styles.section}>Learning library</Text>
-   {loading?<Text style={styles.detail}>Loading courses…</Text>:visible.length?visible.map(c=><TouchableOpacity accessibilityRole="button" key={c.id} style={styles.panel} onPress={()=>{setCourse(c);setQuiz(null);setResult(null);setMessage("")}}><Text style={styles.meta}>{c.demo?"DEMO COURSE · "+(c.discipline||"INTERDISCIPLINARY"):c.discipline||"INTERDISCIPLINARY"}</Text><Text style={styles.panelTitle}>{c.title}</Text><Text style={styles.detail}>{c.summary}</Text><Text style={[styles.detail,{marginTop:14,fontWeight:"700",color:palette.ink}]}>Begin learning →</Text></TouchableOpacity>):<View style={styles.panel}><Text style={styles.panelTitle}>The first courses are being prepared.</Text><Text style={styles.detail}>Published educator-approved lessons will appear here. No fabricated courses have been added.</Text></View>}
+ return <ScrollView style={academyUI.body} keyboardShouldPersistTaps="handled">
+  <Text style={academyUI.eyebrow}>ASCEND ACADEMY / KNOWLEDGE · DEMO MODE</Text>
+  <Text style={academyUI.hero}>LEARN YOUR WAY.</Text>
+  {!course?<><Text style={academyUI.intro}>Video lectures, written passages, audio and interactive practice—choose the way you understand best. No hearts, no punishment for trying again.</Text>
+   <TextInput style={academyUI.textInput} placeholder="Discover learning paths" placeholderTextColor="#687567" value={search} onChangeText={setSearch}/>
+   <Text style={academyUI.section}>Learning library</Text>
+   {loading?<Text style={academyUI.detail}>Loading courses…</Text>:visible.length?visible.map(c=><TouchableOpacity accessibilityRole="button" key={c.id} style={academyUI.panel} onPress={()=>{setCourse(c);setQuiz(null);setResult(null);setMessage("")}}><Text style={academyUI.meta}>{c.demo?"DEMO COURSE · "+(c.discipline||"INTERDISCIPLINARY"):c.discipline||"INTERDISCIPLINARY"}</Text><Text style={academyUI.panelTitle}>{c.title}</Text><Text style={academyUI.detail}>{c.summary}</Text><Text style={[academyUI.detail,{marginTop:14,fontWeight:"700",color:palette.ink}]}>Begin learning →</Text></TouchableOpacity>):<View style={academyUI.panel}><Text style={academyUI.panelTitle}>The first courses are being prepared.</Text><Text style={academyUI.detail}>Published educator-approved lessons will appear here. No fabricated courses have been added.</Text></View>}
   </>:<>
-   <TouchableOpacity accessibilityRole="button" style={styles.secondaryButton} onPress={()=>{setCourse(null);setQuiz(null);setLesson(null)}}><Text style={styles.secondaryText}>← Learning library</Text></TouchableOpacity>
-   <Text style={styles.section}>{course.title}</Text><Text style={styles.intro}>{course.summary}</Text>
-   {quiz?<View style={styles.panel}><Text style={styles.meta}>ASSESSMENT · UNLIMITED RETAKES</Text><Text style={styles.panelTitle}>{quiz.title}</Text>
-    {questions.map((q,i)=><View key={q.id} style={{marginVertical:14}}><Text style={styles.detail}>{i+1}. {q.prompt}</Text>{q.choices.map((choice,j)=><TouchableOpacity key={j} accessibilityRole="button" onPress={()=>setAnswers(x=>({...x,[q.id]:j}))} style={[styles.secondaryButton,{marginTop:7,backgroundColor:answers[q.id]===j?palette.wash:undefined}]}><Text style={styles.secondaryText}>{answers[q.id]===j?"◉ ":"○ "}{choice}</Text></TouchableOpacity>)}</View>)}
-    {!user&&!course?.demo?<SignIn title="Sign in to receive your assessment marks"/>:<TouchableOpacity accessibilityRole="button" disabled={busy||questions.length===0} onPress={()=>void submitAnswers()} style={styles.button}><Text style={styles.buttonText}>{busy?"Checking…":"See my marks"}</Text></TouchableOpacity>}
-    {result?<View style={styles.notice}><Text style={styles.noticeText}>{result.score_percent}% · {result.correct_count}/{result.question_count} correct · {result.passed?"Passed":"Keep learning and retry"}. No lives are lost.</Text><TouchableOpacity accessibilityRole="button" style={styles.secondaryButton} onPress={()=>{setResult(null);setAnswers({})}}><Text style={styles.secondaryText}>Try again</Text></TouchableOpacity></View>:null}
-    <TouchableOpacity accessibilityRole="button" style={styles.secondaryButton} onPress={()=>setQuiz(null)}><Text style={styles.secondaryText}>Back to lessons</Text></TouchableOpacity>
+   <TouchableOpacity accessibilityRole="button" style={academyUI.secondaryButton} onPress={()=>{setCourse(null);setQuiz(null);setLesson(null)}}><Text style={academyUI.secondaryText}>← Learning library</Text></TouchableOpacity>
+   <Text style={academyUI.section}>{course.title}</Text><Text style={academyUI.intro}>{course.summary}</Text>
+   {quiz?<View style={academyUI.panel}><Text style={academyUI.meta}>ASSESSMENT · UNLIMITED RETAKES</Text><Text style={academyUI.panelTitle}>{quiz.title}</Text>
+    {questions.map((q,i)=><View key={q.id} style={{marginVertical:14}}><Text style={academyUI.detail}>{i+1}. {q.prompt}</Text>{q.choices.map((choice,j)=><TouchableOpacity key={j} accessibilityRole="button" onPress={()=>setAnswers(x=>({...x,[q.id]:j}))} style={[academyUI.secondaryButton,{marginTop:7,backgroundColor:answers[q.id]===j?palette.wash:undefined}]}><Text style={academyUI.secondaryText}>{answers[q.id]===j?"◉ ":"○ "}{choice}</Text></TouchableOpacity>)}</View>)}
+    {!user&&!course?.demo?<SignIn title="Sign in to receive your assessment marks"/>:<TouchableOpacity accessibilityRole="button" disabled={busy||questions.length===0} onPress={()=>void submitAnswers()} style={academyUI.button}><Text style={academyUI.buttonText}>{busy?"Checking…":"See my marks"}</Text></TouchableOpacity>}
+    {result?<View style={academyUI.notice}><Text style={academyUI.noticeText}>{result.score_percent}% · {result.correct_count}/{result.question_count} correct · {result.passed?"Passed":"Keep learning and retry"}. No lives are lost.</Text><TouchableOpacity accessibilityRole="button" style={academyUI.secondaryButton} onPress={()=>{setResult(null);setAnswers({})}}><Text style={academyUI.secondaryText}>Try again</Text></TouchableOpacity></View>:null}
+    <TouchableOpacity accessibilityRole="button" style={academyUI.secondaryButton} onPress={()=>setQuiz(null)}><Text style={academyUI.secondaryText}>Back to lessons</Text></TouchableOpacity>
    </View>:
    <>
-    <Text style={styles.meta}>LESSON PATH · {done.size} COMPLETED</Text>
-    {lessons.map((l,i)=><TouchableOpacity accessibilityRole="button" key={l.id} style={[styles.panel,lesson?.id===l.id?styles.panelSelected:null]} onPress={()=>setLesson(l)}><Text style={styles.meta}>{String(i+1).padStart(2,"0")} / {done.has(l.id)?"COMPLETED":"LESSON"}</Text><Text style={styles.panelTitle}>{l.title}</Text></TouchableOpacity>)}
-    {lesson?<View style={styles.panel}><Text style={styles.section}>{lesson.title}</Text>
-     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginBottom:12}}>{modes.map(m=><TouchableOpacity key={m.key} accessibilityRole="button" onPress={()=>void setMode(m.key)} style={[styles.secondaryButton,{marginRight:8,backgroundColor:format===m.key?palette.wash:undefined}]}><Text style={styles.secondaryText}>{m.title}</Text></TouchableOpacity>)}</ScrollView>
-     {formatsForLesson.length?formatsForLesson.map(f=><View key={f.id} style={{marginBottom:15}}><Text style={styles.panelTitle}>{f.title||lesson.title}</Text>{(format==="video"||format==="audio")&&validHttps(f.source_url)?<FormatPlayer key={f.id} url={f.source_url} audio={format==="audio"}/>:<Text style={[styles.detail,{fontSize:16,lineHeight:26}]}>{f.body}</Text>}</View>):format==="passage"?<Text style={[styles.detail,{fontSize:16,lineHeight:27}]}>{lesson.content}</Text>:<Text style={styles.detail}>This learning format is not available for this lesson yet. Try Read or another format.</Text>}
-     {!user&&!course?.demo?<SignIn title="Sign in to save lesson progress"/>:<TouchableOpacity accessibilityRole="button" disabled={busy||done.has(lesson.id)} style={[styles.button,{opacity:busy||done.has(lesson.id)?.5:1}]} onPress={()=>void complete()}><Text style={styles.buttonText}>{done.has(lesson.id)?"Completed":busy?"Saving…":"Mark lesson complete"}</Text></TouchableOpacity>}
-    </View>:<Text style={styles.detail}>No lessons have been published in this course yet.</Text>}
-    {assessments.length?<><Text style={styles.section}>Test your understanding</Text>{assessments.map(a=><TouchableOpacity accessibilityRole="button" key={a.id} style={styles.panel} onPress={()=>void openAssessment(a)}><Text style={styles.panelTitle}>{a.title}</Text><Text style={styles.detail}>Your marks are recorded. Retake freely with no penalties.</Text></TouchableOpacity>)}</>:null}
+    <Text style={academyUI.meta}>LESSON PATH · {done.size} COMPLETED</Text>
+    {lessons.map((l,i)=><TouchableOpacity accessibilityRole="button" key={l.id} style={[academyUI.panel,lesson?.id===l.id?academyUI.panelSelected:null]} onPress={()=>setLesson(l)}><Text style={academyUI.meta}>{String(i+1).padStart(2,"0")} / {done.has(l.id)?"COMPLETED":"LESSON"}</Text><Text style={academyUI.panelTitle}>{l.title}</Text></TouchableOpacity>)}
+    {lesson?<View style={academyUI.panel}><Text style={academyUI.section}>{lesson.title}</Text>
+     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginBottom:12}}>{modes.map(m=><TouchableOpacity key={m.key} accessibilityRole="button" onPress={()=>void setMode(m.key)} style={[academyUI.secondaryButton,{marginRight:8,backgroundColor:format===m.key?palette.wash:undefined}]}><Text style={academyUI.secondaryText}>{m.title}</Text></TouchableOpacity>)}</ScrollView>
+     {formatsForLesson.length?formatsForLesson.map(f=><View key={f.id} style={{marginBottom:15}}><Text style={academyUI.panelTitle}>{f.title||lesson.title}</Text>{(format==="video"||format==="audio")&&validHttps(f.source_url)?<FormatPlayer key={f.id} url={f.source_url} audio={format==="audio"}/>:<Text style={[academyUI.detail,{fontSize:16,lineHeight:26}]}>{f.body}</Text>}</View>):format==="passage"?<Text style={[academyUI.detail,{fontSize:16,lineHeight:27}]}>{lesson.content}</Text>:<Text style={academyUI.detail}>This learning format is not available for this lesson yet. Try Read or another format.</Text>}
+     {!user&&!course?.demo?<SignIn title="Sign in to save lesson progress"/>:<TouchableOpacity accessibilityRole="button" disabled={busy||done.has(lesson.id)} style={[academyUI.button,{opacity:busy||done.has(lesson.id)?.5:1}]} onPress={()=>void complete()}><Text style={academyUI.buttonText}>{done.has(lesson.id)?"Completed":busy?"Saving…":"Mark lesson complete"}</Text></TouchableOpacity>}
+    </View>:<Text style={academyUI.detail}>No lessons have been published in this course yet.</Text>}
+    {assessments.length?<><Text style={academyUI.section}>Test your understanding</Text>{assessments.map(a=><TouchableOpacity accessibilityRole="button" key={a.id} style={academyUI.panel} onPress={()=>void openAssessment(a)}><Text style={academyUI.panelTitle}>{a.title}</Text><Text style={academyUI.detail}>Your marks are recorded. Retake freely with no penalties.</Text></TouchableOpacity>)}</>:null}
    </>}
   </>}
   {user?<><AccountControls/><SignOut/></>:null}
-  {message?<View style={styles.notice}><Text style={styles.noticeText}>{message}</Text></View>:null}
-  <View style={styles.spacer}/>
+  {message?<View style={academyUI.notice}><Text style={academyUI.noticeText}>{message}</Text></View>:null}
+  <View style={academyUI.spacer}/>
  </ScrollView>;
 }
