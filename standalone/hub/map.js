@@ -9,7 +9,7 @@ function legend(items,events){
  if(!categories.length)return "";
  return '<div class="map-legend" aria-label="Map pin guide"><strong>PIN GUIDE</strong>'+categories.map(c=>'<button type="button" data-pin-category="'+esc(c)+'"><i style="background:'+(colors[c]||"#5c7888")+'"></i>'+esc(c)+'</button>').join("")+'</div>';
 }
-function surface(items,events){
+function surface(items,events,guideItems=items){
  const count=items.filter(valid).length;
  return '<div class="ascend-map-container"><div id="ascendMap" class="ascend-map" role="region" aria-label="Interactive world map showing '+count+' mapped '+(events?"events":"projects")+'"></div><div class="ascend-map-hud"><span>DRAG · ZOOM · SELECT PIN</span><span>'+count+' LOCATIONS</span></div></div>'+legend(items,events);
 }
