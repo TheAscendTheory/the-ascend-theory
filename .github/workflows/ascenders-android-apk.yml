@@ -45,6 +45,8 @@ jobs:
           npm install --no-fund --no-audit
           npx expo install --check
           npx expo prebuild --platform android --no-install --non-interactive
+          # Use Java provided by the runner instead of resolving a new JDK via Foojay.
+          sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' node_modules/@react-native/gradle-plugin/settings.gradle.kts
       - name: Build self-contained release APK signed for internal testing
         run: |
           cd android
