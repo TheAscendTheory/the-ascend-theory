@@ -1,0 +1,115 @@
+name: Build installable Ascenders iOS and Android apps
+on:
+  workflow_dispatch:
+    inputs:
+      application:
+        description: Choose app to build
+        required: true
+        type: choice
+        options:
+          - all
+          - hub
+          - academy
+          - media
+        default: all
+      platform:
+        description: Choose device platform
+        required: true
+        type: choice
+        options:
+          - android
+          - ios
+          - all
+        default: android
+permissions:
+  contents: read
+concurrency:
+  group: ascend-native-${{ github.ref }}-${{ inputs.application }}-${{ inputs.platform }}
+  cancel-in-progress: false
+jobs:
+  cloud-build:
+    if: ${{ github.ref_name == 'ascend-hub-functional-foundation' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [hub,academy,media]
+        platform: [android,ios]
+    defaults:
+      run:
+        working-directory: apps/native
+    steps:
+      - name: Select requested release targets
+        id: target
+        shell: bash
+        env:
+          REQUESTED_APP: ${{ inputs.application }}
+          REQUESTED_PLATFORM: ${{ inputs.platform }}
+          APP: ${{ matrix.app }}
+          PLATFORM: ${{ matrix.platform }}
+        run: |
+          if { [ "$REQUESTED_APP" = all ] || [ "$REQUESTED_APP" = "$APP" ]; } &&
+             { [ "$REQUESTED_PLATFORM" = all ] || [ "$REQUESTED_PLATFORM" = "$PLATFORM" ]; }; then
+            echo "selected=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "selected=no" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.target.outputs.selected == 'yes'
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        if: steps.target.outputs.selected == 'yes'
+        with:
+          node-version: "22"
+      - name: Validate Expo connection and release credentials
+        if: steps.target.outputs.selected == 'yes'
+        shell: bash
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EXPO_PROJECT_ID_HUB: ${{ vars.EXPO_PROJECT_ID_HUB }}
+          EXPO_PROJECT_ID_ACADEMY: ${{ vars.EXPO_PROJECT_ID_ACADEMY }}
+          EXPO_PROJECT_ID_MEDIA: ${{ vars.EXPO_PROJECT_ID_MEDIA }}
+          APP: ${{ matrix.app }}
+        run: |
+          set -euo pipefail
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "::error::Connect an Expo account and add EXPO_TOKEN as a GitHub Actions secret."
+            exit 1
+          fi
+          case "$APP" in
+            hub) PROJECT="$EXPO_PROJECT_ID_HUB" ;;
+            academy) PROJECT="$EXPO_PROJECT_ID_ACADEMY" ;;
+            media) PROJECT="$EXPO_PROJECT_ID_MEDIA" ;;
+          esac
+          if [[ ! "$PROJECT" =~ ^[0-9a-fA-F-]{36}$ ]]; then
+            echo "::error::Set vars.EXPO_PROJECT_ID_${APP^^} to the matching Expo project ID."
+            exit 1
+          fi
+      - name: Install and verify mobile application
+        if: steps.target.outputs.selected == 'yes'
+        run: |
+          npm install --no-fund --no-audit
+          npx tsc --noEmit
+      - name: Build signed binary in Expo cloud
+        if: steps.target.outputs.selected == 'yes'
+        shell: bash
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EXPO_PROJECT_ID_HUB: ${{ vars.EXPO_PROJECT_ID_HUB }}
+          EXPO_PROJECT_ID_ACADEMY: ${{ vars.EXPO_PROJECT_ID_ACADEMY }}
+          EXPO_PROJECT_ID_MEDIA: ${{ vars.EXPO_PROJECT_ID_MEDIA }}
+          EXPO_PUBLIC_SUPABASE_URL: ${{ vars.EXPO_PUBLIC_SUPABASE_URL }}
+          EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.EXPO_PUBLIC_SUPABASE_ANON_KEY }}
+          APP_VARIANT: ${{ matrix.app }}
+          EXPO_PUBLIC_APP_VARIANT: ${{ matrix.app }}
+          PLATFORM: ${{ matrix.platform }}
+        run: |
+          set -euo pipefail
+          npx --yes eas-cli@16.29.1 build \
+            --platform "$PLATFORM" \
+            --profile "preview-$APP_VARIANT" \
+            --non-interactive \
+            --no-wait
+          echo "View signed build and install link in the connected Expo dashboard."
