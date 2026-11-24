@@ -10,6 +10,8 @@ async function check(){
  await page.getByRole("button",{name:/Systems Thinking: See the Connections/}).click();
  await page.getByText("Seeing Systems",{exact:true}).first().waitFor();
  await page.getByRole("button",{name:"Try different learning formats"}).click();
+ await page.getByRole("button",{name:"Listen",exact:true}).click();
+ await page.locator("#demoFormatContent audio").waitFor();
  await page.getByRole("button",{name:"Practice",exact:true}).click();
  await page.getByText("Which is an example of a feedback loop?").waitFor();
  await page.getByRole("button",{name:"Take practice quiz"}).click();
