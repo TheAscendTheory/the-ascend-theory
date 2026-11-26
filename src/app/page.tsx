@@ -40,14 +40,14 @@ export default function Home(){
     <motion.p className="ascHeroIntro" initial={{opacity:0,y:25}} animate={{opacity:1,y:0}} transition={transition(.3)}>An international collective connecting changemakers, knowledge and initiatives to cultivate a more connected, flourishing future.</motion.p>
     <motion.div className="ascActions" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={transition(.45)}>
      <Link className="ascButton" href="/hub" target="_blank" rel="noopener noreferrer">Explore Ascend Hub <ArrowUpRight aria-hidden="true"/></Link>
-     <Link className="ascButton ascButtonOutline" href="/about">Discover our philosophy <ArrowRight aria-hidden="true"/></Link>
+     <Link className="ascButton ascButtonOutline" href="/about#our-philosophy">Discover our philosophy <ArrowRight aria-hidden="true"/></Link>
     </motion.div>
    </div>
    <div className="ascHeroFooter"><span>THE ASCENDERS CLUB</span><span>CONNECT / COLLABORATE / CULTIVATE</span><span>ONE WORLD · MANY PATHS</span></div>
   </section>
   <section className="ascWrap ascSection ascSplit">
    <div><p className="ascOverline">THE UNDERLYING PRINCIPLE</p><h2>Everything is<br/><em>connected.</em></h2></div>
-   <div><p>Growth is not an isolated act. It emerges through relationships between people, ideas, communities and the living world.</p><p>We bring together changemakers across disciplines and borders, from emerging local initiatives to established organizations. Different paths, shared possibility.</p><Link className="ascTextLink" href="/about">Our philosophy <ArrowUpRight size={16} style={{verticalAlign:"middle",marginLeft:8}}/></Link></div>
+   <div><p>Growth is not an isolated act. It emerges through relationships between people, ideas, communities and the living world.</p><p>We bring together changemakers across disciplines and borders, from emerging local initiatives to established organizations. Different paths, shared possibility.</p><Link className="ascTextLink" href="/about#our-philosophy">Our philosophy <ArrowUpRight size={16} style={{verticalAlign:"middle",marginLeft:8}}/></Link></div>
   </section>
   <section className="ascAlt ascSection">
    <div className="ascWrap"><div className="ascHeading"><div><p className="ascOverline">ONE COMMUNITY / THREE EXPERIENCES</p><h2>A universe of <em>possibility.</em></h2></div><p>Ascend is the name of what we build. Ascenders are the people. The Ascenders Club brings us together.</p></div>
