@@ -5,9 +5,9 @@ import {ArrowLeft,ArrowRight} from "lucide-react";
 import Link from "next/link";
 
 const scenes=[
- {index:"01",label:"CONNECTION",title:"One network. Infinite intersections.",description:"Every person carries a new possibility for collaboration. The geometry forms a web of connected pathways.",href:"https://theascendersclub.com/apps/hub/index.html",cta:"Explore Ascenders Hub",kind:"intersections"},
- {index:"02",label:"KNOWLEDGE",title:"Change your perspective.",description:"Layered ideas become new ways of seeing. Knowledge transforms the pattern as you move through it.",href:"https://theascendersclub.com/apps/academy/index.html",cta:"Explore Ascenders Academy",kind:"perspective"},
- {index:"03",label:"STORYTELLING",title:"See beyond the surface.",description:"Light, composition, and perception reveal the stories behind a more connected world.",href:"https://theascendersclub.com/apps/media/index.html",cta:"Explore Ascenders Media",kind:"perception"}
+ {index:"01",label:"CONNECTION",title:"One network. Infinite intersections.",description:"Every person carries a new possibility for collaboration. The geometry forms a web of connected pathways.",href:"https://hub.theascendersclub.com/",cta:"Explore Ascenders Hub",kind:"intersections"},
+ {index:"02",label:"KNOWLEDGE",title:"Change your perspective.",description:"Layered ideas become new ways of seeing. Knowledge transforms the pattern as you move through it.",href:"https://academy.theascendersclub.com/",cta:"Explore Ascenders Academy",kind:"perspective"},
+ {index:"03",label:"STORYTELLING",title:"See beyond the surface.",description:"Light, composition, and perception reveal the stories behind a more connected world.",href:"https://media.theascendersclub.com/",cta:"Explore Ascenders Media",kind:"perception"}
 ];
 export default function PerceptionSequence(){
  const [index,setIndex]=useState(0);
