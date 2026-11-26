@@ -6,9 +6,9 @@ import { ArrowUpRight, ArrowRight, Globe2, BookOpen, Clapperboard } from "lucide
 import PerceptionSequence from "./components/PerceptionSequence";
 
 const platforms=[
- {number:"01",name:"Ascenders Hub",label:"THE NETWORK",description:"A curated global constellation of people, organizations, projects and shared opportunities.",href:"/hub",Icon:Globe2},
- {number:"02",name:"Ascenders Academy",label:"THE KNOWLEDGE",description:"Structured learning, practical education and knowledge exchange across disciplines.",href:"/academy",Icon:BookOpen},
- {number:"03",name:"Ascenders Media",label:"THE STORIES",description:"Films, documentaries, interviews and photography that move beyond the surface.",href:"/media",Icon:Clapperboard}
+ {number:"01",name:"Ascenders Hub",label:"THE NETWORK",description:"A curated global constellation of people, organizations, projects and shared opportunities.",href:"https://theascendtheory.github.io/the-ascend-theory/?revision=e4e5e69",Icon:Globe2},
+ {number:"02",name:"Ascenders Academy",label:"THE KNOWLEDGE",description:"Structured learning, practical education and knowledge exchange across disciplines.",href:"https://theascendtheory.github.io/the-ascend-theory/academy/",Icon:BookOpen},
+ {number:"03",name:"Ascenders Media",label:"THE STORIES",description:"Films, documentaries, interviews and photography that move beyond the surface.",href:"https://theascendtheory.github.io/the-ascend-theory/media/",Icon:Clapperboard}
 ];
 
 function SacredGeometry(){
@@ -69,7 +69,7 @@ export default function Home(){
     <motion.h1 initial={{opacity:0,y:34}} animate={{opacity:1,y:0}} transition={transition(.12)}>WE ARE<br/><em>Ascenders.</em></motion.h1>
     <motion.p className="ascHeroIntro" initial={{opacity:0,y:25}} animate={{opacity:1,y:0}} transition={transition(.3)}>An international collective connecting changemakers, knowledge and initiatives to cultivate a more connected, flourishing future.</motion.p>
     <motion.div className="ascActions" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={transition(.45)}>
-     <Link className="ascButton" href="/hub">Explore Ascenders Hub <ArrowUpRight aria-hidden="true"/></Link>
+     <Link className="ascButton" href="https://theascendtheory.github.io/the-ascend-theory/?revision=e4e5e69">Explore Ascenders Hub <ArrowUpRight aria-hidden="true"/></Link>
      <Link className="ascButton ascButtonOutline" href="/about">Discover our philosophy <ArrowRight aria-hidden="true"/></Link>
     </motion.div>
    </div>
@@ -87,6 +87,6 @@ export default function Home(){
   </section>
   <PerceptionSequence/>
   <section className="ascWrap ascSection ascSplit"><div><p className="ascOverline">BEYOND DISCIPLINES / BEYOND BORDERS</p><h2>For those who <em>create change.</em></h2></div><div><p>Community builders, artists, scientists, educators, entrepreneurs, and stewards of nature. This is a place for individuals and organizations united not by prestige, but by purpose.</p><Link className="ascButton" href="/contact">Collaborate with us <ArrowUpRight aria-hidden="true"/></Link></div></section>
-  <section className="ascClosing"><div className="ascWrap"><p className="ascOverline">THE FUTURE IS COLLECTIVE</p><h2>Become part of<br/><em>what comes next.</em></h2><p>Discover what becomes possible when we move together.</p><Link className="ascButton" href="/hub">Discover Ascenders Hub <ArrowUpRight aria-hidden="true"/></Link></div></section>
+  <section className="ascClosing"><div className="ascWrap"><p className="ascOverline">THE FUTURE IS COLLECTIVE</p><h2>Become part of<br/><em>what comes next.</em></h2><p>Discover what becomes possible when we move together.</p><Link className="ascButton" href="https://theascendtheory.github.io/the-ascend-theory/?revision=e4e5e69">Discover Ascenders Hub <ArrowUpRight aria-hidden="true"/></Link></div></section>
  </main>;
 }
