@@ -1,0 +1,55 @@
+name: Deploy Ascenders three-app preview to GitHub Pages
+on:
+  push:
+    branches: [ascend-hub-functional-foundation]
+    paths:
+      - standalone/**
+      - .github/workflows/ascend-hub-pages.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: hub-pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    environment:
+      name: ascend-hub-preview
+      url: ${{ steps.deploy.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate application browser JavaScript
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          for name in ("hub","academy","media"):
+              html=Path(f"standalone/{name}/index.html").read_text()
+              src=re.search(r'<script type="module">(.*?)</script>',html,re.S)
+              assert src, f"Missing {name} app module"
+              Path(f"/tmp/ascend-{name}.mjs").write_text(src.group(1))
+          PY
+          for name in hub academy media; do node --check /tmp/ascend-$name.mjs; done
+          node --check standalone/hub/map.js
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Assemble Pages entrypoints
+        run: |
+          mkdir -p /tmp/ascend-pages/academy /tmp/ascend-pages/media
+          cp standalone/hub/index.html /tmp/ascend-pages/index.html
+          cp standalone/hub/map.js /tmp/ascend-pages/map.js
+          cp standalone/academy/index.html /tmp/ascend-pages/academy/index.html
+          cp standalone/media/index.html /tmp/ascend-pages/media/index.html
+          cp standalone/hub/{app-icon,brand}.png /tmp/ascend-pages/
+          for name in academy media; do cp standalone/$name/{app-icon,brand}.png /tmp/ascend-pages/$name/; done
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: /tmp/ascend-pages
+      - name: Allow artifact indexing
+        run: sleep 20
+      - id: deploy
+        uses: actions/deploy-pages@v4

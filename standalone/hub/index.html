@@ -1,0 +1,439 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f8faf6"><title>Ascend Hub · The Ascenders Club</title><style>
+:root{--paper:#f8faf6;--ink:#171d18;--mute:#637168;--line:#dce3da;--forest:#284e38;--soft:#e9efe8}*{box-sizing:border-box}html{background:var(--paper)}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}a{color:inherit}.wrap{max-width:1000px;margin:0 auto;padding:0 23px}.top{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.top .wrap{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:15px}.identity{display:flex;align-items:center;gap:11px}.mark{width:37px;height:37px;border:1.6px solid var(--ink);display:grid;place-items:center;border-radius:100%;font-size:20px}.brand{font-size:12px;font-weight:750;letter-spacing:.15em;line-height:1.45}.brand small{display:block;font-size:9px;font-weight:500;letter-spacing:.2em;color:var(--mute)}.top .right{display:flex;align-items:center;gap:9px}.chip{font-size:11px;color:var(--forest);border:1px solid var(--line);border-radius:100px;padding:7px 10px}.hero{padding:65px 0 34px;border-bottom:1px solid var(--line)}.eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);font-weight:750}.hero h1{font-family:Georgia,serif;font-size:clamp(54px,10vw,100px);font-weight:400;letter-spacing:-.07em;line-height:1;margin:18px 0}.hero h1 em{color:var(--forest);font-weight:400}.hero p{max-width:570px;line-height:1.65;color:var(--mute);font-size:16px}.section{padding:34px 0 90px}.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:25px;margin-bottom:18px}.panel h2{font-family:Georgia,serif;font-size:30px;font-weight:400;letter-spacing:-.03em;margin:0 0 10px}.panel h3{font-size:17px;margin:0 0 8px}.panel p,.muted{color:var(--mute);line-height:1.6}.actions{display:flex;gap:10px;flex-wrap:wrap}.button{background:var(--ink);color:white;border:1px solid var(--ink);border-radius:7px;padding:12px 17px;font-weight:600;font-size:13px;min-height:43px}.button:disabled{opacity:.6;cursor:wait}.button.secondary{background:white;color:var(--ink);border-color:var(--line)}.button.green{background:var(--forest);border-color:var(--forest)}.input,textarea{display:block;width:100%;border:1px solid #cfdbcf;border-radius:7px;padding:12px;background:white;color:var(--ink);outline-color:var(--forest);min-height:44px}.input:focus,textarea:focus{border-color:var(--forest)}textarea{min-height:105px;resize:vertical}label{display:block;font-size:12px;font-weight:650;margin:15px 0 7px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 17px}.nav{display:flex;gap:7px;overflow:auto;margin:0 0 24px;padding:0 0 8px}.nav button{border:1px solid var(--line);background:white;padding:11px 17px;white-space:nowrap;border-radius:100px;font-size:13px}.nav button.active{background:var(--ink);color:white;border-color:var(--ink)}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.card{border:1px solid var(--line);border-radius:10px;background:white;padding:20px}.card h3{font-family:Georgia,serif;font-size:24px;font-weight:400;margin:13px 0 10px}.card p{font-size:14px;color:var(--mute);line-height:1.55}.tag{display:inline-block;color:var(--forest);background:var(--soft);border-radius:5px;font-size:11px;padding:6px 9px}.status{border-radius:8px;border:1px solid #c5d7c7;background:#eff6ef;color:#264b34;padding:12px 14px;margin-bottom:22px;line-height:1.45;font-size:13px}.status.error{background:#fff1ed;border-color:#e9c5be;color:#7e3326}.foot{border-top:1px solid var(--line);padding:27px 0;font-size:12px;color:var(--mute)}.hidden{display:none!important}.skeleton{padding:25px;border:1px dashed var(--line);border-radius:9px;color:var(--mute)}.tiny{font-size:12px!important}.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.notice{margin:18px 0;color:var(--mute);font-size:13px}.results{margin:14px 0}.pill{border:1px solid var(--line);border-radius:100px;padding:6px 10px;color:var(--mute);font-size:12px}.toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:18px}.toolbar input{min-width:0}@media(max-width:600px){.top .wrap{min-height:62px}.brand{font-size:10px}.brand small{font-size:8px}.hero{padding:47px 0 26px}.hero h1{font-size:64px}.panel{padding:19px}.formgrid,.cards{grid-template-columns:1fr}.chip{display:none}.section{padding-top:24px}.toolbar{grid-template-columns:1fr}}
+
+/* Hub application shell: mobile-first workspace, not a marketing landing page. */
+.hero{display:none}.section{padding:25px 0 70px}.wrap{max-width:1240px}.top .wrap{min-height:66px}
+.hub-header{display:flex;justify-content:space-between;gap:16px;align-items:center;margin:4px 0 22px}
+.hub-header h1{font:400 clamp(29px,4vw,43px)/1.08 Georgia,serif;letter-spacing:-.045em;margin:7px 0}
+.hub-header p{font-size:13px;color:var(--mute);margin:0;line-height:1.5}
+.hub-layout{display:grid;grid-template-columns:205px minmax(0,1fr);gap:26px}
+.hub-side{border:1px solid var(--line);background:white;border-radius:12px;padding:12px;align-self:start;position:sticky;top:86px}
+.hub-side-label{padding:12px 12px 8px;font-size:10px;font-weight:750;letter-spacing:.16em;color:var(--mute)}
+.hub-side button{display:flex;align-items:center;gap:12px;min-height:44px;width:100%;text-align:left;background:transparent;color:var(--ink);border:0;border-radius:8px;padding:11px 12px;font-size:14px;white-space:nowrap}
+.hub-side button.active{background:var(--soft);color:var(--forest);font-weight:750}
+.hub-side button:hover{background:#f1f4ef}.hub-side-note{border-top:1px solid var(--line);padding:15px 12px;font-size:12px;color:var(--mute);line-height:1.5}
+.hub-main{min-width:0}.hub-toolrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.hub-toolrow h2{font:400 26px Georgia,serif;letter-spacing:-.03em;margin:0}
+.hub-controls{display:grid;grid-template-columns:minmax(0,1fr) 170px 170px;gap:9px;margin-bottom:13px}
+.hub-controls .input{margin:0;min-width:0;font-size:13px}
+.hub-map{position:relative;overflow:hidden;min-height:340px;border:1px solid var(--line);border-radius:12px;background:#e7edeb}
+.hub-map iframe{display:block;width:100%;height:340px;border:0}
+.hub-map-info{position:absolute;top:12px;left:12px;right:12px;pointer-events:none;display:flex;justify-content:space-between;gap:8px}
+.hub-map-info span{background:#fffefa;border:1px solid #d9dfd7;box-shadow:0 2px 10px #00000013;border-radius:7px;font-size:11px;padding:9px 12px;color:var(--ink)}
+.hub-list-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:22px 0 13px}
+.hub-list-head h3{font-size:16px;margin:0}.hub-empty{border:1px solid var(--line);background:white;border-radius:11px;padding:23px}
+.hub-empty h3{font:400 24px Georgia,serif;margin:12px 0}.hub-empty p{font-size:13px;color:var(--mute);line-height:1.6;max-width:500px}
+.hub-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.hub-cards article{border:1px solid var(--line);background:white;border-radius:10px;padding:17px}
+.hub-cards article h3{font:400 22px Georgia,serif;margin:10px 0}
+.hub-cards article p{font-size:13px;line-height:1.5;color:var(--mute)}
+.hub-locked{display:flex;align-items:center;gap:12px;background:#f2f4ef;border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:16px}
+.hub-locked strong{font-size:13px}.hub-locked p{font-size:12px;color:var(--mute);margin:4px 0 0;line-height:1.4}
+.hub-locked .button{margin-left:auto;flex-shrink:0}
+.hub-guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:18px}
+.hub-guide .card{padding:20px}.hub-guide h3{font-size:23px}.hub-guide .card p{font-size:13px}
+.hub-meta{font-size:11px;font-weight:750;letter-spacing:.12em;color:var(--forest);text-transform:uppercase}
+.hub-mobile-nav{display:none}
+.hub-sidefoot{font-size:11px;color:var(--mute);margin-top:18px}
+.hub-subtle{color:var(--mute);font-size:13px;line-height:1.6}
+@media(max-width:760px){
+ .section{padding:16px 0 48px}.wrap{padding-left:16px;padding-right:16px}
+ .hub-header{align-items:flex-start;margin:8px 0 17px}.hub-header h1{font-size:32px}.hub-header p{font-size:12px}
+ .hub-header .button{font-size:12px;min-height:38px;padding:9px 11px}
+ .hub-layout{display:block}.hub-side{display:none}.hub-mobile-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-bottom:17px;background:white;border:1px solid var(--line);padding:4px;border-radius:10px}
+ .hub-mobile-nav button{min-width:0;border:0;background:transparent;color:var(--mute);padding:11px 2px;font-size:11px;border-radius:7px;font-weight:600}
+ .hub-mobile-nav button.active{background:var(--ink);color:white}
+ .hub-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .hub-controls input{grid-column:1/-1}.hub-map{min-height:290px}.hub-map iframe{height:290px}
+ .hub-list-head{margin:18px 0 11px}.hub-cards,.hub-guide{grid-template-columns:1fr}
+ .hub-locked{flex-wrap:wrap}.hub-locked .button{margin-left:0;width:100%}
+}
+.hub-activity-card{border:1px solid var(--line);background:#fff;border-radius:12px;padding:20px}.hub-activity-card h3{font:400 23px Georgia,serif;margin:14px 0 8px}.hub-activity-card p{color:var(--mute);font-size:13px;line-height:1.55}.activity-meta{margin:9px 0;color:var(--forest);font-size:12px}.hub-controls button{min-width:0}@media(max-width:760px){.hub-controls #eventSearch{grid-column:1/-1}.hub-controls #nearbyToggle{font-size:12px;padding:9px}.hub-activity-card{padding:17px}}.hub-person-card{background:#fff;border:1px solid var(--line);padding:18px;border-radius:11px}.hub-person-card h3{font:400 24px Georgia,serif;margin:12px 0 6px}.person-photo{width:74px;height:74px;border-radius:50%;background:#e4eae4;color:var(--forest);display:grid;place-items:center;overflow:hidden;font:400 38px Georgia,serif;margin-bottom:16px}.person-photo img{width:100%;height:100%;object-fit:cover}.person-headline{font-size:13px;color:var(--mute);line-height:1.5}.profile-banner{height:170px;background:#e0e9df center/cover;border-radius:12px;margin:14px 0}.person-profile-top{display:flex;align-items:center;gap:18px;margin-bottom:22px}.person-photo.large{width:95px;height:95px;flex-shrink:0;margin:0}.person-profile-top h2{font:400 32px Georgia,serif;margin:7px 0}.person-profile-top p{font-size:14px;color:var(--mute)}.hub-person-detail .panel{margin:14px 0}.hub-person-detail .panel h3{font:400 24px Georgia,serif}.hub-person-detail .panel p{line-height:1.6}.hub-person-card .button{margin-top:12px}.panel form input,.panel form textarea{max-width:100%}.demoBanner{background:#e5ece1;text-align:center;color:#284e38;padding:10px 14px;font-size:12px;font-weight:750}.hub-person-card .tag{max-width:100%}.ascend-map-container{position:relative;border:1px solid #d0dcd0;border-radius:13px;overflow:hidden}.ascend-map{height:410px;background:#d9e8df;z-index:0}.ascend-map-hud{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;z-index:500;pointer-events:none}.ascend-map-hud span{background:#fffffff0;border:1px solid #dce4da;border-radius:7px;padding:9px 11px;font-size:10px;font-weight:750;letter-spacing:.055em}.ascend-map-marker{background:none;border:0}.ascend-map-pin{display:block;width:24px;height:24px;border:3px solid white;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 3px 8px #0007}.map-legend{display:flex;flex-wrap:wrap;gap:7px 13px;align-items:center;margin:9px 0 14px}.map-legend strong{font-size:10px;letter-spacing:.12em;color:#475d4c}.map-legend button{border:0;background:transparent;padding:7px 2px;font-size:12px;color:#47604b;cursor:pointer}.map-legend i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:middle;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #aab7ab}.map-legend button.selected{text-decoration:underline;text-underline-offset:5px;font-weight:750}.ascend-popup{min-width:175px;max-width:235px}.ascend-popup small{display:block;font-size:10px;color:#425f4c;font-weight:750;letter-spacing:.08em}.ascend-popup b{display:block;font-size:16px;margin:7px 0;line-height:1.3}.ascend-popup span{display:block;font-size:12px;color:#66736a;margin-bottom:12px}.ascend-popup button{background:#29523a;color:#fff;border:0;padding:9px 13px;border-radius:6px;font-size:12px}.map-highlight{outline:3px solid #5d9871;scroll-margin-top:130px}.map-error{padding:20px;color:#45574b}@media(max-width:760px){.ascend-map{height:355px}.ascend-map-hud span{font-size:9px;padding:7px}}
+/* 2026 geometric Hub redesign — map-first spatial composition. */
+:root{--paper:#f5f6ef;--ink:#19251e;--mute:#65766a;--line:#d8e0d4;--forest:#294c36;--soft:#eaf0e4}
+body{background:#eff2ea}
+.top{background:#f8faf4ed;backdrop-filter:blur(15px);border-bottom:1px solid #d5dfd0}
+.top .wrap{max-width:1600px}.top .mark{border-color:#8ca28f;transform:rotate(45deg);border-radius:6px}.top .mark::first-letter{display:inline-block;transform:rotate(-45deg)}
+.section{padding:0 0 65px}.section>.wrap{max-width:1600px;padding:0 19px}
+.hub-app{display:grid;grid-template-columns:188px minmax(0,1fr);gap:0;min-height:85vh;background:#f5f7f1;border-left:1px solid #dce4d7;border-right:1px solid #dce4d7}
+.hub-side{position:sticky;top:67px;align-self:start;height:calc(100vh - 68px);background:linear-gradient(155deg,#172c20,#264735 62%,#1b3024);border:0;border-right:1px solid #a5b7a8;border-radius:0;padding:21px 13px;box-shadow:none}
+.side-emblem{height:125px;display:grid;place-items:center;position:relative;margin:4px auto 20px}.side-emblem .emblem-circle{width:92px;height:92px;border:1px solid #8dab92;transform:rotate(45deg);border-radius:16px;box-shadow:0 0 0 15px #a6c0a40b,inset 0 0 0 17px #d5e5ca0c}.side-emblem .emblem-circle:before,.side-emblem .emblem-circle:after{content:"";position:absolute;inset:8px;border:1px solid #9db9a0;border-radius:50%}.side-emblem .emblem-circle:after{inset:24px;border-color:#d6e6c0}.emblem-core{position:absolute;inset:auto;color:#d7e7c8;font-size:46px}
+.hub-side-label{color:#9ab09f;font-size:10px;letter-spacing:.16em;padding:12px 11px}
+.hub-side button{color:#d5e3d7;background:transparent;display:flex;gap:15px;border:1px solid transparent;border-radius:11px;align-items:center;padding:12px 13px;min-height:49px;white-space:normal}
+.hub-side button .nav-glyph{font-size:22px;line-height:1;color:#a5bfaa;width:24px;text-align:center}
+.hub-side button.active{background:#ffffff18;color:white;border-color:#b2cbb03c;font-weight:700;box-shadow:inset 3px 0 0 #b9d5a8}
+.hub-side button:hover{background:#ffffff14}.side-bottom{position:absolute;bottom:32px;left:19px;right:15px;border-top:1px solid #ffffff2a;padding-top:17px;color:#d2e1c7;font-size:10px;font-weight:750;letter-spacing:.08em}.side-bottom p{font-size:11px;line-height:1.6;color:#a8baab;font-weight:400;letter-spacing:0}
+.pulse-indicator{display:inline-block;width:7px;height:7px;border-radius:50%;background:#88bc84;box-shadow:0 0 0 4px #8abf8430;margin-right:7px}
+.hub-stage{min-width:0}.hub-header{position:relative;margin:0;min-height:216px;padding:31px 38px 27px;overflow:hidden;border-bottom:1px solid #d6e1d3;display:flex;justify-content:space-between;align-items:center;background:radial-gradient(circle at 86% 44%,#c6d5c052 0,#d7e3d523 26%,transparent 58%),linear-gradient(130deg,#fafbf6,#eff3ea)}
+.hub-intro{position:relative;z-index:2;max-width:650px}.hub-meta{font-size:10px;letter-spacing:.19em;color:#56735a;font-weight:800}.hub-split{color:#9daf9d;padding:0 8px}.hub-header h1{font:400 clamp(35px,4vw,60px)/1.05 Georgia,serif;letter-spacing:-.063em;margin:14px 0 12px;color:#203a29}.hub-header p{font-size:14px;line-height:1.55;color:#627468;max-width:500px;margin:0}
+.hub-orbit{position:absolute;right:13%;top:50%;width:250px;height:250px;transform:translateY(-50%);opacity:.5;display:grid;place-items:center;pointer-events:none}.orbit-one,.orbit-two,.orbit-three{position:absolute;inset:24px;border:1px solid #799c82;transform:rotate(45deg);border-radius:20px}.orbit-two{inset:44px;transform:rotate(0deg);border-radius:50%;border-color:#628a70}.orbit-three{inset:63px;transform:rotate(45deg);border-radius:8px}.orbit-center{font:60px Georgia,serif;color:#527a5a}
+.hub-join{position:relative;z-index:3;white-space:nowrap;padding:13px 19px;border-radius:100px;align-self:flex-start;margin-top:2px;background:#244832!important}
+.hub-main{padding:24px 31px 42px;background:linear-gradient(125deg,#f9faf6 0,#f3f6ef 100%);min-height:550px}
+.hub-toolrow h2{font:400 31px/1.1 Georgia,serif;letter-spacing:-.04em}.hub-toolrow .pill{background:#edf1e8;border-color:#cadacb;color:#415a48}
+.hub-controls{display:grid;grid-template-columns:minmax(0,1fr) 170px 150px;gap:10px;margin:17px 0 20px}.hub-controls .input,.hub-controls .button{border-radius:100px;min-height:47px;padding:12px 17px;background:#fff;border:1px solid #d7e2d4;box-shadow:0 2px 10px #2b463d0b}
+.hub-controls #nearbyToggle{background:#e6eee3;border-color:#c7dcc4}
+.hub-map-shell,.ascend-map-container{border-radius:20px!important;border:1px solid #b9cdb9!important;overflow:hidden;box-shadow:0 14px 45px #23452c20}
+.ascend-map{height:510px}.ascend-map-hud{top:16px;left:16px;right:16px}.ascend-map-hud span{background:#f8fbf0f4;color:#274935;border:1px solid #bad4bb;border-radius:50px;font-size:10px;padding:10px 14px}
+.map-legend{display:flex;align-items:center;gap:11px 17px;flex-wrap:wrap;margin:13px 0 23px;padding:12px 16px;border:1px solid #d5e2d1;background:#f4f8f0;border-radius:12px}.map-legend strong{font-size:10px;letter-spacing:.14em}.map-legend button{font-size:12px;padding:7px 10px!important;border-radius:100px;border:1px solid transparent!important}.map-legend button:hover,.map-legend button.selected{background:#dfebdc;border-color:#c0d0be!important}
+.hub-list-head{margin:24px 0 15px}.hub-list-head h3{font:400 25px Georgia,serif;letter-spacing:-.03em}
+.hub-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.hub-activity-card,.hub-cards article,.hub-person-card{background:#fff;border:1px solid #d1dfd0;border-radius:15px;padding:20px;min-width:0;box-shadow:0 5px 18px #2548320a;transition:transform .2s ease,box-shadow .2s ease,border-color .2s}.hub-activity-card:hover,.hub-cards article:hover,.hub-person-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px #244a3520;border-color:#9ebe9e}
+.hub-activity-card h3,.hub-cards article h3{font:400 24px Georgia,serif;letter-spacing:-.03em;line-height:1.15}.hub-activity-card .tag,.hub-cards .tag{font-size:10px;letter-spacing:.07em}.hub-activity-card .activity-meta{font-size:12px}.hub-activity-card .button{border-radius:100px;min-height:38px}
+.hub-locked{background:#1f402c;color:#e5eee3;border:1px solid #224b31;border-radius:16px;padding:22px 23px;margin-top:27px}.hub-locked strong{font:400 22px Georgia,serif}.hub-locked p{color:#bacdb9}.hub-locked .button{background:#e3edda!important;color:#1c3d28;border-color:#d7e8cf}
+.hub-person-card .person-photo{height:85px;width:85px;border:4px solid #e1ecdf;box-shadow:0 0 0 1px #a9c4ae}.hub-person-card h3{font:400 27px Georgia,serif}
+.hub-mobile-nav{display:none}
+@media(min-width:1200px){.hub-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1100px){.hub-app{grid-template-columns:166px minmax(0,1fr)}.hub-header{padding:27px 24px}.hub-main{padding:21px}.hub-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.hub-orbit{right:10%;opacity:.3}}
+@media(max-width:760px){
+ .section{padding:0 0 45px}.section>.wrap{padding:0}.hub-app{display:block;border:0}.hub-side{display:none}
+ .hub-header{padding:27px 18px 19px;min-height:218px;display:block}
+ .hub-header h1{font-size:clamp(37px,9vw,52px);margin:12px 0 8px;max-width:310px}
+ .hub-header p{font-size:12px;max-width:295px;line-height:1.5}
+ .hub-orbit{width:188px;height:188px;right:-73px;top:90px;opacity:.28}
+ .hub-join{margin-top:17px;padding:10px 17px;min-height:38px;font-size:12px}
+ .hub-mobile-nav{display:grid;position:sticky;top:62px;z-index:9;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:0;border-bottom:1px solid #d0ddcc;border-radius:0;background:#f7faf3f4;backdrop-filter:blur(16px);padding:6px 6px}
+ .hub-mobile-nav button{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;font-size:10px;min-height:58px;border-radius:10px;color:#627367;padding:6px 2px}
+ .hub-mobile-nav button .nav-glyph{font-size:21px;line-height:1}
+ .hub-mobile-nav button.active{background:#264632;color:#fff}
+ .hub-main{padding:17px 14px 34px}
+ .hub-toolrow h2{font-size:27px}
+ .hub-controls{grid-template-columns:minmax(0,1fr) 125px;gap:8px;margin:14px 0}
+ .hub-controls #eventSearch,.hub-controls #projectSearch{grid-column:1/-1}
+ .hub-controls .input,.hub-controls .button{font-size:12px;padding:9px 12px;min-height:43px}
+ .ascend-map{height:clamp(350px,52vh,495px)}.ascend-map-hud span{font-size:9px;padding:7px 10px}
+ .hub-cards{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding:2px 1px 17px;margin-right:-14px}
+ .hub-cards article,.hub-activity-card,.hub-person-card{flex:0 0 min(80vw,295px);scroll-snap-align:start;min-height:220px}
+ .hub-list-head h3{font-size:24px}
+ .map-legend{padding:10px;gap:4px;margin:10px 0 15px}.map-legend button{font-size:11px}
+ .hub-locked{display:block;padding:22px}.hub-locked .button{width:100%;margin-top:14px}
+ .hub-person-detail .hub-cards{display:flex}
+}
+@media(prefers-reduced-motion:reduce){.hub-activity-card,.hub-cards article,.hub-person-card{transition:none}}
+
+
+/* Explorer V2: geospatial stage, floating discovery panel and deliberately balanced proportions. */
+.hub-discover-heading{margin:0 0 7px;align-items:flex-end}.hub-discover-heading h2{margin:8px 0 0;font-size:38px}.hub-discovery-stage{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(270px,.83fr);gap:0;border:1px solid #b5cbb6;border-radius:21px;background:#eaf1e7;overflow:hidden;min-height:610px;box-shadow:0 14px 42px #223e2821}.hub-discovery-map{min-width:0;position:relative;padding:12px;display:flex;flex-direction:column;background:#d9e7d9}.hub-discovery-map .ascend-map-container{border-radius:14px!important;box-shadow:0 8px 24px #1e432522;flex:1;min-height:480px}.hub-discovery-map .ascend-map{height:100%;min-height:480px}.hub-discovery-map .map-legend{margin:12px 0 0;background:#f7faf5e8;border-radius:10px}.hub-discovery-feed{min-width:0;border-left:1px solid #ceddcf;background:linear-gradient(135deg,#fbfcf8 0%,#f2f6ed 100%);padding:20px 17px 18px;display:flex;flex-direction:column}.hub-feed-header{flex-shrink:0;padding:5px 4px 17px;border-bottom:1px solid #d8e1d3}.hub-feed-header h3{font:400 31px Georgia,serif;letter-spacing:-.045em;margin:9px 0}.hub-feed-header>span:last-child{color:#708171;font-size:12px}.hub-discovery-feed .hub-cards{display:flex;flex-direction:column;gap:10px;overflow-y:auto;scrollbar-width:thin;padding:14px 3px 4px;max-height:545px;min-height:0}.hub-discovery-feed .hub-activity-card{flex:0 0 auto;min-height:0;border-radius:12px;padding:16px;cursor:pointer;box-shadow:none;background:#fff;border:1px solid #d7e3d4}.hub-discovery-feed .hub-activity-card:hover{box-shadow:0 7px 17px #284b3115}.hub-discovery-feed .hub-activity-card h3{font-size:20px;margin:9px 0 6px}.hub-discovery-feed .hub-activity-card p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.4;margin:5px 0}.hub-discovery-feed .hub-activity-card .activity-meta{font-size:11px;margin:6px 0}.hub-discovery-feed .hub-activity-card .actions{margin-top:9px}.hub-discovery-feed .hub-activity-card .button{font-size:11px;min-height:35px;padding:8px 12px}.hub-discovery-map .ascend-map-hud{z-index:500}.hub-discovery-feed .hub-empty{margin:15px 0}.hub-discovery-stage .map-legend{border-color:#c1d4c3}.hub-discovery-stage .map-legend button{white-space:nowrap}
+@media(max-width:1100px){.hub-discovery-stage{grid-template-columns:minmax(0,1.4fr) minmax(250px,.8fr)}.hub-discovery-map .ascend-map,.hub-discovery-map .ascend-map-container{min-height:470px}.hub-discovery-feed{padding:15px 12px}.hub-feed-header h3{font-size:27px}}
+@media(max-width:860px){.hub-discovery-stage{display:block;min-height:0;border-radius:18px}.hub-discovery-map{padding:8px}.hub-discovery-map .ascend-map-container{min-height:400px}.hub-discovery-map .ascend-map{height:400px;min-height:400px}.hub-discovery-feed{border:0;border-top:1px solid #c8d9c8;padding:16px 13px}.hub-feed-header{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:3px 4px 12px}.hub-feed-header .hub-meta{display:none}.hub-feed-header h3{font-size:25px;margin:0}.hub-discovery-feed .hub-cards{display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;max-height:none;padding:13px 0 5px;gap:11px}.hub-discovery-feed .hub-activity-card{flex:0 0 min(76vw,285px);scroll-snap-align:start;min-height:215px}.hub-discover-heading h2{font-size:31px}}
+@media(max-width:480px){.hub-discovery-map .ascend-map-container{min-height:340px}.hub-discovery-map .ascend-map{height:345px;min-height:345px}.hub-discovery-stage{border-radius:14px}.hub-discover-heading .pill{font-size:10px}.hub-feed-header h3{font-size:23px}.hub-discovery-map .map-legend{gap:5px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:8px}.hub-discovery-map .map-legend strong{white-space:nowrap}.hub-discovery-map .map-legend button{white-space:nowrap}}
+
+/* Cinematic discovery: map is the stage, feed is supporting content. */
+.hub-header{min-height:185px;background:radial-gradient(ellipse at 80% 50%,#d7ddcd,transparent 60%),#f6f6ef}.hub-header h1{color:#191e19}.hub-side{background:#181d19}.hub-main{background:#f6f6ef}.hub-discovery-stage{grid-template-columns:minmax(0,2.3fr) minmax(250px,.8fr);border:0;border-radius:24px;background:#222b24;box-shadow:0 24px 60px #16231b22}.hub-discovery-map{background:#222b24;padding:10px}.hub-discovery-map .ascend-map{min-height:560px}.hub-discovery-map .map-legend{background:#202820;border:1px solid #ffffff20;color:#fff}.hub-discovery-map .map-legend strong,.hub-discovery-map .map-legend button{color:#e5eadf}.hub-discovery-map .map-legend button.selected,.hub-discovery-map .map-legend button:hover{background:#52644e;color:white}.hub-discovery-feed{background:#f5f4ed;border:0;padding:24px 19px}.hub-feed-header h3{font-size:36px}.hub-discovery-feed .hub-activity-card{border:0;border-bottom:1px solid #cdd3c7;border-radius:0;box-shadow:none;background:transparent;padding:18px 4px}.map-world-reset{margin-top:46px;padding:9px 12px;border:1px solid #b9c5b6;border-radius:20px;background:#fff;color:#223529;font-weight:700;font-size:12px;cursor:pointer}.ascend-map-pin{width:27px;height:27px}.ascend-map-hud span:last-child{margin-right:0}@media(max-width:900px){.hub-discovery-stage{grid-template-columns:1fr}.hub-discovery-map .ascend-map{min-height:440px}.hub-discovery-feed{padding:18px}.hub-header{min-height:150px}}@media(max-width:480px){.hub-discovery-map .ascend-map{height:440px;min-height:440px}.hub-discovery-stage{border-radius:18px}.hub-discovery-map .map-legend{flex-wrap:wrap;overflow:visible}.hub-discovery-map .map-legend button{min-height:36px}}
+/* Presentation revision: Atlas / cinematic editorial, scoped to Hub. */
+body{background:#f2f1eb}.top{background:#121714;color:#f5f5ee;border:0}.top .mark{border-color:#d5ded0}.top .brand small,.top .chip{color:#cbd5c5}.top .wrap{min-height:58px}.demoBanner{background:#e5e8df;color:#354438;font-size:10px;letter-spacing:.09em}.hub-app{border:0;background:#f2f1eb}.hub-side{background:#121714}.hub-header{min-height:200px;background:#151d18;color:#f2f5ec;border:0;padding:36px 34px}.hub-header h1{color:#f2f5ec;font-size:clamp(40px,5vw,76px);letter-spacing:-.065em}.hub-header p,.hub-header .hub-meta{color:#b8c7b5}.hub-header .hub-orbit{opacity:.75;right:13%}.hub-join{background:#e2e9d9!important;color:#17241a;border:0}.hub-main{background:#f2f1eb;padding:24px}.hub-discovery-stage{grid-template-columns:minmax(0,3fr) minmax(230px,1fr);border-radius:20px;min-height:650px}.hub-discovery-map .ascend-map{min-height:610px}.hub-discovery-feed{background:#f2f1eb}.hub-controls .input,.hub-controls .button{border-radius:8px}.hub-discover-heading h2{font-size:44px}.hub-mobile-nav{border:0;background:#e5e8df}.hub-mobile-nav button.active{background:#18221b}.hub-discovery-map .map-legend button{font-size:12px}.hub-discovery-map .map-legend button.selected{outline:1px solid #f1f5e9}.hub-discovery-map .ascend-map-container{border:0!important}.hub-discovery-feed .hub-cards{display:flex;flex-direction:column}.hub-discovery-feed .hub-activity-card{min-width:0}.hub-header .hub-meta:after{content:" / ATLAS 02";font-size:9px;color:#a6b7a2}@media(max-width:900px){.hub-discovery-stage{grid-template-columns:1fr;min-height:0}.hub-discovery-map .ascend-map{height:480px;min-height:480px}.hub-header{padding:24px 18px;min-height:160px}.hub-header h1{font-size:42px}.hub-main{padding:15px}.hub-discovery-feed .hub-cards{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(245px,78%);overflow:auto;grid-template-columns:none;scroll-snap-type:x mandatory}.hub-discovery-feed .hub-activity-card{scroll-snap-align:start;padding:16px;background:#fff;border:0;border-radius:12px}.hub-discover-heading h2{font-size:32px}.hub-header .hub-orbit{right:-50px;opacity:.25}.hub-join{font-size:11px;padding:10px}.hub-discovery-map .map-legend{flex-wrap:wrap}}@media(max-width:480px){.hub-header h1{font-size:36px}.hub-header{min-height:145px}.hub-discovery-map .ascend-map{height:460px;min-height:460px}.hub-header p{font-size:12px}.hub-main{padding:12px}}
+</style><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="./map.js?v=20261125-3"></script><link rel="icon" type="image/png" href="./app-icon.png"><link rel="apple-touch-icon" href="./app-icon.png"><style>.app-brand-lockup{display:block;width:40px;height:40px;object-fit:contain;flex:none}.app-brand-group{display:flex;align-items:center;gap:8px;min-width:0}@media(max-width:400px){.app-brand-lockup{width:30px;height:30px}.app-brand-group{gap:5px}}</style></head><body><header class="top"><div class="wrap"><div class="identity"><img class="app-brand-lockup" src="./brand.png" alt="" width="40" height="40"><div class="brand">ASCENDERS HUB<small>THE ASCENDERS CLUB</small></div></div><div class="right"><span class="chip">OPEN TO EXPLORE</span><button class="button secondary hidden" id="signout" type="button">Sign out</button></div></div></header><div class="demoBanner">Presentation preview · Illustrative listings and profiles; not live registrations</div><main><section class="hero"><div class="wrap"><div class="eyebrow">CONNECT · COLLABORATE · CULTIVATE</div><h1>Ascend <em>Hub.</em></h1><p>Explore projects and discover collaboration opportunities across borders and disciplines. Browse freely; apply when you're ready to participate.</p></div></section><section class="section"><div class="wrap"><div id="status" class="status hidden" role="status"></div><div id="loading" class="skeleton">Connecting securely…</div><div id="content"></div></div></section></main><footer class="foot"><div class="wrap">© THE ASCENDERS CLUB · PRIVATE MEMBER NETWORK · <a href="mailto:contact@theascendtheory.com">CONTACT</a></div></footer>
+<script type="module">
+import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.4/+esm';
+const supabase=createClient('https://iigetmiputlcdthhhpps.supabase.co',"sb_publishable_CXx9TuAZeTcjx6wCeMUFJg_2RIHFMNo",{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const el=id=>document.getElementById(id);
+const htmlEscape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clean=v=>String(v??'').trim(),safeLink=v=>{try{const u=new URL(v);return ['http:','https:'].includes(u.protocol)?u.href:null}catch{return null}};
+const link=(url,label)=>{const u=safeLink(url);return u?'<a href="'+htmlEscape(u)+'" target="_blank" rel="noopener noreferrer">'+label+' ↗</a>':''};
+const message=(txt,error=false)=>{const n=el('status');n.className='status'+(error?' error':'');n.textContent=txt;window.scrollTo({top:0,behavior:'smooth'})};
+const hideMessage=()=>el('status').className='status hidden';
+const b=(label,cls='')=>'<button class="button '+cls+'" type="submit">'+label+'</button>';
+const field=(name,title,required=false,type='text',max=180)=>'<label for="'+name+'">'+title+'</label><input class="input" id="'+name+'" name="'+name+'" type="'+type+'" maxlength="'+max+'" '+(required?'required':'')+'/>';
+const area=(name,title,max=1500)=>'<label for="'+name+'">'+title+'</label><textarea id="'+name+'" name="'+name+'" maxlength="'+max+'"></textarea>';
+const formData=form=>Object.fromEntries(new FormData(form));
+function presentationFixture(x){const y={...x};for(const k of ['title','description','about','organization','venue','headline','summary'])if(typeof y[k]==='string')y[k]=y[k].replace(/^DEMO(?: EVENT| PERSONA)?\s*[—–:·-]\s*/i,'').replace(/\bfictional\s+/gi,'').replace(/\s*\(fictional\)/gi,'').replace(/^Demo Learning Garden$/,'Learning Garden');if(Array.isArray(y.entries))y.entries=y.entries.map(presentationFixture);return y;}
+let user=null,membership=null,isAdmin=false,members=[],projects=[],tab='projects',search='',blocked=new Set(),publicProjects=[],publicMode=true,publicTab='happening',publicEvents=[],publicPeople=[],peopleQuery='',publicPortfolio=[],demoPortfolios=[],portfolioPerson=null,ownProfile=null,ownInitiatives=[],myFollows=new Set(),myConnections=[],eventQuery='',eventCategory='All types',nearbyOnly=false,userCoords=null,publicQuery='',publicDiscipline='All fields',publicCountry='All locations';
+
+async function loadPublicProjects(){
+ const {data,error}=await supabase.from('ascend_hub_projects').select('id,title,description,discipline,country,city,latitude,longitude,website,looking_for').eq('status','approved').order('created_at',{ascending:false}).limit(150);
+ publicProjects=data||[];
+ if(error)message('Public projects are temporarily unavailable. Please try again later.',true);
+ const res=await supabase.from('ascend_hub_events').select('id,title,description,category,venue,city,country,latitude,longitude,starts_at,ends_at,is_online,link_url').eq('status','approved').gte('starts_at',new Date(Date.now()-86400000).toISOString()).order('starts_at').limit(150);
+ publicEvents=res.data||[];
+ const ppl=await supabase.rpc('discover_ascend_hub_people');publicPeople=ppl.data||[];
+ if(ppl.error)message('Public profiles are temporarily unavailable.',true);
+ if(res.error)message('Public event listings are temporarily unavailable.',true);
+ const demoResult=await supabase.from('ascend_demo_fixtures').select('kind,payload').in('kind',['hub_project','hub_event','hub_person','hub_portfolio']);
+ if(!demoResult.error){
+  const demo=demoResult.data||[];
+  publicProjects.push(...demo.filter(x=>x.kind==='hub_project').map(x=>presentationFixture(x.payload)));
+  publicEvents.push(...demo.filter(x=>x.kind==='hub_event').map(x=>presentationFixture(x.payload)));
+  publicPeople.push(...demo.filter(x=>x.kind==='hub_person').map(x=>presentationFixture(x.payload)));
+  demoPortfolios=demo.filter(x=>x.kind==='hub_portfolio').map(x=>presentationFixture(x.payload));
+ }else console.warn('Demo fixtures unavailable',demoResult.error.message);
+ if(!publicEvents.some(x=>x.category==='Business'))publicEvents.push({id:'preview-business-vancouver',title:'Vancouver Business',description:'Local enterprise and community collaboration.',category:'Business',city:'Vancouver',country:'Canada',latitude:49.2827,longitude:-123.1207,demo:true,starts_at:null});
+}
+function exploreAction(){
+ if(user&&(membership?.status==='approved'||isAdmin)){publicMode=false;tab='profile';render();return}
+ if(!user){publicMode=false;render();return}
+ if(!membership){publicMode=false;render();return}
+ if(membership.status==='pending')message('Your application is pending review. You can still explore public projects.');
+ else message('Membership approval is required to collaborate with other members.');
+}
+
+const publicTabs=[['happening','Happening'],['projects','Projects'],['people','People'],['overview','About']];
+const WORLD_EMBED='https://www.openstreetmap.org/export/embed.html?bbox=-168%2C-65%2C168%2C78&layer=mapnik';
+function setPublicTab(t){publicTab=t;portfolioPerson=null;renderPublic()}
+const demoActionState=JSON.parse(sessionStorage.getItem('ascend_demo_actions')||'{}');
+function setDemoAction(id,kind){
+ const key=kind+':'+id;demoActionState[key]=!demoActionState[key];
+ sessionStorage.setItem('ascend_demo_actions',JSON.stringify(demoActionState));
+ renderPublicScreen();
+ message(''+(demoActionState[key]?'Action previewed.':'Preview reset.')+' This preview does not send real requests.');
+}
+function renderPublic(){
+ el('loading').className='hidden';
+ const title=publicTab==='happening'?'The world is happening.':publicTab==='projects'?'Ideas in motion.':publicTab==='people'?'People with purpose.':'A living network.';
+ const subtitle=publicTab==='happening'?'Follow the signals. Discover gatherings, workshops and ideas wherever they unfold.':publicTab==='projects'?'Find the work taking shape, around the world.':publicTab==='people'?'Meet the people moving ideas into the world.':'A place for people, ideas and collaboration to intersect.';
+ const marks={happening:'◎',projects:'◇',people:'◌',overview:'✧'};
+ const side=publicTabs.map(([id,label])=>'<button type="button" data-hub-tab="'+id+'" class="'+(publicTab===id?'active':'')+'"><span class="nav-glyph">'+marks[id]+'</span><span>'+label+'</span></button>').join('');
+ const mobile=publicTabs.map(([id,label])=>'<button type="button" data-hub-tab="'+id+'" class="'+(publicTab===id?'active':'')+'"><span class="nav-glyph">'+marks[id]+'</span><span>'+label+'</span></button>').join('');
+ el('content').innerHTML='<div class="hub-app"><aside class="hub-side"><div class="side-emblem" aria-hidden="true"><span class="emblem-circle"></span><span class="emblem-core">✧</span></div><div class="hub-side-label">YOUR UNIVERSE</div>'+side+'<div class="side-bottom"><span class="pulse-indicator"></span> GLOBAL DISCOVERY <p>Explore freely. Participation is curated.</p></div></aside><div class="hub-stage"><header class="hub-header"><div class="hub-intro"><div class="hub-meta"><span class="pulse-indicator"></span> THE ASCENDERS CLUB <span class="hub-split">/</span> '+(publicTab==='happening'?'WORLD EXPLORER':publicTab.toUpperCase())+'</div><h1>'+title+'</h1><p>'+subtitle+'</p></div><div class="hub-orbit" aria-hidden="true"><span class="orbit-one"></span><span class="orbit-two"></span><span class="orbit-three"></span><span class="orbit-center">✧</span></div><button type="button" class="button green hub-join" id="hubJoin">'+(membership?.status==='approved'||isAdmin?'My space':membership?.status==='pending'?'Review pending':'Become an Ascender')+'</button></header><div class="hub-mobile-nav" aria-label="Hub navigation">'+mobile+'</div><main class="hub-main" id="hubWorkspace"></main></div></div>';
+ el('hubJoin').onclick=exploreAction;
+ document.querySelectorAll('[data-hub-tab]').forEach(b=>b.onclick=()=>setPublicTab(b.dataset.hubTab));
+ renderPublicScreen();
+}
+function publicAccessBanner(){
+ return '<div class="hub-locked"><div><strong>Ready to participate?</strong><p>Join the review process to submit projects and collaborate with other members.</p></div><button type="button" class="button green" data-public-join>Apply for access</button></div>';
+}
+function attachPublicJoin(){
+ document.querySelectorAll('[data-public-join]').forEach(b=>b.onclick=exploreAction);
+}
+function mapEmbed(p){
+ if(!p)return '<iframe loading="lazy" title="Explore locations worldwide on an interactive map" referrerpolicy="no-referrer" src="'+WORLD_EMBED+'"></iframe>';
+ const lat=Number(p.latitude),lon=Number(p.longitude);
+ if(!Number.isFinite(lat)||!Number.isFinite(lon))return '<iframe loading="lazy" title="Worldwide map" src="'+WORLD_EMBED+'"></iframe>';
+ const delta=1.5,bbox=[lon-delta,lat-delta,lon+delta,lat+delta].join(',');
+ return '<iframe loading="lazy" title="Location of '+htmlEscape(p.title)+'" referrerpolicy="no-referrer" src="https://www.openstreetmap.org/export/embed.html?bbox='+encodeURIComponent(bbox)+'&amp;layer=mapnik&amp;marker='+encodeURIComponent(lat+','+lon)+'"></iframe>';
+}
+function mapPanel(list){return window.AscendMap?AscendMap.surface(list,false):'<div>Map loading…</div>'}
+function bindMap(list){}
+function projectFilterRow(){
+ const f=(key,values,current)=>'<select class="input" id="'+key+'" aria-label="Filter projects">'+values.map(v=>'<option value="'+htmlEscape(v)+'" '+(v===current?'selected':'')+'>'+htmlEscape(v)+'</option>').join('')+'</select>';
+ const disciplines=['All fields',...new Set(publicProjects.map(p=>p.discipline).filter(Boolean))].sort((a,b)=>a==='All fields'?-1:b==='All fields'?1:a.localeCompare(b));
+ const countries=['All locations',...new Set(publicProjects.map(p=>p.country).filter(Boolean))].sort((a,b)=>a==='All locations'?-1:b==='All locations'?1:a.localeCompare(b));
+ return '<div class="hub-controls"><input class="input" type="search" aria-label="Search projects" id="projectSearch" placeholder="Search initiatives, places or disciplines" value="'+htmlEscape(publicQuery)+'">'+f('projectField',disciplines,publicDiscipline)+f('projectPlace',countries,publicCountry)+'</div>';
+}
+function filteredPublic(){
+ return publicProjects.filter(p=>(publicDiscipline==='All fields'||p.discipline===publicDiscipline)&&(publicCountry==='All locations'||p.country===publicCountry)&&[p.title,p.description,p.discipline,p.country,p.city,p.looking_for].join(' ').toLowerCase().includes(publicQuery.toLowerCase()));
+}
+function publicCards(list){
+ return '<div class="hub-cards">'+list.map(p=>'<article data-map-card="'+htmlEscape(p.id)+'"><span class="tag">'+htmlEscape(p.discipline||'INITIATIVE')+'</span><h3>'+htmlEscape(p.title)+'</h3><p>'+htmlEscape(p.description)+'</p><p class="tiny">⌖ '+htmlEscape([p.city,p.country].filter(Boolean).join(', ')||'Worldwide')+'</p>'+(p.looking_for?'<p class="tiny"><b>Seeking:</b> '+htmlEscape(p.looking_for)+'</p>':'')+link(p.website,'View project site')+'<div class="actions" style="margin-top:13px"><button type="button" data-public-join class="button secondary">Collaborate · Members only</button></div></article>').join('')+'</div>';
+}
+function renderProjectExplorer(){
+ const result=filteredPublic();
+ return '<div class="hub-toolrow"><h2>World explorer</h2><span class="pill">'+result.length+' published initiatives</span></div>'+projectFilterRow()+mapPanel(result)+'<div class="hub-list-head"><h3>Approved projects</h3><span class="hub-subtle">Explore initiatives</span></div>'+(result.length?publicCards(result):'<div class="hub-empty"><span class="tag">'+(publicProjects.length?'NO MATCHES':'PUBLIC DIRECTORY · OPEN FOR EXPLORATION')+'</span><h3>'+(publicProjects.length?'No projects match these filters.':'Building the first public collection.')+'</h3><p>'+(publicProjects.length?'Try a different field or location to find relevant initiatives.':'The map and filters are operational. Public project listings will appear as real initiatives are reviewed and approved. No sample organizations or fabricated profiles have been inserted.')+'</p></div>')+publicAccessBanner();
+}
+function personTile(p){
+ const photo=safeLink(p.photo_url);
+ return '<article class="hub-person-card"><div class="person-photo">'+(photo?'<img src="'+htmlEscape(photo)+'" alt="Profile photo of '+htmlEscape(p.display_name)+'">':'<span>'+htmlEscape((p.display_name||'?').slice(0,1).toUpperCase())+'</span>')+'</div><span class="tag">'+htmlEscape(p.discipline||'CHANGEMAKER')+'</span><h3>'+htmlEscape(p.display_name)+'</h3><p class="person-headline">'+htmlEscape(p.headline||p.organization||'Member of the Ascenders Club')+'</p><p class="tiny">⌖ '+htmlEscape([p.city,p.country].filter(Boolean).join(', ')||'Worldwide')+'</p><button class="button secondary" type="button" data-person="'+htmlEscape(p.user_id)+'">View profile</button></article>';
+}
+async function followPerson(id){
+ if(id.startsWith('demo-')){setDemoAction(id,'follow');return}
+ if(!user||membership?.status!=='approved'){exploreAction();return}
+ if(id===user.id)return;
+ if(myFollows.has(id)){
+  const {error}=await supabase.from('ascend_hub_follows').delete().eq('follower_id',user.id).eq('followed_id',id);
+  if(error){message(error.message,true);return}
+  myFollows.delete(id);message('You unfollowed this member.');
+ }else{
+  const {error}=await supabase.from('ascend_hub_follows').insert({follower_id:user.id,followed_id:id});
+  if(error){message(error.message,true);return}
+  myFollows.add(id);message('You are now following this changemaker.');
+ }
+ renderPublicScreen();
+}
+async function connectPerson(id){
+ if(id.startsWith('demo-')){setDemoAction(id,'connect');return}
+ if(!user||membership?.status!=='approved'){exploreAction();return}
+ if(id===user.id)return;
+ if(myConnections.some(c=>c.requester_id===user.id&&c.recipient_id===id&&['pending','accepted'].includes(c.status))){message('A connection is already pending or accepted.');return}
+ const {data,error}=await supabase.from('ascend_hub_connection_requests').insert({requester_id:user.id,recipient_id:id,status:'pending'}).select('id,requester_id,recipient_id,status,created_at').single();
+ if(error){message(error.message,true);return}
+ myConnections.push(data);message('Connection request sent. The other member must accept it.');renderPublicScreen();
+}
+async function respondConnection(id,accept){
+ const {data,error}=await supabase.rpc('respond_to_ascend_connection',{p_request_id:id,p_accept:accept});
+ if(error||!data){message(error?.message||'Request could not be updated.',true);return}
+ myConnections=myConnections.map(c=>c.id===id?{...c,status:accept?'accepted':'declined'}:c);
+ renderConnections();message(accept?'Connection accepted.':'Connection declined.');
+}
+function renderConnections(){
+ const root=el('screen');if(!root)return;
+ const received=myConnections.filter(c=>c.recipient_id===user.id&&c.status==='pending');
+ const outgoing=myConnections.filter(c=>c.requester_id===user.id&&c.status==='pending');
+ const accepted=myConnections.filter(c=>c.status==='accepted');
+ const name=id=>publicPeople.find(p=>p.user_id===id)?.display_name||'Ascenders member';
+ root.innerHTML='<div class="panel"><div class="hub-meta">MY NETWORK</div><h2>Connections</h2><p>Connecting is mutual. Requests are private until the recipient accepts them.</p></div><div class="hub-list-head"><h3>Received requests</h3><span class="pill">'+received.length+'</span></div>'+(received.length?received.map(c=>'<div class="card" style="margin:10px 0"><h3>'+htmlEscape(name(c.requester_id))+'</h3><div class="actions"><button class="button green" data-respond="'+htmlEscape(c.id)+'" data-accept="yes">Accept</button><button class="button secondary" data-respond="'+htmlEscape(c.id)+'" data-accept="no">Decline</button></div></div>').join(''):'<div class="hub-empty"><p>No incoming connection requests.</p></div>')+'<div class="hub-list-head"><h3>Pending sent requests</h3><span class="pill">'+outgoing.length+'</span></div>'+(outgoing.length?outgoing.map(c=>'<div class="card" style="margin:10px 0"><h3>'+htmlEscape(name(c.recipient_id))+'</h3><span class="tag">AWAITING RESPONSE</span></div>').join(''):'<div class="hub-empty"><p>No outgoing requests awaiting a response.</p></div>')+'<div class="hub-list-head"><h3>Confirmed connections</h3><span class="pill">'+accepted.length+'</span></div>'+(accepted.length?accepted.map(c=>'<div class="card" style="margin:10px 0"><h3>'+htmlEscape(name(c.requester_id===user.id?c.recipient_id:c.requester_id))+'</h3><span class="tag">CONNECTED</span></div>').join(''):'<div class="hub-empty"><p>Your accepted connections will appear here.</p></div>');
+ document.querySelectorAll('[data-respond]').forEach(b=>b.onclick=()=>{void respondConnection(b.dataset.respond,b.dataset.accept==='yes')});
+}
+function renderPeopleExplorer(){
+ const people=publicPeople.filter(p=>[p.display_name,p.headline,p.discipline,p.city,p.country,p.about,p.organization].join(' ').toLowerCase().includes(peopleQuery.toLowerCase()));
+ if(portfolioPerson){
+ const p=portfolioPerson;
+ const photo=safeLink(p.photo_url),banner=safeLink(p.banner_url),website=safeLink(p.website_url);
+ return '<div class="hub-person-detail"><button type="button" class="button secondary" id="backPeople">← All people</button><div class="profile-banner"'+(banner?' style="background-image:url('+encodeURI(banner)+')"':'')+'></div><div class="person-profile-top"><div class="person-photo large">'+(photo?'<img src="'+htmlEscape(photo)+'" alt="Profile photo of '+htmlEscape(p.display_name)+'">':htmlEscape((p.display_name||'?').slice(0,1).toUpperCase()))+'</div><div><div class="hub-meta">'+htmlEscape(p.discipline||'CHANGEMAKER')+'</div><h2>'+htmlEscape(p.display_name)+'</h2><p>'+htmlEscape(p.headline||p.organization||'')+'</p><span class="tiny">⌖ '+htmlEscape([p.city,p.country].filter(Boolean).join(', '))+'</span>'+(website?'<div>'+link(website,'Visit website')+'</div>':'')+'</div></div><div class="actions" style="margin:12px 0 20px">'+(user&&p.user_id===user.id?'':'<'+'button class="button secondary" type="button" data-follow="'+htmlEscape(p.user_id)+'">'+(p.demo&&demoActionState['follow:'+p.user_id]?'Following ✓':myFollows.has(p.user_id)?'Following ✓':'Follow')+'</button><button class="button green" type="button" data-connect="'+htmlEscape(p.user_id)+'">'+(p.demo&&demoActionState['connect:'+p.user_id]?'Request sent ✓':myConnections.some(c=>c.requester_id===user?.id&&c.recipient_id===p.user_id&&c.status==='pending')?'Requested':'Connect')+'</button>')+'</div><div class="panel"><h3>About</h3><p>'+htmlEscape(p.about||'No public biography yet.')+'</p>'+(p.featured_skills?.length?'<p class="tiny">FOCUS: '+htmlEscape(p.featured_skills.join(' · '))+'</p>':'')+'</div><div class="hub-list-head"><h3>Selected initiatives</h3><span class="pill">'+publicPortfolio.length+' shared</span></div>'+(publicPortfolio.length?'<div class="hub-cards">'+publicPortfolio.map(x=>'<article class="card"><span class="tag">'+htmlEscape(x.role_title||'INITIATIVE')+'</span><h3>'+htmlEscape(x.title)+'</h3><p>'+htmlEscape(x.summary)+'</p>'+(x.project_url?link(x.project_url,'Project website'):'')+'</article>').join('')+'</div>':'<div class="hub-empty"><p>This member has not chosen to showcase past initiatives.</p></div>')+publicAccessBanner()+'</div>';
+ }
+ return '<div class="hub-toolrow"><h2>People & changemakers</h2><span class="pill">'+people.length+' public profiles</span></div><div class="hub-controls"><input class="input" id="peopleSearch" placeholder="Search names, skills, disciplines or cities…" aria-label="Find people" value="'+htmlEscape(peopleQuery)+'"><div class="pill" style="align-self:center">Public profiles only</div></div>'+(people.length?'<div class="hub-cards">'+people.map(personTile).join('')+'</div>':'<div class="hub-empty"><span class="tag">CURATED GLOBAL COMMUNITY</span><h3>'+(publicPeople.length?'No people match this search.':'Discover changemakers around the world.')+'</h3><p>'+(publicPeople.length?'Try another name, field or location.':'Approved members can optionally publish their professional biography, photo and selected past initiatives. Profiles will appear here as members choose to share them.')+'</p></div>')+publicAccessBanner();
+}
+async function openPublicPerson(id){
+ const p=publicPeople.find(x=>x.user_id===id);if(!p)return;
+ portfolioPerson=p;publicPortfolio=[];
+ renderPublicScreen();
+ const r=p.demo?{data:demoPortfolios.find(x=>x.user_id===id)?.entries||[],error:null}:await supabase.rpc('discover_ascend_hub_portfolios',{p_user_id:id});
+ if(r.error)message('Selected initiatives could not be loaded.',true);
+ publicPortfolio=r.data||[];
+ renderPublicScreen();
+}
+
+function renderOverview(){
+ return '<div class="hub-toolrow"><h2>Explore what is possible</h2><span class="pill">Public access</span></div><div class="hub-guide"><article class="card"><span class="tag">01 / DISCOVER</span><h3>Explore initiatives.</h3><p>Browse approved real projects across fields and countries. Search and geographic navigation are available to everyone.</p><button type="button" class="button secondary" data-open-tab="projects">Browse projects</button></article><article class="card"><span class="tag">02 / CONNECT</span><h3>Find your people.</h3><p>Understand the global network and the disciplines represented. Personal directory access follows approval.</p><button type="button" class="button secondary" data-open-tab="people">Explore people</button></article><article class="card"><span class="tag">03 / CONTRIBUTE</span><h3>Build together.</h3><p>Submit a membership application to propose initiatives and access collaboration features once approved.</p><button type="button" class="button secondary" data-public-join>Join the network</button></article></div><div class="hub-toolrow"><h2>Global activity map</h2><span class="pill">Interactive</span></div>'+mapPanel(publicProjects)+'<div class="hub-list-head"><h3>Recently approved initiatives</h3><button type="button" class="button secondary" data-open-tab="projects">Explore all projects</button></div>'+(publicProjects.length?publicCards(publicProjects.slice(0,4)):'<div class="hub-empty"><span class="tag">COMMUNITY LAUNCH</span><h3>No published projects yet.</h3><p>The Hub is accepting its first verified projects. The map is available to explore, and approved initiatives will appear automatically once published. Nothing here is presented as activity that has not happened.</p></div>')+publicAccessBanner();
+}
+function kmBetween(lat1,lon1,lat2,lon2){
+ const a=(lat2-lat1)*Math.PI/180,b=(lon2-lon1)*Math.PI/180;
+ const h=Math.sin(a/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(b/2)**2;
+ return 12742*Math.asin(Math.min(1,Math.sqrt(h)));
+}
+function filteredEvents(){
+ return publicEvents.filter(e=>{
+ const txt=[e.title,e.description,e.category,e.city,e.country,e.venue].join(' ').toLowerCase();
+ if(!txt.includes(eventQuery.toLowerCase()))return false;
+ if(eventCategory!=='All types'&&e.category!==eventCategory)return false;
+ if(nearbyOnly&&userCoords){if(e.latitude===null||e.longitude===null)return false;return kmBetween(userCoords.lat,userCoords.lon,Number(e.latitude),Number(e.longitude))<=100;}
+ return true;
+ });
+}
+function eventCard(e){
+ const date=new Date(e.starts_at);
+ const when=e.category==='Business'?'Business location · Preview':!e.starts_at||Number.isNaN(+date)?'Time to be announced':date.toLocaleString(undefined,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+ const place=e.is_online?'Online':[e.venue,e.city,e.country].filter(Boolean).join(', ')||'Location to be confirmed';
+ const url=safeLink(e.link_url);
+ return '<article data-map-card="'+htmlEscape(e.id)+'" class="hub-activity-card"><span class="tag">'+htmlEscape(e.category||'EVENT')+'</span><h3>'+htmlEscape(e.title)+'</h3><p>'+htmlEscape(e.description)+'</p><div class="activity-meta">◷ '+htmlEscape(when)+'</div><div class="activity-meta">⌖ '+htmlEscape(place)+'</div><div class="actions">'+(e.category==='Business'?'<button class="button secondary" type="button" data-public-join>Membership information</button>':e.demo?'<button class="button secondary" type="button" data-demo-rsvp="'+htmlEscape(e.id)+'">'+(demoActionState['rsvp:'+e.id]?'RSVP preview saved':'Preview RSVP')+'</button>':url?'<a class="button secondary" href="'+htmlEscape(url)+'" rel="noopener noreferrer" target="_blank">View details ↗</a>':'<button class="button secondary" type="button" data-public-join>Request details · Members</button>')+'</div></article>';
+}
+function renderHappening(){
+ const data=filteredEvents(),categories=['All types',...new Set(['Business',...publicEvents.map(e=>e.category).filter(Boolean)])];
+ const physical=data.filter(e=>e.latitude!=null&&e.longitude!=null).length;
+ const now=new Date();
+ return '<div class="hub-toolrow hub-discover-heading"><div><div class="hub-meta">◎ WORLDWIDE · LIVE DISCOVERY</div><h2>Explore the world.</h2></div><span class="pill">'+data.length+' activities · '+physical+' on the map</span></div>'+
+ '<div class="hub-controls"><input class="input" id="eventSearch" placeholder="Search places, people, events…" aria-label="Search activities" value="'+htmlEscape(eventQuery)+'"><select class="input" id="eventCategory" aria-label="Activity category">'+categories.map(v=>'<option value="'+htmlEscape(v)+'" '+(v===eventCategory?'selected':'')+'>'+htmlEscape(v)+'</option>').join('')+'</select><button class="button secondary" type="button" id="nearbyToggle">'+(nearbyOnly?'✓ Within 100 km':'⌖ Near me')+'</button></div>'+
+ '<section class="hub-discovery-stage" aria-label="Interactive event discovery"><div class="hub-discovery-map">'+(window.AscendMap?AscendMap.surface(data,true,publicEvents):'<div>Map loading…</div>')+'</div>'+
+ '<aside class="hub-discovery-feed"><div class="hub-feed-header"><span class="hub-meta">◉ ACTIVITY SIGNALS</span><h3>On the horizon</h3><span>'+now.toLocaleDateString(undefined,{month:'short',year:'numeric'})+' · '+data.length+' results</span></div>'+
+ (data.length?'<div class="hub-cards">'+data.map(eventCard).join('')+'</div>':'<div class="hub-empty"><span class="tag">NO MATCHES</span><h3>'+ (publicEvents.length?'Try another filter.':'The first events are being curated.')+'</h3><p>Explore the world or search a different place, discipline or category.</p></div>')+'</aside></section>'+publicAccessBanner();
+}
+function renderPublicScreen(){
+ const root=el('hubWorkspace');if(!root)return;
+ window.AscendMap?.destroy();
+ root.innerHTML=publicTab==='happening'?renderHappening():publicTab==='projects'?renderProjectExplorer():publicTab==='people'?renderPeopleExplorer():renderOverview();
+ attachPublicJoin();
+ if(el('peopleSearch'))el('peopleSearch').oninput=e=>{peopleQuery=e.target.value;const pos=e.target.selectionStart;renderPublicScreen();const n=el('peopleSearch');n.focus();n.setSelectionRange(pos,pos)};
+ document.querySelectorAll('[data-person]').forEach(b=>b.onclick=()=>{void openPublicPerson(b.dataset.person)});
+ if(el('backPeople'))el('backPeople').onclick=()=>{portfolioPerson=null;publicPortfolio=[];renderPublicScreen()};
+ document.querySelectorAll('[data-follow]').forEach(b=>b.onclick=()=>{void followPerson(b.dataset.follow)});
+ document.querySelectorAll('[data-connect]').forEach(b=>b.onclick=()=>{void connectPerson(b.dataset.connect)});
+ document.querySelectorAll('[data-demo-rsvp]').forEach(b=>b.onclick=()=>setDemoAction(b.dataset.demoRsvp,'rsvp'));
+ if(el('eventSearch'))el('eventSearch').oninput=e=>{eventQuery=e.target.value;const pos=e.target.selectionStart;renderPublicScreen();const n=el('eventSearch');n.focus();n.setSelectionRange(pos,pos)};
+ if(el('eventCategory'))el('eventCategory').onchange=e=>{eventCategory=e.target.value;renderPublicScreen()};
+ if(el('nearbyToggle'))el('nearbyToggle').onclick=()=>{
+  if(nearbyOnly){nearbyOnly=false;renderPublicScreen();return}
+  if(userCoords){nearbyOnly=true;renderPublicScreen();return}
+  if(!navigator.geolocation){message('Location is unavailable here. Search by city instead.',true);return}
+  navigator.geolocation.getCurrentPosition(p=>{userCoords={lat:p.coords.latitude,lon:p.coords.longitude};nearbyOnly=true;renderPublicScreen()},()=>message('Location permission was not granted. You can still search globally.',true),{timeout:10000,maximumAge:300000});
+ };
+ document.querySelectorAll('[data-open-tab]').forEach(b=>b.onclick=()=>setPublicTab(b.dataset.openTab));
+ const searchInput=el('projectSearch');
+ if(searchInput)searchInput.oninput=e=>{publicQuery=e.target.value;const pos=e.target.selectionStart;renderPublicScreen();const n=el('projectSearch');n.focus();n.setSelectionRange(pos,pos)};
+ if(el('projectField'))el('projectField').onchange=e=>{publicDiscipline=e.target.value;renderPublicScreen()};
+ if(el('projectPlace'))el('projectPlace').onchange=e=>{publicCountry=e.target.value;renderPublicScreen()};
+ if(window.AscendMap&&(publicTab==='happening'||publicTab==='projects'))AscendMap.draw(publicTab==='happening'?filteredEvents():filteredPublic(),publicTab==='happening');
+ document.querySelectorAll('[data-pin-category]').forEach(b=>{if(eventCategory===b.dataset.pinCategory)b.classList.add('selected');b.onclick=()=>{if(publicTab==='happening'){eventCategory=eventCategory===b.dataset.pinCategory?'All types':b.dataset.pinCategory;renderPublicScreen()}}});
+
+}
+
+async function loadOwnProfile(){
+ const [p,i]=await Promise.all([
+ supabase.from('ascend_hub_public_profiles').select('*').eq('user_id',user.id).maybeSingle(),
+ supabase.from('ascend_hub_portfolio_initiatives').select('*').eq('user_id',user.id).order('sort_order')]);
+ if(p.error||i.error)message(p.error?.message||i.error?.message,true);
+ ownProfile=p.data;ownInitiatives=i.data||[];
+}
+function renderProfileEditor(){
+ const root=el('screen');if(!root)return;
+ const p=ownProfile||{};
+ root.innerHTML='<div class="panel"><div class="hub-meta">YOUR PUBLIC IDENTITY</div><h2>Build your changemaker profile.</h2><p>This information is private until you choose to publish. You can showcase selected past initiatives without making all your work visible.</p><form id="profileForm">'+field('headline','Professional headline')+area('about','Biography and purpose',3000)+field('photo_url','Profile photo HTTPS URL (or upload below)',false,'url',500)+'<label for="photoUpload">Upload profile photo from phone</label><input type="file" id="photoUpload" class="input" accept="image/jpeg,image/png,image/webp"><p class="tiny">Uploaded images are publicly accessible files. Use a photo you are comfortable sharing. Maximum 5 MB.</p>'+field('banner_url','Banner image HTTPS URL',false,'url',500)+field('website_url','Website HTTPS URL',false,'url',500)+field('featured_skills','Expertise / interests (comma-separated)',false,'text',500)+'<label><input type="checkbox" id="showPublic"> Make my profile publicly discoverable</label>'+b('Save profile','green')+'</form></div><div class="panel"><h2>Past and current initiatives</h2><p>Only initiatives you explicitly publish will be shown on your profile, and only while your profile is public.</p><form id="portfolioForm">'+field('title','Initiative title',true,'text',160)+field('role_title','Your role',false,'text',150)+area('summary','Initiative overview',2000)+field('project_url','Project website HTTPS URL',false,'url',500)+field('cover_url','Cover image HTTPS URL',false,'url',500)+'<label><input type="checkbox" id="initiativePublic"> Display this initiative on my public profile</label>'+b('Add initiative','green')+'</form><div class="results" id="myInitiatives">'+ownInitiatives.map(i=>'<article class="card" style="margin:10px 0"><h3>'+htmlEscape(i.title)+'</h3><p>'+htmlEscape(i.summary)+'</p><span class="tag">'+(i.publicly_visible?'Public when profile is public':'Private')+'</span><button class="button secondary" type="button" data-remove-initiative="'+htmlEscape(i.id)+'">Delete</button></article>').join('')+'</div></div>';
+ const form=el('profileForm');for(const k of ['headline','about','photo_url','banner_url','website_url'])form.elements[k].value=p[k]||'';
+ form.elements.featured_skills.value=(p.featured_skills||[]).join(', ');
+ el('showPublic').checked=p.publicly_visible===true;
+ const upload=el('photoUpload');
+ upload.onchange=async()=>{
+  const file=upload.files?.[0];if(!file)return;
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>5242880){message('Choose a JPEG, PNG, or WebP image under 5 MB.',true);upload.value='';return}
+  if(!confirm('This photo will be stored in publicly accessible image storage. Continue?')){upload.value='';return}
+  const ext=({'image/jpeg':'jpg','image/png':'png','image/webp':'webp'})[file.type];
+  upload.disabled=true;
+  const objectPath=user.id+'/'+crypto.randomUUID()+'.'+ext;
+  const result=await supabase.storage.from('ascend-public-profile-images').upload(objectPath,file,{contentType:file.type,upsert:false,cacheControl:'3600'});
+  upload.disabled=false;
+  if(result.error){message('Photo upload failed: '+result.error.message,true);return}
+  const pub=supabase.storage.from('ascend-public-profile-images').getPublicUrl(objectPath);
+  form.elements.photo_url.value=pub.data.publicUrl;
+  message('Photo uploaded. Save your profile to use this picture.');
+ };
+ form.onsubmit=async e=>{
+ e.preventDefault();
+ const x=formData(form);
+ for(const k of ['photo_url','banner_url','website_url'])if(x[k]&&!safeLink(x[k])){message('Use a valid HTTPS URL for '+k,true);return}
+ const payload={user_id:user.id,headline:clean(x.headline),about:clean(x.about),photo_url:clean(x.photo_url),banner_url:clean(x.banner_url),website_url:clean(x.website_url),featured_skills:clean(x.featured_skills).split(',').map(s=>s.trim()).filter(Boolean).slice(0,20),publicly_visible:el('showPublic').checked,updated_at:new Date().toISOString()};
+ const {error}=await supabase.from('ascend_hub_public_profiles').upsert(payload,{onConflict:'user_id'});
+ if(error)message(error.message,true);else{message('Profile updated. Visibility is controlled by your choice and approval status.');await loadOwnProfile();renderProfileEditor();}
+ };
+ el('portfolioForm').onsubmit=async e=>{
+ e.preventDefault();
+ if(!ownProfile){message('Save your profile before adding an initiative.',true);return}
+ const x=formData(e.target);
+ for(const k of ['project_url','cover_url'])if(x[k]&&!safeLink(x[k])){message('Please use a valid HTTPS '+k+' link.',true);return}
+ const {error}=await supabase.from('ascend_hub_portfolio_initiatives').insert({user_id:user.id,title:clean(x.title),role_title:clean(x.role_title),summary:clean(x.summary),project_url:clean(x.project_url),cover_url:clean(x.cover_url),publicly_visible:el('initiativePublic').checked,sort_order:ownInitiatives.length});
+ if(error)message(error.message,true);else{message('Initiative added.');await loadOwnProfile();renderProfileEditor()}
+ };
+ document.querySelectorAll('[data-remove-initiative]').forEach(b=>b.onclick=async()=>{if(!confirm('Delete this initiative from your portfolio?'))return;const {error}=await supabase.from('ascend_hub_portfolio_initiatives').delete().eq('id',b.dataset.removeInitiative).eq('user_id',user.id);if(error)message(error.message,true);else{await loadOwnProfile();renderProfileEditor()}});
+}
+
+function render(){
+ el('loading').className='hidden';el('signout').classList.toggle('hidden',!user);
+ if(!user){if(publicMode){renderPublic();return}el('content').innerHTML='<div class="panel"><div class="eyebrow">MEMBERSHIP ACCESS</div><h2>Join the Club.</h2><p>Enter your email address to receive a secure sign-in message. Membership applications are reviewed before access to the directory is granted.</p><form id="login">'+field('email','Email address',true,'email',254)+b('Continue with email','green')+'</form><button type="button" class="button secondary" id="backExplore" style="margin-top:10px">Back to exploration</button><div id="otpBox" class="hidden"><form id="verify">'+field('token','Email verification code',true,'text',12)+b('Verify code','green')+'</form></div></div>';el('backExplore').onclick=()=>{publicMode=true;render()};el('login').onsubmit=async e=>{e.preventDefault();hideMessage();const btn=e.target.querySelector('button');btn.disabled=true;const email=clean(e.target.email.value);const {error}=await supabase.auth.signInWithOtp({email,options:{shouldCreateUser:true,emailRedirectTo:location.href.split('?')[0]}});btn.disabled=false;if(error){message(error.message,true);return}el('otpBox').classList.remove('hidden');message('Check your email. If you received a numerical code, enter it below. If you received a secure link, open it to sign in.');};el('verify').onsubmit=async e=>{e.preventDefault();const email=clean(el('email').value);const token=clean(el('token').value);const {error}=await supabase.auth.verifyOtp({email,token,type:'email'});if(error)message(error.message,true);else{hideMessage();await load()}};return}
+ if(publicMode){renderPublic();return}
+ if(!membership){el('content').innerHTML='<div class="panel"><div class="eyebrow">INVITATION / APPLICATION</div><h2>Introduce yourself.</h2><p>Tell us about your work and the connections you are looking to create. Your application will be reviewed before other members can see your profile.</p><form id="apply">'+field('display_name','Public display name',true,'text',100)+field('organization','Organization or initiative')+'<div class="formgrid"><div>'+field('city','City')+'</div><div>'+field('country','Country')+'</div></div>'+field('discipline','Area of work')+area('bio','Your story and work',1500)+field('website','Website (optional)',false,'url',300)+b('Submit membership application','green')+'</form></div>';el('apply').onsubmit=async e=>{e.preventDefault();const btn=e.target.querySelector('button');btn.disabled=true;const x=formData(e.target);if(x.website&&!safeLink(x.website)){message('Please enter a valid http or https website.',true);btn.disabled=false;return}const data={user_id:user.id,display_name:clean(x.display_name),organization:clean(x.organization),city:clean(x.city),country:clean(x.country),discipline:clean(x.discipline),bio:clean(x.bio),website:clean(x.website),status:'pending'};const {error}=await supabase.from('ascend_hub_members').insert(data);btn.disabled=false;if(error)message(error.message,true);else{message('Application submitted for review.');await load()}};return}
+ if(membership.status!=='approved'&&!isAdmin){el('content').innerHTML='<div class="panel"><div class="eyebrow">APPLICATION STATUS</div><h2>'+ (membership.status==='pending'?'Under review.':'Application reviewed.')+'</h2><p>'+ (membership.status==='pending'?'Your application is safely recorded. The Club reviews each request before granting directory access.':'Your application was not approved. Contact the Club if you have questions.')+'</p><p class="tiny">Signed in: '+htmlEscape(user.email)+'</p></div>';return}
+ const nav=['discover','projects','people','connections','profile','submit','event',...(isAdmin?['review']:[])];el('content').innerHTML='<div class="nav">'+nav.map(v=>'<button type="button" data-tab="'+v+'" class="'+(tab===v?'active':'')+'">'+({discover:'Explore',projects:'Projects',people:'People',connections:'Connections',profile:'My profile',submit:'Contribute',event:'Post an event',review:'Review queue'}[v])+'</button>').join('')+'</div><div id="screen"></div>';document.querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>{tab=btn.dataset.tab;render()});renderScreen();
+}
+function renderScreen(){const root=el('screen');if(!root)return;
+ if(tab==='discover'){publicMode=true;publicTab='happening';render();return}
+ if(tab==='connections'){renderConnections();return}
+ if(tab==='profile'){renderProfileEditor();return}
+ if(tab==='event'){
+ root.innerHTML='<div class="panel"><div class="hub-meta">CONTRIBUTE / ACTIVITIES</div><h2>Submit a happening.</h2><p>Help people find your next workshop, gathering, talk, exhibition or collaborative session. Every listing is reviewed before it becomes publicly searchable.</p><form id="eventForm">'+field('title','Activity title',true,'text',160)+area('description','What will happen?',3000)+field('category','Category (workshop, event, meetup, talk…)')+'<div class="formgrid"><div>'+field('city','City')+'</div><div>'+field('country','Country')+'</div></div>'+field('venue','Venue or venue details')+'<div class="formgrid"><div><label for="starts_at">Start date and time</label><input class="input" id="starts_at" type="datetime-local" name="starts_at" required></div><div><label for="ends_at">End date and time (optional)</label><input class="input" id="ends_at" type="datetime-local" name="ends_at"></div></div>'+field('link_url','Official event or registration HTTPS link',false,'url',500)+'<label><input type="checkbox" id="onlineEvent"> Online activity</label>'+b('Submit for review','green')+'</form></div>';
+ el('eventForm').onsubmit=async e=>{
+ e.preventDefault();const x=formData(e.target),start=new Date(x.starts_at),end=x.ends_at?new Date(x.ends_at):null;
+ if(!x.title||x.title.trim().length<5||!Number.isFinite(+start)||start<=new Date()||(end&&(!Number.isFinite(+end)||end<=start))){message('Enter a title and valid future start/end times.',true);return}
+ if(x.link_url&&!safeLink(x.link_url)){message('Event link must use HTTPS.',true);return}
+ const btn=e.target.querySelector('[type=submit]');btn.disabled=true;
+ const data={host_user_id:user.id,title:clean(x.title),description:clean(x.description),category:clean(x.category),venue:clean(x.venue),city:clean(x.city),country:clean(x.country),starts_at:start.toISOString(),ends_at:end?end.toISOString():null,link_url:clean(x.link_url),is_online:el('onlineEvent').checked,status:'pending'};
+ const {error}=await supabase.from('ascend_hub_events').insert(data);
+ btn.disabled=false;
+ if(error)message(error.message,true);else{message('Event submitted for review.');tab='projects';render()}
+ };return
+ }
+ if(tab==='submit'){root.innerHTML='<div class="panel"><div class="eyebrow">CONTRIBUTE</div><h2>Propose a project.</h2><p>Share an initiative you are building. The Club will review it before publishing it to members.</p><form id="proposal">'+field('title','Project title',true,'text',150)+area('description','Project description (30+ characters)',3000)+field('discipline','Field or discipline')+'<div class="formgrid"><div>'+field('city','City')+'</div><div>'+field('country','Country')+'</div></div>'+field('looking_for','Who or what are you looking for?',false,'text',500)+field('website','Project website',false,'url',300)+'<div class="formgrid"><div>'+field('latitude','Latitude (optional)',false,'number')+'</div><div>'+field('longitude','Longitude (optional)',false,'number')+'</div></div>'+b('Submit project for review','green')+'</form></div>';el('proposal').onsubmit=async e=>{e.preventDefault();const btn=e.target.querySelector('button');btn.disabled=true;const x=formData(e.target);if(clean(x.description).length<30){message('Description must be at least 30 characters.',true);btn.disabled=false;return}if(x.website&&!safeLink(x.website)){message('Invalid website address.',true);btn.disabled=false;return}const lat=clean(x.latitude)?Number(x.latitude):null,lon=clean(x.longitude)?Number(x.longitude):null;if((lat===null)!==(lon===null)||lat!==null&&(lat < -90||lat >90)||lon!==null&&(lon < -180||lon >180)){message('Use two valid coordinates or leave both blank.',true);btn.disabled=false;return}const data={owner_id:user.id,title:clean(x.title),description:clean(x.description),discipline:clean(x.discipline),city:clean(x.city),country:clean(x.country),looking_for:clean(x.looking_for),website:clean(x.website),latitude:lat,longitude:lon,status:'pending'};const {error}=await supabase.from('ascend_hub_projects').insert(data);btn.disabled=false;if(error)message(error.message,true);else{message('Project submitted for Club review.');tab='projects';render()}};return}
+ if(tab==='review'){root.innerHTML='<div class="panel"><h2>Review queue.</h2><p>Restricted to verified Club administrators.</p><div id="queue">Loading reviews…</div></div>';loadQueue();return}
+ const list=tab==='projects'?projects.filter(p=>!blocked.has(p.owner_id)):members.filter(m=>!blocked.has(m.user_id));const filtered=list.filter(item=>Object.values(item).join(' ').toLowerCase().includes(search.toLowerCase()));root.innerHTML='<div class="toolbar"><input class="input" id="search" aria-label="Search directory" placeholder="Search '+(tab==='projects'?'projects':'members')+'" value="'+htmlEscape(search)+'"><span class="pill">'+filtered.length+' results</span></div>'+(filtered.length?'<div class="cards">'+filtered.map(item=>tab==='projects'?projectCard(item):memberCard(item)).join('')+'</div>':'<div class="skeleton">No approved '+(tab==='projects'?'projects':'members')+' match. Newly submitted initiatives appear after review.</div>');el('search').oninput=e=>{search=e.target.value;const cursor=e.target.selectionStart;renderScreen();el('search').focus();el('search').setSelectionRange(cursor,cursor)};document.querySelectorAll('[data-report]').forEach(btn=>btn.onclick=()=>report(btn.dataset.kind,btn.dataset.report));document.querySelectorAll('[data-block]').forEach(btn=>btn.onclick=()=>block(btn.dataset.block));}
+function projectCard(p){const where=[p.city,p.country].filter(Boolean).join(', ')||'Worldwide';return '<article class="card"><span class="tag">'+htmlEscape(p.discipline||'PROJECT')+'</span><h3>'+htmlEscape(p.title)+'</h3><p>'+htmlEscape(p.description)+'</p><p class="tiny">⌖ '+htmlEscape(where)+'</p>'+(p.looking_for?'<p class="tiny"><b>Seeking:</b> '+htmlEscape(p.looking_for)+'</p>':'')+link(p.website,'Project website')+'<div class="actions" style="margin-top:17px"><button class="button secondary" data-report="'+htmlEscape(p.id)+'" data-kind="project">Report</button></div></article>'}
+function memberCard(m){return '<article class="card"><span class="tag">'+htmlEscape(m.discipline||'ASCENDER')+'</span><h3>'+htmlEscape(m.display_name)+'</h3><p>'+htmlEscape(m.organization)+'</p><p>'+htmlEscape(m.bio)+'</p><p class="tiny">⌖ '+htmlEscape([m.city,m.country].filter(Boolean).join(', '))+'</p>'+link(m.website,'Website')+'<div class="actions" style="margin-top:17px"><button class="button secondary" data-report="'+htmlEscape(m.user_id)+'" data-kind="member">Report</button>'+(m.user_id!==user.id?'<button class="button secondary" data-block="'+htmlEscape(m.user_id)+'">Block</button>':'')+'</div></article>'}
+async function report(kind,id){const reason=prompt('Describe the concern (10+ characters):');if(reason===null)return;if(clean(reason).length<10){message('Please enter at least 10 characters.',true);return}const data={reporter_id:user.id,target_type:kind,reason:clean(reason).slice(0,1500),target_user_id:kind==='member'?id:null,target_project_id:kind==='project'?id:null};const {error}=await supabase.from('ascend_hub_reports').insert(data);message(error?error.message:'Report submitted for review.',!!error)}
+async function block(id){if(!confirm('Hide this member and their projects from your directory?'))return;const {error}=await supabase.from('ascend_hub_blocks').insert({blocker_id:user.id,blocked_id:id});if(error){message(error.message,true);return}blocked.add(id);renderScreen();message('Member blocked from your directory.')}
+async function loadQueue(){if(!isAdmin)return;const [a,b,c,d]=await Promise.all([supabase.from('ascend_hub_members').select('user_id,display_name,organization,discipline,bio,status').eq('status','pending').limit(100),supabase.from('ascend_hub_projects').select('id,title,description,discipline,status').eq('status','pending').limit(100),supabase.from('ascend_hub_reports').select('id,reason,target_type,status').eq('status','pending').limit(100),supabase.from('ascend_hub_events').select('id,title,description,starts_at,status').eq('status','pending').limit(100)]);if(!el('queue'))return;if(a.error||b.error||c.error||d.error){el('queue').textContent='Unable to load review queue: '+(a.error?.message||b.error?.message||c.error?.message||d.error?.message);return}const group=(heading,items,table,col)=>'<h3>'+heading+' ('+items.length+')</h3>'+items.map(p=>'<div class="card" style="margin:10px 0"><h3>'+htmlEscape(p.display_name||p.title||p.target_type)+'</h3><p>'+htmlEscape(p.bio||p.description||p.reason)+'</p><div class="actions">'+['approved','declined'].map(v=>'<button class="button secondary" data-review="'+htmlEscape(p[col]||p.id)+'" data-table="'+table+'" data-col="'+col+'" data-status="'+v+'">'+v+'</button>').join('')+'</div></div>').join('');el('queue').innerHTML=group('Membership applications',a.data,'ascend_hub_members','user_id')+group('Project submissions',b.data,'ascend_hub_projects','id')+group('Upcoming events',d.data,'ascend_hub_events','id')+'<h3>Member reports ('+c.data.length+')</h3>'+c.data.map(x=>'<div class="card" style="margin:10px 0"><p>'+htmlEscape(x.reason)+'</p><button class="button secondary" data-review="'+htmlEscape(x.id)+'" data-table="ascend_hub_reports" data-col="id" data-status="reviewed">Mark reviewed</button></div>').join('');document.querySelectorAll('[data-review]').forEach(btn=>btn.onclick=async()=>{btn.disabled=true;const {error}=await supabase.from(btn.dataset.table).update({status:btn.dataset.status,updated_at:new Date().toISOString()}).eq(btn.dataset.col,btn.dataset.review);if(error){btn.disabled=false;message(error.message,true)}else{message('Review updated.');await load();tab='review';render()}})}
+async function load(){
+ const {data:{user:authUser},error:authError}=await supabase.auth.getUser();user=authUser;if(authError&&!user)console.info('Auth session:',authError.message);
+ if(!user){membership=null;isAdmin=false;await loadPublicProjects();render();return}
+ const [own,admin]=await Promise.all([supabase.from('ascend_hub_members').select('*').eq('user_id',user.id).maybeSingle(),supabase.rpc('is_ascend_hub_admin')]);
+ if(own.error){message('Membership database error: '+own.error.message,true);render();return}
+ membership=own.data;isAdmin=admin.data===true;
+ await loadPublicProjects();
+ if(membership?.status==='approved'||isAdmin){const [mm,pp,bb]=await Promise.all([supabase.from('ascend_hub_members').select('*').eq('status','approved').order('display_name'),supabase.from('ascend_hub_projects').select('*').eq('status','approved').order('created_at',{ascending:false}).limit(100),supabase.from('ascend_hub_blocks').select('blocked_id').eq('blocker_id',user.id)]);members=mm.data||[];projects=pp.data||[];await loadOwnProfile();const [follows,connections]=await Promise.all([supabase.from('ascend_hub_follows').select('followed_id').eq('follower_id',user.id),supabase.from('ascend_hub_connection_requests').select('id,requester_id,recipient_id,status,created_at').or('requester_id.eq.'+user.id+',recipient_id.eq.'+user.id).limit(100)]);myFollows=new Set((follows.data||[]).map(x=>x.followed_id));myConnections=connections.data||[];blocked=new Set((bb.data||[]).map(x=>x.blocked_id));if(mm.error||pp.error)message('Directory issue: '+(mm.error?.message||pp.error?.message),true)}
+ render()
+}
+el('signout').onclick=async()=>{await supabase.auth.signOut();hideMessage();user=null;membership=null;render()};
+supabase.auth.onAuthStateChange((event)=>{if(event==='SIGNED_IN'||event==='SIGNED_OUT')setTimeout(()=>load(),0)});
+load().catch(e=>{el('loading').className='hidden';message('Connection failed: '+e.message,true);el('content').innerHTML='<button class="button secondary" id="retry">Retry</button>';el('retry').onclick=()=>location.reload()});
+</script></body></html>

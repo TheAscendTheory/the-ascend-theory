@@ -1,0 +1,40 @@
+name: Ascend Hub standalone app smoke test
+on:
+  push:
+    branches:
+      - ascend-hub-functional-foundation
+    paths:
+      - ".github/workflows/ascend-hub-edge-smoke.yml"
+      - "supabase/functions/ascend-hub-app/**"
+  workflow_dispatch:
+jobs:
+  standalone-hub:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify deployed Hub app is reachable and independent from marketing homepage
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://iigetmiputlcdthhhpps.supabase.co/functions/v1/ascend-hub-app"
+          curl --fail --show-error --silent --location --max-time 25 --retry 2 "$URL" -o /tmp/ascend-hub.html
+          grep -Fq '<title>Ascend Hub · The Ascenders Club</title>' /tmp/ascend-hub.html
+          grep -Fq 'Submit membership application' /tmp/ascend-hub.html
+          grep -Fq 'ascend_hub_members' /tmp/ascend-hub.html
+          grep -Fq 'ascend_hub_projects' /tmp/ascend-hub.html
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          html=Path("/tmp/ascend-hub.html").read_text()
+          script=re.search(r'<script type="module">(.*?)</script>',html,re.S)
+          assert script, "Missing application JavaScript module"
+          Path("/tmp/ascend-hub.mjs").write_text(script.group(1))
+          print("Verified standalone HTML, membership and project code")
+          PY
+          node --check /tmp/ascend-hub.mjs
+      - name: Verify Supabase authentication endpoint is reachable
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --silent --show-error --max-time 20 -H "apikey: sb_publishable_CXx9TuAZeTcjx6wCeMUFJg_2RIHFMNo" -o /tmp/auth-response.txt -w "%{http_code}"             "https://iigetmiputlcdthhhpps.supabase.co/auth/v1/health" | grep -Eq '^200$'

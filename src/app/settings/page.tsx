@@ -1,0 +1,1 @@
+import type {Metadata} from "next";import AccountSettings from "./AccountSettings";export const metadata:Metadata={title:"Ascenders Account Settings",robots:{index:false,follow:false}};export default function SettingsPage(){return <AccountSettings/>;}

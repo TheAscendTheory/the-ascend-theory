@@ -1,0 +1,44 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+const {chromium}=require('playwright');
+(async()=>{
+ const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+ const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ const errors=[];
+ page.on('pageerror',e=>errors.push(e.message));
+ const url='https://theascendtheory.github.io/the-ascend-theory/?revision='+process.env.GITHUB_SHA;
+ for(let i=0;i<20;i++){await page.goto(url+'&attempt='+i,{waitUntil:'domcontentloaded',timeout:45000});if(await page.locator('script[src="./map.js?v=20261125-2"]').count())break;await page.waitForTimeout(5000);}
+ if(!await page.locator('script[src="./map.js?v=20261125-2"]').count())throw Error('New Atlas revision not deployed');
+ await page.getByRole('heading',{name:'The world is happening.'}).waitFor({timeout:30000});
+ if(await page.locator('input#email').count())throw Error('Email is gating public exploration');
+ await page.locator('#eventSearch').waitFor();
+ await page.locator('#ascendMap').waitFor();
+ await page.locator('#ascendMap .leaflet-marker-icon').first().waitFor({timeout:30000});
+ await page.locator('#eventCategory').selectOption({label:'Business'});
+ await page.getByText('Vancouver Business · Example').first().waitFor();
+ await page.locator('#ascendMap .leaflet-marker-icon').first().waitFor();
+ await page.locator('[data-pin-category="Business"]').waitFor();
+ await page.locator('[data-pin-category="Meetup"]').waitFor();
+ await page.locator('#eventCategory').selectOption({label:'Meetup'});
+ await page.locator('#ascendMap .leaflet-marker-icon').first().waitFor();
+ await page.getByText('New Jersey Changemakers Meetup').first().waitFor();
+ await page.locator('[data-map-card="demo-e3"]').waitFor();
+ await page.locator('#ascendMap .leaflet-marker-icon').first().click();
+ await page.locator('.ascend-popup').getByText('New Jersey Changemakers Meetup').waitFor();
+ await page.locator('.ascend-popup button').click();
+ await page.locator('[data-map-card="demo-e3"].map-highlight').waitFor();
+ await page.getByRole('button',{name:/Meetup/}).first().waitFor();
+ await page.locator('#eventCategory').selectOption({label:'All types'});
+ await page.locator('.hub-mobile-nav [data-hub-tab="projects"]').click();
+ await page.locator('#projectSearch').waitFor();
+ await page.locator('#projectSearch').fill('education');
+ await page.locator('.hub-mobile-nav [data-hub-tab="people"]').click();
+ await page.getByRole('heading',{name:'People & changemakers'}).waitFor();
+ await page.getByRole('button',{name:'Become an Ascender'}).click();
+ await page.locator('#email').waitFor();
+ await page.getByRole('button',{name:'Back to exploration'}).click();
+ await page.getByRole('heading',{name:'People with purpose.'}).waitFor();
+ if(errors.length)throw Error('JavaScript errors: '+errors.join('; '));
+ await page.screenshot({path:'/tmp/ascend-hub-mobile.png',fullPage:true});
+ console.log('PASS: Public dashboard, live map, search, people and gated join work on mobile.');
+ await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});

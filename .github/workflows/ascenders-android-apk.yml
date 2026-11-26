@@ -1,0 +1,67 @@
+name: Build Android installable test APKs
+on:
+  push:
+    branches: [ascend-hub-functional-foundation]
+    paths:
+      - .github/workflows/ascenders-android-apk.yml
+      - apps/native/assets/**
+      - apps/native/app.config.js
+      - apps/native/App.tsx
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-apk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [hub, academy, media]
+    defaults:
+      run:
+        working-directory: apps/native
+    env:
+      APP_VARIANT: ${{ matrix.variant }}
+      EXPO_PUBLIC_APP_VARIANT: ${{ matrix.variant }}
+      EXPO_PUBLIC_SUPABASE_URL: "https://iigetmiputlcdthhhpps.supabase.co"
+      EXPO_PUBLIC_SUPABASE_ANON_KEY: "sb_publishable_CXx9TuAZeTcjx6wCeMUFJg_2RIHFMNo"
+      CI: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Use Android SDK on GitHub Ubuntu runner
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          test -d "$ANDROID_HOME"
+          test -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" || find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f | head -1
+      - name: Prepare native Android project
+        run: |
+          npm install --no-fund --no-audit
+          npx expo install --check
+          npx expo prebuild --platform android --no-install --non-interactive
+          # Use Java provided by the runner instead of resolving a new JDK via Foojay.
+          sed -i '/org.gradle.toolchains.foojay-resolver-convention/d' node_modules/@react-native/gradle-plugin/settings.gradle.kts
+      - name: Build self-contained release APK signed for internal testing
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon --stacktrace
+      - name: Verify APK was produced
+        run: |
+          test -f android/app/build/outputs/apk/release/app-release.apk
+          ls -lh android/app/build/outputs/apk/release/app-release.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ascend-${{ matrix.variant }}-android-test-apk
+          path: apps/native/android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+          retention-days: 14

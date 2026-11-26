@@ -1,0 +1,31 @@
+{
+  "name": "ascend-native",
+  "version": "0.1.0",
+  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "hub": "APP_VARIANT=hub EXPO_PUBLIC_APP_VARIANT=hub expo start",
+    "academy": "APP_VARIANT=academy EXPO_PUBLIC_APP_VARIANT=academy expo start",
+    "media": "APP_VARIANT=media EXPO_PUBLIC_APP_VARIANT=media expo start",
+    "doctor": "expo-doctor",
+    "typecheck": "tsc --noEmit",
+    "build:hub": "APP_VARIANT=hub eas build --platform all --profile production-hub",
+    "build:academy": "APP_VARIANT=academy eas build --platform all --profile production-academy",
+    "build:media": "APP_VARIANT=media eas build --platform all --profile production-media"
+  },
+  "dependencies": {
+    "expo": "~58.0.0",
+    "react": "19.3.0",
+    "react-native": "0.88.1",
+    "@supabase/supabase-js": "^2.105.4",
+    "expo-sqlite": "~58.0.18",
+    "react-native-url-polyfill": "^2.0.0",
+    "expo-video": "~58.0.14"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.0",
+    "@types/react": "^19.3.0",
+    "expo-doctor": "^1.0.0"
+  }
+}
