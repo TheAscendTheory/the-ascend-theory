@@ -11,7 +11,7 @@ import "./optical-interactions.css";
 import "./ascenders-monochrome.css";
 import "./ascenders-white-canvas.css";
 
-const links=[{label:"Our Story",href:"/story"},{label:"Our Philosophy",href:"/about"},{label:"Ascend Hub",href:"/hub"},{label:"Ascend Academy",href:"/academy"},{label:"Ascend Media",href:"/media"},{label:"Shop",href:"/shop"},{label:"Contact",href:"/contact"}];
+const links=[{label:"Our Story & Philosophy",href:"/about"},{label:"Ascend Hub",href:"/hub"},{label:"Ascend Academy",href:"/academy"},{label:"Ascend Media",href:"/media"},{label:"Shop",href:"/shop"},{label:"Contact",href:"/contact"}];
 
 export default function SiteShell({children}:{children:React.ReactNode}){
  const [open,setOpen]=useState(false);
