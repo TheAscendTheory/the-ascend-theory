@@ -5,9 +5,9 @@ import {ArrowLeft,ArrowRight} from "lucide-react";
 import Link from "next/link";
 
 const scenes=[
- {index:"01",label:"CONNECTION",title:"One network. Infinite intersections.",description:"Every person carries a new possibility for collaboration. The geometry forms a web of connected pathways.",href:"/hub",cta:"Explore Ascend Hub",kind:"intersections"},
- {index:"02",label:"KNOWLEDGE",title:"Change your perspective.",description:"Layered ideas become new ways of seeing. Knowledge transforms the pattern as you move through it.",href:"/academy",cta:"Explore Ascend Academy",kind:"perspective"},
- {index:"03",label:"STORYTELLING",title:"See beyond the surface.",description:"Light, composition, and perception reveal the stories behind a more connected world.",href:"/media",cta:"Explore Ascend Media",kind:"perception"}
+ {index:"01",label:"CONNECTION",title:"One network. Infinite intersections.",description:"Every person carries a new possibility for collaboration. The geometry forms a web of connected pathways.",href:"https://theascendtheory.github.io/the-ascend-theory/",cta:"Explore Ascenders Hub",kind:"intersections"},
+ {index:"02",label:"KNOWLEDGE",title:"Change your perspective.",description:"Layered ideas become new ways of seeing. Knowledge transforms the pattern as you move through it.",href:"https://theascendtheory.github.io/the-ascend-theory/academy/",cta:"Explore Ascenders Academy",kind:"perspective"},
+ {index:"03",label:"STORYTELLING",title:"See beyond the surface.",description:"Light, composition, and perception reveal the stories behind a more connected world.",href:"https://theascendtheory.github.io/the-ascend-theory/media/",cta:"Explore Ascenders Media",kind:"perception"}
 ];
 export default function PerceptionSequence(){
  const [index,setIndex]=useState(0);
@@ -19,14 +19,14 @@ export default function PerceptionSequence(){
    <div className="ascWrap">
      <div className="ascPerceptionTop"><p className="ascOverline">THE ART OF PERCEPTION</p><span>INTERACTIVE SEQUENCE / {scene.index} — 03</span></div>
      <div className="ascPerceptionStage" onTouchStart={e=>touch.current=e.touches[0].clientX} onTouchEnd={e=>{if(touch.current===null)return;const movement=e.changedTouches[0].clientX-touch.current;if(Math.abs(movement)>55)change(movement<0?1:-1);touch.current=null}}>
-      <div className={`ascPerceptionPattern ascPattern-${scene.kind}`} aria-hidden="true"><div className="ascPatternLayer ascPatternLayerA"/><div className="ascPatternLayer ascPatternLayerB"/><div className="ascPatternCore"/></div>
+      <div key={scene.kind} className={`ascPerceptionPattern ascPattern-${scene.kind}`} aria-hidden="true"><div className="ascPatternLayer ascPatternLayerA"/><div className="ascPatternLayer ascPatternLayerB"/><div className="ascPatternCore"/></div>
       <div className="ascPerceptionContent" aria-live="polite">
       <AnimatePresence mode="wait">
        <motion.div key={index} initial={reduce?false:{opacity:0,y:20,filter:"blur(8px)"}} animate={{opacity:1,y:0,filter:"blur(0px)"}} exit={reduce?{opacity:1}:{opacity:0,y:-20,filter:"blur(8px)"}} transition={{duration:reduce?0:.45,ease:[.22,1,.36,1]}}>
         <p className="ascOverline">{scene.label}</p>
         <h2>{scene.title}</h2>
         <p>{scene.description}</p>
-        <Link href={scene.href} className="ascTextLink">{scene.cta} <ArrowRight size={17} aria-hidden="true"/></Link>
+        <Link href={scene.href} target="_blank" rel="noopener noreferrer" className="ascTextLink">{scene.cta} <ArrowRight size={17} aria-hidden="true"/></Link>
        </motion.div>
       </AnimatePresence>
       </div>
