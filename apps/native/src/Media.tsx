@@ -70,7 +70,7 @@ function MediaPlayer({queue,index,onNext,onBack}:{queue:Media[];index:number;onN
   {error?<Text style={mediaUI.detail}>Playback error: {error}</Text>:null}
   <View style={{flexDirection:"row",gap:10,marginTop:18,flexWrap:"wrap"}}>
    <TouchableOpacity accessibilityRole="button" style={mediaUI.secondaryButton} onPress={onBack}><Text style={mediaUI.secondaryText}>← Library</Text></TouchableOpacity>
-   <TouchableOpacity accessibilityRole="button" style={mediaUI.secondaryButton} onPress={()=>{if(player.playing){player.pause();setPaused(true)}else{player.play();setPaused(false)}}}><Text style={mediaUI.secondaryText}>{paused?"▶ Play":"Ⅱ Pause"}</Text></TouchableOpacity>
+   <TouchableOpacity accessibilityRole="button" style={mediaUI.secondaryButton} onPress={()=>{if(player.playing){player.pause();setPaused(true)}else{player.play();setPaused(false)}}}><Text style={mediaUI.secondaryText}>{paused?"Play":"Pause"}</Text></TouchableOpacity>
    <TouchableOpacity accessibilityRole="button" style={mediaUI.secondaryButton} disabled={index===queue.length-1} onPress={onNext}><Text style={mediaUI.secondaryText}>Next →</Text></TouchableOpacity>
   </View>
   <Text style={[mediaUI.detail,{marginTop:14,fontSize:12}]}>Playback uses hosted audio or video sources. Background audio and lock-screen controls require a signed native build and real-device verification. Automatic queue transitions may be affected by operating-system background suspension.</Text>
@@ -134,7 +134,7 @@ export default function NativeMedia(){
    </ScrollView>
    {playlists.length>0?<><Text style={mediaUI.section}>Curated playlists</Text>{playlists.map(p=>{
     const queue=entries.filter(x=>x.playlist_id===p.id).sort((x,y)=>x.sequence-y.sequence).map(e=>items.find(i=>i.id===e.media_id)).filter((x):x is Media=>!!x);
-    return <TouchableOpacity accessibilityRole="button" key={p.id} style={mediaUI.panel} onPress={()=>void playSelection(queue)}><Text style={mediaUI.meta}>MIXED MEDIA · {queue.length} TITLES</Text><Text style={mediaUI.panelTitle}>{p.title}</Text><Text style={mediaUI.detail}>{p.description}</Text><Text style={mediaUI.meta}>▶ PLAY COLLECTION</Text></TouchableOpacity>;
+    return <TouchableOpacity accessibilityRole="button" key={p.id} style={mediaUI.panel} onPress={()=>void playSelection(queue)}><Text style={mediaUI.meta}>MIXED MEDIA · {queue.length} TITLES</Text><Text style={mediaUI.panelTitle}>{p.title}</Text><Text style={mediaUI.detail}>{p.description}</Text><Text style={mediaUI.meta}>PLAY COLLECTION</Text></TouchableOpacity>;
    })}</>:null}
    <Text style={mediaUI.section}>Browse releases</Text>
    {loading?<Text style={mediaUI.detail}>Loading media…</Text>:visible.length===0?<View style={mediaUI.panel}><Text style={mediaUI.panelTitle}>No published releases yet.</Text><Text style={mediaUI.detail}>The library will show original films and audio after real editorial publication.</Text></View>:visible.map(m=><TouchableOpacity accessibilityRole="button" key={m.id} onPress={()=>void selectItem(m)} style={mediaUI.panel}>
