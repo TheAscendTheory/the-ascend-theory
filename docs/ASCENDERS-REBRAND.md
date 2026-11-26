@@ -37,3 +37,6 @@ Founder approved the restored geometry and interactions, requested another publi
 
 ## White canvas / black geometry variation — 2026-11-22
 User clarified the intended inverse palette: pure white dominates the site, black is the ink/drafting geometry and typography, and green remains a small accent. The previous white-on-black variation was the reverse of what was requested. This release adds `ascenders-white-canvas.css` as the last-scoped layer, leaving motion, optical interaction components, swipe navigation, and icon implementation intact. The previous designs remain recoverable in Git. Deploy only after both Vercel preview checks report success, then verify production checks. Visual inspection of actual devices remains necessary.
+
+## Navigation regression correction — 2026-11-26
+Restored full Ascend platform names, separate Story and Philosophy routes, Shop navigation and new-tab app links. Homepage tint muted to #eef1ec; no app layout edits. Story uses existing combined-page copy pending recovery of founder-approved original separate text. GitHub Pages review navigation updated independently. Live deployment and device QA remain to be verified.
