@@ -55,3 +55,11 @@ Inspection of `ascend-hub-functional-foundation` on 2026-11-24 found:
 - Implemented on authoritative branch: standalone Hub map controls and stable legend (1cdccee), map-first composition and Business category (5a98988); public Next.js Hub Business example, click-to-filter legend, pointer/keyboard panning (5b5235b), map-first styling (a8339c1); homepage cinematic geometry and distinct product gateways (5b464ce).
 - Business example in Next.js public preview is explicitly fictional. Standalone Hub supports the Business category but permanent real-business listing schema and moderation are not yet implemented. No claims of actual businesses until verified.
 - Academy and Media files untouched in this change set. Build, deployment and mobile verification pending; do not call these changes live before verification.
+
+
+## Approved trademark system — 2026-11-25
+- Founder approved a single unchanged original Ascenders mark plus uppercase HUB, ACADEMY or MEDIA underneath. No alternate geometry or secondary symbols.
+- Original raster source remains unchanged: public/logo.PNG (blob 422ba07b88af837237e3234034356b64f52e34da). Icon masks are resampled directly from that original, not redrawn. White on solid black 1024x1024 opaque RGB store icons; transparent adaptive Android foregrounds; small transparent header lockups. Wordmarks are separate typography beneath the trademark.
+- Applied web favicon/touch icons and header lockups, native Expo icon/adaptive icon configuration, and native header mark. Existing labels, copy, navigation, app content, layouts and behavior are otherwise retained.
+- Authoritative project for live theascendersclub.com is Vercel project prj_dhM20t5bbVkGYtG9JE3KvD5kg78L. Hub, Academy and Media branded subdomains were each verified HTTP 200 before this branding change. Namecheap CNAMEs are correct. Vercel daily limit prevented the last navigation-only production deployment; do not claim this new branding is live until verified at actual branded hostnames.
+- Android APK workflow triggers on the approved native assets and config changes. APKs are internal testing, not Play Store releases. Signed iOS/Android cloud builds still require configured Expo projects and credentials; actual installation and device testing outstanding.

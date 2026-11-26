@@ -44,6 +44,8 @@ jobs:
           cp standalone/hub/map.js /tmp/ascend-pages/map.js
           cp standalone/academy/index.html /tmp/ascend-pages/academy/index.html
           cp standalone/media/index.html /tmp/ascend-pages/media/index.html
+          cp standalone/hub/{app-icon,brand}.png /tmp/ascend-pages/
+          for name in academy media; do cp standalone/$name/{app-icon,brand}.png /tmp/ascend-pages/$name/; done
       - uses: actions/upload-pages-artifact@v3
         with:
           path: /tmp/ascend-pages

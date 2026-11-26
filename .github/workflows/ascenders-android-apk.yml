@@ -4,6 +4,9 @@ on:
     branches: [ascend-hub-functional-foundation]
     paths:
       - .github/workflows/ascenders-android-apk.yml
+      - apps/native/assets/**
+      - apps/native/app.config.js
+      - apps/native/App.tsx
   workflow_dispatch:
 permissions:
   contents: read

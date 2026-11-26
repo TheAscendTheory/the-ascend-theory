@@ -1,5 +1,11 @@
 name: Ascend Apps CI
 on:
+  push:
+    branches: [ascend-hub-functional-foundation]
+    paths:
+      - apps/native/**
+      - standalone/**
+      - next.config.ts
   pull_request:
     branches: [main]
   workflow_dispatch:

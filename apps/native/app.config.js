@@ -16,9 +16,10 @@ module.exports={
  expo:{
   name:app.name,slug:app.slug,scheme:app.scheme,
   version:"0.1.0",orientation:"portrait",
+  icon:`./assets/${variant}-icon.png`,
   userInterfaceStyle:"light",
   ios:{bundleIdentifier:app.id,supportsTablet:true,buildNumber:"1"},
-  android:{package:app.id,versionCode:1},
+  android:{package:app.id,versionCode:1,adaptiveIcon:{foregroundImage:`./assets/${variant}-adaptive.png`,backgroundColor:"#000000"}},
   plugins:variant==="media"?[["expo-video",{supportsBackgroundPlayback:true,supportsPictureInPicture:true}]]:[],
   extra:{variant,...(projectId?{eas:{projectId}}:{})}
  }

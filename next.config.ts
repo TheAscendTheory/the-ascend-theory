@@ -18,6 +18,7 @@ const nextConfig:NextConfig={
  async rewrites(){
   return {beforeFiles:[
    ...["hub","academy","media"].map(name=>({source:"/",has:[{type:"host" as const,value:name+".theascendersclub.com"}],destination:"/apps/"+name+"/index.html"})),
+   ...["hub","academy","media"].flatMap(name=>["app-icon.png","brand.png"].map(asset=>({source:"/"+asset,has:[{type:"host" as const,value:name+".theascendersclub.com"}],destination:"/apps/"+name+"/"+asset}))),
    {source:"/map.js",has:[{type:"host",value:"hub.theascendersclub.com"}],destination:"/apps/hub/map.js"}
   ],afterFiles:[],fallback:[]};
  }
