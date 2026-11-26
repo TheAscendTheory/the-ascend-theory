@@ -10,7 +10,7 @@ for(const name of ["hub","academy","media"]){
  cpSync(join(process.cwd(),"standalone",name),target,{recursive:true});
  if(name!=="hub"){
   const file=join(target,"index.html");
-  writeFileSync(file,readFileSync(file,"utf8").replaceAll('href="../"','href="https://theascendersclub.com/apps/hub/index.html"'));
+  writeFileSync(file,readFileSync(file,"utf8").replaceAll('href="../"','href="https://hub.theascendersclub.com/"'));
  }
 }
 const nextConfig:NextConfig={
