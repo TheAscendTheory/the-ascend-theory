@@ -48,3 +48,10 @@ Inspection of `ascend-hub-functional-foundation` on 2026-11-24 found:
 - No faux screenshots, substitute chat prototypes, generic four-screen samples, or unverifiable GitHub Pages links presented as the actual application.
 - No claims of completed or live work without code, build and deployment evidence.
 - No unrequested rebranding, new pillars or wholesale rewrites of Academy/Media.
+
+## Founder direction — 2026-11-25
+- Founder explicitly praised the current Academy and Media layouts. Preserve both as the visual benchmark, without cloning their screens.
+- Main site and Hub should follow their cinematic design quality. Improve Hub map and add Businesses to its legend and category filter.
+- Implemented on authoritative branch: standalone Hub map controls and stable legend (1cdccee), map-first composition and Business category (5a98988); public Next.js Hub Business example, click-to-filter legend, pointer/keyboard panning (5b5235b), map-first styling (a8339c1); homepage cinematic geometry and distinct product gateways (5b464ce).
+- Business example in Next.js public preview is explicitly fictional. Standalone Hub supports the Business category but permanent real-business listing schema and moderation are not yet implemented. No claims of actual businesses until verified.
+- Academy and Media files untouched in this change set. Build, deployment and mobile verification pending; do not call these changes live before verification.
