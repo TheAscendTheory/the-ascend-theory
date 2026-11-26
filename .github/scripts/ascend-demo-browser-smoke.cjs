@@ -5,8 +5,10 @@ async function run(){
  const browser=await chromium.launch({headless:true,args:["--no-sandbox"]});
  const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  const errors=[];page.on("pageerror",e=>errors.push(e.message));
- await page.goto(BASE+"academy/",{waitUntil:"domcontentloaded",timeout:45000});
+ for(let i=0;i<30;i++){await page.goto(BASE+"academy/?revision=visual-previews-03&attempt="+i,{waitUntil:"domcontentloaded",timeout:45000});if(await page.locator('meta[name="ascenders-release"][content="visual-previews-03"]').count())break;await page.waitForTimeout(5000);}
  await page.locator('[data-course="demo-c1"]').waitFor({timeout:35000});
+ if(!await page.locator('meta[name="ascenders-release"][content="visual-previews-03"]').count())throw Error("Academy preview release not live");
+ if(await page.locator(".coursecard").count()!==await page.locator(".coursecard .courseart img").count())throw Error("Missing course artwork");
  await page.locator('[data-course="demo-c1"]').click();
  await page.locator('[data-mode="audio"]').waitFor();
  await page.locator('[data-mode="audio"]').click();
@@ -23,10 +25,13 @@ async function run(){
  await page.locator('#submitQuiz').waitFor();
  if(errors.length)throw Error("Academy JS errors: "+errors.join(","));
  console.log("PASS Academy: distinct classroom, choose listening and practice, graded quiz, retry");
- for(let i=0;i<30;i++){await page.goto(BASE+"media/?revision=vector-controls-02&attempt="+i,{waitUntil:"domcontentloaded",timeout:45000});if(await page.locator('meta[name="ascenders-release"][content="vector-controls-02"]').count())break;await page.waitForTimeout(5000);}
- if(!await page.locator('meta[name="ascenders-release"][content="vector-controls-02"]').count())throw Error("Updated Media release not live");
+ for(let i=0;i<30;i++){await page.goto(BASE+"media/?revision=visual-previews-03&attempt="+i,{waitUntil:"domcontentloaded",timeout:45000});if(await page.locator('meta[name="ascenders-release"][content="visual-previews-03"]').count())break;await page.waitForTimeout(5000);}
+ if(!await page.locator('meta[name="ascenders-release"][content="visual-previews-03"]').count())throw Error("Updated Media release not live");
  for(const id of ["btnPrev","btnToggle","btnNext","btnExpand","panelPrev","panelToggle","panelNext"]){if(await page.locator("#"+id+" svg.transportIcon").count()!==1)throw Error("Missing vector control "+id);if((await page.locator("#"+id).textContent()).trim())throw Error("Unexpected text/glyph in "+id);}
  await page.locator('[data-playlist="demo-collection"]').waitFor({timeout:35000});
+ if(await page.locator(".tile").count()!==await page.locator(".tile .previewCover").count())throw Error("Missing release artwork");
+ if(!await page.locator('[data-release="demo-m1"] .tilePreview').count())throw Error("Missing actual video preview");
+ if(!await page.locator('[data-playlist="demo-collection"] .symbol img').count())throw Error("Missing playlist artwork");
  await page.locator('[data-playlist="demo-collection"]').click();
  await page.locator('#playerbar.active').waitFor();
  await page.locator('#fullPlayer.active').waitFor();
