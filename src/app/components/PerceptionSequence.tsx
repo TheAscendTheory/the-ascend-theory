@@ -26,7 +26,7 @@ export default function PerceptionSequence(){
         <p className="ascOverline">{scene.label}</p>
         <h2>{scene.title}</h2>
         <p>{scene.description}</p>
-        <Link href={scene.href} className="ascTextLink">{scene.cta} <ArrowRight size={17} aria-hidden="true"/></Link>
+        <Link href={scene.href} target="_blank" rel="noopener noreferrer" className="ascTextLink">{scene.cta} <ArrowRight size={17} aria-hidden="true"/></Link>
        </motion.div>
       </AnimatePresence>
       </div>
