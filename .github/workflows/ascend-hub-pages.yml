@@ -1,4 +1,4 @@
-name: Deploy independent Ascend Hub to GitHub Pages
+name: Deploy Ascenders three-app preview to GitHub Pages
 on:
   push:
     branches: [ascend-hub-functional-foundation]
