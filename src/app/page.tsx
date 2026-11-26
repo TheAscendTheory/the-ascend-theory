@@ -16,19 +16,20 @@ function SacredGeometry(){
  return <div className="ascGeometry" aria-hidden="true"><svg viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
  <defs><radialGradient id="ascCore"><stop offset="0" stopColor="#d5e0cc" stopOpacity=".14"/><stop offset="1" stopColor="#d5e0cc" stopOpacity="0"/></radialGradient><linearGradient id="ascLine" x1="0" y1="0" x2="800" y2="800"><stop stopColor="#c4d1bc" stopOpacity=".12"/><stop offset=".5" stopColor="#c4d1bc" stopOpacity=".77"/><stop offset="1" stopColor="#c4d1bc" stopOpacity=".13"/></linearGradient></defs>
  <circle cx="400" cy="400" r="390" fill="url(#ascCore)"/>
- <g stroke="url(#ascLine)" strokeWidth="1">
+ <g stroke="#202a20" strokeWidth="1.7">
+ <g className="ascOrbitD" strokeWidth="1.2" opacity=".85"><ellipse cx="400" cy="400" rx="374" ry="112" transform="rotate(-25 400 400)"/><ellipse cx="400" cy="400" rx="374" ry="112" transform="rotate(35 400 400)"/><ellipse cx="400" cy="400" rx="374" ry="112" transform="rotate(95 400 400)"/>{Array.from({length:12},(_,i)=><circle key={i} cx={400+348*Math.cos(i*Math.PI/6)} cy={400+348*Math.sin(i*Math.PI/6)} r="3.5" fill="#202a20"/>)}</g>
  <circle cx="400" cy="400" r="348"/><circle cx="400" cy="400" r="308"/><circle cx="400" cy="400" r="230"/><circle cx="400" cy="400" r="154"/>
  <g className="ascOrbitA"><circle cx="400" cy="246" r="154"/><circle cx="533.368" cy="323" r="154"/><circle cx="533.368" cy="477" r="154"/><circle cx="400" cy="554" r="154"/><circle cx="266.632" cy="477" r="154"/><circle cx="266.632" cy="323" r="154"/></g>
- <g className="ascOrbitB" strokeOpacity=".75"><path d="M400 85 672.8 557.5H127.2Z"/><path d="M400 715 127.2 242.5H672.8Z"/><path d="M400 85 400 715M127.2 242.5 672.8 557.5M672.8 242.5 127.2 557.5"/></g>
- <g className="ascOrbitC" strokeOpacity=".45"><circle cx="400" cy="400" r="365" strokeDasharray="4 18"/><circle cx="400" cy="400" r="280" strokeDasharray="2 12"/></g>
+ <g className="ascOrbitB" strokeOpacity=".95"><path d="M400 85 672.8 557.5H127.2Z"/><path d="M400 715 127.2 242.5H672.8Z"/><path d="M400 85 400 715M127.2 242.5 672.8 557.5M672.8 242.5 127.2 557.5"/></g>
+ <g className="ascOrbitC" strokeOpacity=".75"><circle cx="400" cy="400" r="365" strokeDasharray="4 18"/><circle cx="400" cy="400" r="280" strokeDasharray="2 12"/></g>
  </g>
- <circle cx="400" cy="400" r="10" stroke="#e0e6d8" strokeWidth="1.5"/><circle cx="400" cy="400" r="3" fill="#e0e6d8" className="ascPulse"/>
+ <circle cx="400" cy="400" r="10" stroke="#202a20" strokeWidth="1.5"/><circle cx="400" cy="400" r="3" fill="#202a20" className="ascPulse"/>
  </svg></div>
 }
 export default function Home(){
  const reduceMotion=useReducedMotion();
  const transition=(delay:number)=>({duration:reduceMotion?0:.85,delay:reduceMotion?0:delay});
- return <main className="asc-home" data-home-revision="constellation-04">
+ return <main className="asc-home" data-home-revision="constellation-05">
   
   <section className="ascHero">
    <div className="ascDottedField" aria-hidden="true"/>
@@ -45,7 +46,6 @@ export default function Home(){
      <Link className="ascButton ascButtonOutline" href="/about">Discover our philosophy <ArrowRight aria-hidden="true"/></Link>
     </motion.div>
    </div>
-   <div className="homeGateway" aria-label="Explore the three platforms">{platforms.map(({number,name,href,Icon})=><Link key={name} href={href} className="homeGatewayLink"><Icon size={22}/><span><small>{number} / EXPLORE</small>{name}</span><ArrowUpRight size={18}/></Link>)}</div>
    <div className="ascHeroFooter"><span>THE ASCENDERS CLUB</span><span>CONNECT / COLLABORATE / CULTIVATE</span><span>ONE WORLD · MANY PATHS</span></div>
   </section>
   <section className="ascWrap ascSection ascSplit">
