@@ -235,3 +235,12 @@
 @media(prefers-reduced-motion:reduce) {
  .ascHero h1 em,.ascSection h2 em,.ascClosing h2 em {animation:none!important}
 }
+
+/* Muted green-neutral website canvas; application-specific styles remain intact. */
+.ascSite:has(.ascHero) {--night:#eef1ec;background:#eef1ec!important;}
+.ascSite:has(.ascHero) .ascHeader {background:rgba(238,241,236,.94)}
+.ascSite:has(.ascHero) .ascHero {background:radial-gradient(ellipse at 77% 47%,rgba(95,139,104,.10),transparent 48%),#eef1ec!important}
+.ascSite:has(.ascHero) .ascHero::before {background:linear-gradient(90deg,#eef1ec 0%,rgba(238,241,236,.97) 28%,transparent 80%),linear-gradient(0deg,#eef1ec 0%,transparent 27%)}
+.ascSite:has(.ascHero) .ascSection,.ascSite:has(.ascHero) .ascPerception,.ascSite:has(.ascHero) .ascFooter {background:#eef1ec!important}
+.ascSite:has(.ascHero) .ascAlt {background:#e7ece5!important}
+.ascSite:has(.ascHero) .ascClosing {background:radial-gradient(ellipse at center,rgba(90,150,105,.08),transparent 67%),#eef1ec!important}
