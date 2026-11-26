@@ -29,3 +29,12 @@
 @media(prefers-reduced-motion:reduce){.ascSite .asc-home .ascOrbitA,.ascSite .asc-home .ascOrbitB,.ascSite .asc-home .ascOrbitC,.kineticSpiral svg{animation:none!important}}
 
 .ascSite:has(.asc-home) .ascHeader{background:#e8e9dff2!important}.ascSite:has(.asc-home) .ascFooter{background:#e8e9df!important}.ascSite:has(.asc-home) .ascPerception{background:#e8e9df!important}.ascSite:has(.asc-home) .ascPerceptionStage{background:#e0e5d8!important}
+
+/* Constellation 05 — additive orbital restoration; no duplicate app gateways. */
+.ascSite .asc-home .ascHero{padding-bottom:85px;min-height:650px}
+.ascSite .asc-home .ascHero .ascGeometry{opacity:1!important;mask-image:none!important;filter:none!important;right:1%;top:2%;width:49%;z-index:1}
+.ascSite .asc-home .ascHero .ascGeometry svg{opacity:1!important;filter:none!important}
+.ascSite .asc-home .ascOrbitD{transform-origin:400px 400px;animation:constellationSpin 38s linear infinite reverse}
+.ascSite .asc-home .ascHeroFooter{bottom:18px}
+@media(max-width:760px){.ascSite .asc-home .ascHero{min-height:0;padding:30px 6% 24px;gap:12px}.ascSite .asc-home .ascHero .ascGeometry{width:52%;max-width:240px;top:12px;right:-3%;opacity:.98!important}.ascSite .asc-home .ascHeroContent{padding-top:120px}.ascSite .asc-home .ascHeroFooter{bottom:auto}}
+@media(prefers-reduced-motion:reduce){.ascSite .asc-home .ascOrbitD{animation:none!important}}
