@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prebuild": "node scripts/check-app-continuity.cjs",
+    "check:apps": "node scripts/check-app-continuity.cjs"
   },
   "dependencies": {
     "@next/font": "^14.2.15",
