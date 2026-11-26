@@ -29,7 +29,7 @@ function draw(items,events){
   const type=events?(item.category||"Event"):"Project",shade=colors[type]||"#5c7888";
   const marker=L.marker([+item.latitude,+item.longitude],{icon:L.divIcon({className:"ascend-map-marker",html:'<span class="ascend-map-pin" style="background:'+shade+'"></span>',iconSize:[28,32],iconAnchor:[14,29]})}).addTo(map);
   const popup=document.createElement("div");popup.className="ascend-popup";
-  popup.innerHTML='<small>'+(item.demo?"DEMO · ":"")+esc(type)+'</small><b>'+esc(item.title)+'</b><span>'+esc([item.city,item.country].filter(Boolean).join(", "))+'</span><button type="button">View '+(events?"event":"project")+'</button>';
+  popup.innerHTML='<small>'+esc(type)+'</small><b>'+esc(item.title)+'</b><span>'+esc([item.city,item.country].filter(Boolean).join(", "))+'</span><button type="button">View '+(events?"event":"project")+'</button>';
   popup.querySelector("button").addEventListener("click",()=>{const card=[...document.querySelectorAll("[data-map-card]")].find(el=>el.dataset.mapCard===String(item.id));if(card){card.scrollIntoView({behavior:"smooth",block:"center"});card.classList.add("map-highlight");setTimeout(()=>card.classList.remove("map-highlight"),1800)}});
   marker.bindPopup(popup);markers.set(String(item.id),marker);bounds.push([+item.latitude,+item.longitude]);
  }
