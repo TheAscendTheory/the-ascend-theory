@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, ArrowRight, Globe2, BookOpen, Clapperboard } from "lucide-react";
 import PerceptionSequence from "./components/PerceptionSequence";
+import PlatformArt from "./components/PlatformArt";
 
 const platforms=[
  {number:"01",name:"Ascend Hub",label:"THE NETWORK",description:"A curated global constellation of people, organizations, projects and shared opportunities.",href:"/hub",Icon:Globe2},
@@ -27,7 +28,7 @@ function SacredGeometry(){
 export default function Home(){
  const reduceMotion=useReducedMotion();
  const transition=(delay:number)=>({duration:reduceMotion?0:.85,delay:reduceMotion?0:delay});
- return <main>
+ return <main className="ascEditorialPage ascEditorialHome">
   <section className="ascHero">
    <div className="ascDottedField" aria-hidden="true"/>
    <SacredGeometry/>
@@ -45,17 +46,17 @@ export default function Home(){
    </div>
    <div className="ascHeroFooter"><span>THE ASCENDERS CLUB</span><span>CONNECT / COLLABORATE / CULTIVATE</span><span>ONE WORLD · MANY PATHS</span></div>
   </section>
-  <section className="ascWrap ascSection ascSplit">
+  <section className="ascWrap ascSection ascSplit ascEditorialSplit">
    <div><p className="ascOverline">THE UNDERLYING PRINCIPLE</p><h2>Everything is<br/><em>connected.</em></h2></div>
    <div><p>Growth is not an isolated act. It emerges through relationships between people, ideas, communities and the living world.</p><p>We bring together changemakers across disciplines and borders, from emerging local initiatives to established organizations. Different paths, shared possibility.</p><Link className="ascTextLink" href="/about#our-philosophy">Our philosophy <ArrowUpRight size={16} style={{verticalAlign:"middle",marginLeft:8}}/></Link></div>
   </section>
   <section className="ascAlt ascSection">
    <div className="ascWrap"><div className="ascHeading"><div><p className="ascOverline">ONE COMMUNITY / THREE EXPERIENCES</p><h2>A universe of <em>possibility.</em></h2></div><p>Ascend is the name of what we build. Ascenders are the people. The Ascenders Club brings us together.</p></div>
-    <div className="ascCards">{platforms.map(({number,name,label,description,href,Icon})=><Link className="ascCard" href={href} target="_blank" rel="noopener noreferrer" key={name}><span className="ascNum">{number} / 03</span><span className="ascCardIcon"><Icon size={45} strokeWidth={1.2}/></span><span className="ascOverline">{label}</span><h3>{name}</h3><p>{description}</p><span style={{display:"flex",gap:10,alignItems:"center"}}>Explore platform <ArrowUpRight size={17}/></span></Link>)}</div>
+    <div className="ascPlatformPanels">{platforms.map(({number,name,label,description,href,Icon},i)=><article className={"ascPlatformPanel ascPlatformPanel"+i} key={name}><Link className="ascPlatformInside" href={href} target="_blank" rel="noopener noreferrer"><div className="ascPlatformCopy"><span className="ascPlatformIndex">{number} / 03 <Icon size={16} strokeWidth={1.4}/></span><span className="ascOverline">{label}</span><h3>{name}</h3><p>{description}</p><span className="ascPlatformAction">Explore platform <ArrowUpRight size={17}/></span></div><PlatformArt kind={i}/></Link></article>)}</div>
    </div>
   </section>
   <PerceptionSequence/>
-  <section className="ascWrap ascSection ascSplit"><div><p className="ascOverline">BEYOND DISCIPLINES / BEYOND BORDERS</p><h2>For those who <em>create change.</em></h2></div><div><p>Community builders, artists, scientists, educators, entrepreneurs, and stewards of nature. This is a place for individuals and organizations united not by prestige, but by purpose.</p><Link className="ascButton" href="/contact">Collaborate with us <ArrowUpRight aria-hidden="true"/></Link></div></section>
+  <section className="ascWrap ascSection ascSplit ascEditorialSplit"><div><p className="ascOverline">BEYOND DISCIPLINES / BEYOND BORDERS</p><h2>For those who <em>create change.</em></h2></div><div><p>Community builders, artists, scientists, educators, entrepreneurs, and stewards of nature. This is a place for individuals and organizations united not by prestige, but by purpose.</p><Link className="ascButton" href="/contact">Collaborate with us <ArrowUpRight aria-hidden="true"/></Link></div></section>
   <section className="ascClosing"><div className="ascWrap"><p className="ascOverline">THE FUTURE IS COLLECTIVE</p><h2>Become part of<br/><em>what comes next.</em></h2><p>Discover what becomes possible when we move together.</p><Link className="ascButton" href="/hub" target="_blank" rel="noopener noreferrer">Discover Ascend Hub <ArrowUpRight aria-hidden="true"/></Link></div></section>
  </main>;
 }
