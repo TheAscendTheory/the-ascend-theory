@@ -40,3 +40,6 @@ User clarified the intended inverse palette: pure white dominates the site, blac
 
 ## Navigation regression correction — 2026-11-26
 Restored full Ascend platform names, separate Story and Philosophy routes, Shop navigation and new-tab app links. Homepage tint muted to #eef1ec; no app layout edits. Story uses existing combined-page copy pending recovery of founder-approved original separate text. GitHub Pages review navigation updated independently. Live deployment and device QA remain to be verified.
+
+## Editorial design extension — 2026-11-26
+User approved the philosophy mockup with chamfered panels, alternating geometry, serif headings and restrained green accents. Extended the same visual system to Story and homepage platform cards, editorial sections and closing areas. Distinct animated SVG art for Hub, Academy and Media. Existing public copy, app links/new-tab behavior, Shop and application layouts retained. Story and Philosophy now share /about with separate anchors; /story redirects. Verify mobile rendering and Vercel deployment.
