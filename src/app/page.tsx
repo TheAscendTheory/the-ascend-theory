@@ -29,7 +29,7 @@ function SacredGeometry(){
 export default function Home(){
  const reduceMotion=useReducedMotion();
  const transition=(delay:number)=>({duration:reduceMotion?0:.85,delay:reduceMotion?0:delay});
- return <main className="asc-home" data-home-revision="constellation-05">
+ return <main className="asc-home" data-home-revision="constellation-06">
   
   <section className="ascHero">
    <div className="ascDottedField" aria-hidden="true"/>
@@ -42,7 +42,7 @@ export default function Home(){
     <motion.h1 initial={{opacity:0,y:34}} animate={{opacity:1,y:0}} transition={transition(.12)}>WE ARE<br/><em>Ascenders.</em></motion.h1>
     <motion.p className="ascHeroIntro" initial={{opacity:0,y:25}} animate={{opacity:1,y:0}} transition={transition(.3)}>An international collective connecting changemakers, knowledge and initiatives to cultivate a more connected, flourishing future.</motion.p>
     <motion.div className="ascActions" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={transition(.45)}>
-     <Link className="ascButton" href="https://theascendtheory.github.io/the-ascend-theory/?revision=e4e5e69">Explore Ascenders Hub <ArrowUpRight aria-hidden="true"/></Link>
+     <Link className="ascButton" href="https://theascendtheory.github.io/the-ascend-theory/" target="_blank" rel="noopener noreferrer">Explore Ascenders Hub <ArrowUpRight aria-hidden="true"/></Link>
      <Link className="ascButton ascButtonOutline" href="/about">Discover our philosophy <ArrowRight aria-hidden="true"/></Link>
     </motion.div>
    </div>
@@ -54,11 +54,11 @@ export default function Home(){
   </section>
   <section className="ascAlt ascSection">
    <div className="ascWrap"><div className="ascHeading"><div><p className="ascOverline">ONE COMMUNITY / THREE EXPERIENCES</p><h2>A universe of <em>possibility.</em></h2></div><p>Ascend is the name of what we build. Ascenders are the people. The Ascenders Club brings us together.</p></div>
-    <div className="ascCards">{platforms.map(({number,name,label,description,href,Icon})=><Link className="ascCard" href={href} key={name}><span className="kineticSpiral" aria-hidden="true"><svg viewBox="0 0 500 500" fill="none">{Array.from({length:16},(_,i)=><path key={i} d="M250 250 C260 160 390 120 470 250 C530 390 350 530 160 450 C-30 360 20 90 250 28" transform={"rotate("+(i*22.5)+" 250 250)"} stroke="#d9e3cd" strokeWidth=".9" opacity={.5}/>)}</svg></span><span className="ascNum">{number} / 03</span><span className="ascCardIcon"><Icon size={45} strokeWidth={1.2}/></span><span className="ascOverline">{label}</span><h3>{name}</h3><p>{description}</p><span style={{display:"flex",gap:10,alignItems:"center"}}>Explore platform <ArrowUpRight size={17}/></span></Link>)}</div>
+    <div className="ascCards">{platforms.map(({number,name,label,description,href,Icon})=><Link className="ascCard" href={href} key={name} target="_blank" rel="noopener noreferrer"><span className="kineticSpiral" aria-hidden="true"><svg viewBox="0 0 500 500" fill="none">{Array.from({length:16},(_,i)=><path key={i} d="M250 250 C260 160 390 120 470 250 C530 390 350 530 160 450 C-30 360 20 90 250 28" transform={"rotate("+(i*22.5)+" 250 250)"} stroke="#d9e3cd" strokeWidth=".9" opacity={.5}/>)}</svg></span><span className="ascNum">{number} / 03</span><span className="ascCardIcon"><Icon size={45} strokeWidth={1.2}/></span><span className="ascOverline">{label}</span><h3>{name}</h3><p>{description}</p><span style={{display:"flex",gap:10,alignItems:"center"}}>Explore platform <ArrowUpRight size={17}/></span></Link>)}</div>
    </div>
   </section>
   <PerceptionSequence/>
   <section className="ascWrap ascSection ascSplit"><div><p className="ascOverline">BEYOND DISCIPLINES / BEYOND BORDERS</p><h2>For those who <em>create change.</em></h2></div><div><p>Community builders, artists, scientists, educators, entrepreneurs, and stewards of nature. This is a place for individuals and organizations united not by prestige, but by purpose.</p><Link className="ascButton" href="/contact">Collaborate with us <ArrowUpRight aria-hidden="true"/></Link></div></section>
-  <section className="ascClosing"><div className="ascWrap"><p className="ascOverline">THE FUTURE IS COLLECTIVE</p><h2>Become part of<br/><em>what comes next.</em></h2><p>Discover what becomes possible when we move together.</p><Link className="ascButton" href="https://theascendtheory.github.io/the-ascend-theory/?revision=e4e5e69">Discover Ascenders Hub <ArrowUpRight aria-hidden="true"/></Link></div></section>
+  <section className="ascClosing"><div className="ascWrap"><p className="ascOverline">THE FUTURE IS COLLECTIVE</p><h2>Become part of<br/><em>what comes next.</em></h2><p>Discover what becomes possible when we move together.</p><Link className="ascButton" href="https://theascendtheory.github.io/the-ascend-theory/" target="_blank" rel="noopener noreferrer">Discover Ascenders Hub <ArrowUpRight aria-hidden="true"/></Link></div></section>
  </main>;
 }
