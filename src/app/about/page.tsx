@@ -15,6 +15,17 @@ function SacredGeometry(){
  </svg></div>
 }
 
+function PrincipleArt({kind}:{kind:number}){
+ const rays=Array.from({length:20},(_,i)=>i*9);
+ return <svg className="ascPrincipleArt" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+ <defs><linearGradient id={"principle"+kind} x1="0" y1="0" x2="0.8" y2="1"><stop stopColor="#83a98a" stopOpacity=".08"/><stop offset="1" stopColor="#507e56" stopOpacity=".45"/></linearGradient></defs>
+ <circle cx="120" cy="120" r="104" stroke="#202820" strokeDasharray="2 5" opacity=".65"/>
+ <g className="ascPrincipleSpin" stroke="#202820" strokeWidth=".8">
+ {kind===0?<><circle cx="120" cy="84" r="66"/><circle cx="120" cy="156" r="66" fill="url(#principle0)"/><circle cx="120" cy="120" r="93"/><path d="M120 16V224M16 120H224" opacity=".5"/></>:kind===1?<>{Array.from({length:6},(_,i)=>{const a=i*Math.PI/3;return <circle key={i} cx={120+48*Math.cos(a)} cy={120+48*Math.sin(a)} r="48" fill="url(#principle1)"/>})}<circle cx="120" cy="120" r="96"/></>:<><circle cx="120" cy="120" r="92"/><circle cx="120" cy="120" r="70"/>{rays.map(a=><path key={a} d="M120 120V33" transform={"rotate("+a+" 120 120)"}/>)}<path d="M28 143Q72 89 120 143T212 143V156Q120 236 28 156Z" fill="url(#principle2)"/><path d="M34 164Q80 119 120 164T206 164" stroke="#497b50"/></>}
+ </g><path d="M120 16V224" stroke="#202820" opacity=".55"/>{[16,68,120,172,224].map(y=><circle key={y} cx="120" cy={y} r={y===120?4:2.4} fill="#151b16"/>)}</svg>
+}
+const principles=[{title:"Connection",text:"We see shared purpose across disciplines, communities and borders."},{title:"Collaboration",text:"We encourage new partnerships between established and emerging changemakers."},{title:"Regeneration",text:"We value flourishing social and ecological systems, informed by practice and evidence."}];
+
 export default function About(){return <main className="ascSite ascCombinedAbout"><nav className="ascWrap ascAboutSections" aria-label="About sections"><a href="#our-story">Our Story</a><a href="#our-philosophy">Our Philosophy</a></nav><div id="our-story" className="ascAboutChapter">
     <section className="ascInnerHero ascWrap ascStoryHero"><SacredGeometry/>
       <p className="ascOverline">THE ASCENDERS CLUB / OUR STORY</p>
@@ -35,4 +46,8 @@ export default function About(){return <main className="ascSite ascCombinedAbout
       </div>
     </section>
     <section className="ascClosing"><div className="ascWrap"><p className="ascOverline">OUR NEXT CHAPTER</p><h2>The story is still <em>being written.</em></h2><p>We are building an international collective shaped by the people who participate in it. Our ambition is to turn connections into collaborations, knowledge into action and individual contributions into lasting collective impact.</p><Link className="ascButton" href="/contact">Connect with us</Link></div></section>
-  </div><div id="our-philosophy" className="ascAboutChapter"><section className="ascInnerHero ascWrap ascPhilosophyHero"><div className="ascPhilosophyGeometry" aria-hidden="true"><i/><i/><i/></div><p className="ascOverline">THE ASCENDERS CLUB / OUR PHILOSOPHY</p><h1>We are <em>Ascenders.</em></h1><p>We believe in connection, collective progress and living in greater harmony with the world around us. We bring people and organizations together to exchange knowledge, cultivate opportunities and advance meaningful work.</p><Link className="ascButton" href="/hub" target="_blank" rel="noopener noreferrer">Discover the network</Link></section><section className="ascWrap ascFeatureGrid"><article><h2>Connection</h2><p>We see shared purpose across disciplines, communities and borders.</p></article><article><h2>Collaboration</h2><p>We encourage new partnerships between established and emerging changemakers.</p></article><article><h2>Regeneration</h2><p>We value flourishing social and ecological systems, informed by practice and evidence.</p></article></section></div></main>}
+  </div><div id="our-philosophy" className="ascAboutChapter ascEditorialPhilosophy"><div className="ascWrap">
+ <header className="ascPhilosophyIntro"><div className="ascEditorialMark" aria-hidden="true"><span/><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 32 20 4 35 32 20 22ZM10 30 20 15 30 30"/></svg><span/></div><h2>Our Philosophy</h2><p>A shared commitment to people, place, and planet — across disciplines and borders.</p><p className="ascPhilosophyOriginal">We believe in connection, collective progress and living in greater harmony with the world around us. We bring people and organizations together to exchange knowledge, cultivate opportunities and advance meaningful work.</p></header>
+ <section className="ascPrinciplePanels" aria-label="Our three principles">{principles.map((p,i)=><article className={"ascPrinciplePanel ascPrinciplePanel"+i} key={p.title}><div className="ascPrincipleInside"><div className="ascPrincipleCopy"><div className="ascPrincipleNumber">0{i+1}<span/></div><h3>{p.title}</h3><p>{p.text}</p></div><PrincipleArt kind={i}/></div></article>)}</section>
+ <div className="ascPhilosophyManifesto"><div className="ascEditorialMark" aria-hidden="true"><span/><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 32 20 4 35 32 20 22ZM10 30 20 15 30 30"/></svg><span/></div><p>One community. Many forms of meaningful change.</p><Link className="ascButton" href="/hub" target="_blank" rel="noopener noreferrer">Discover the network</Link></div>
+ </div></div></main>}
