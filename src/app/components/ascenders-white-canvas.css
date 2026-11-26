@@ -302,3 +302,39 @@
 @keyframes ascEditorialDrift{to{translate:4% -7%;rotate:7deg}}
 @media(max-width:600px){.ascEditorialPhilosophy{padding:42px 0 44px}.ascPhilosophyIntro{margin-bottom:27px}.ascPhilosophyIntro .ascPhilosophyOriginal{font-size:14px}.ascPrinciplePanels{gap:12px}.ascPrinciplePanel{clip-path:polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px)}.ascPrinciplePanel1{clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));margin-left:0}.ascPrinciplePanel0,.ascPrinciplePanel2{margin-right:0}.ascPrincipleInside{padding:18px 15px;min-height:170px;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:7px}.ascPrinciplePanel1 .ascPrincipleInside{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}.ascPrinciplePanel1 .ascPrincipleCopy{padding-left:9px}.ascPrincipleCopy h3{font-size:clamp(23px,6.3vw,37px)}.ascPrincipleCopy p{font-size:14px;line-height:1.4}.ascPrincipleArt{min-width:0}.ascPrincipleNumber{font-size:11px}.ascPrincipleNumber span{width:30px}.ascPhilosophyManifesto{padding-top:36px}}
 @media(prefers-reduced-motion:reduce){.ascPrincipleSpin,.ascPrincipleInside:before,.ascPrincipleInside:after{animation:none!important}}
+
+/* Editorial public-page extension: platform panels and continuous visual rhythm. */
+.ascEditorialPage .ascPlatformPanels{display:grid;gap:18px;margin-top:36px}
+.ascEditorialPage .ascPlatformPanel{position:relative;background:#344138;padding:1px;clip-path:polygon(32px 0,100% 0,100% calc(100% - 32px),calc(100% - 32px) 100%,0 100%,0 32px);margin-right:5%}
+.ascEditorialPage .ascPlatformPanel1{margin-right:0;margin-left:5%;clip-path:polygon(0 0,calc(100% - 32px) 0,100% 32px,100% 100%,32px 100%,0 calc(100% - 32px))}
+.ascEditorialPage .ascPlatformInside{position:relative;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:center;gap:24px;min-height:240px;padding:30px 42px;clip-path:inherit;background:linear-gradient(125deg,#fcfdf9 10%,#f2f6ef 58%,#d6e5d5);overflow:hidden;isolation:isolate;color:#101710}
+.ascEditorialPage .ascPlatformInside:before,.ascEditorialPage .ascPlatformInside:after{content:"";position:absolute;z-index:-1;width:120%;height:120%;bottom:-88%;left:12%;border:1px solid #638c6966;border-radius:50%;box-shadow:0 -12px #8cae8d19,0 -26px #8cae8d13,0 -40px #8cae8d0d;transform:rotate(-16deg);animation:ascEditorialDrift 17s ease-in-out infinite alternate;pointer-events:none}
+.ascEditorialPage .ascPlatformInside:after{left:-40%;animation-direction:alternate-reverse;transform:rotate(20deg)}
+.ascEditorialPage .ascPlatformPanel1 .ascPlatformInside{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);background:linear-gradient(35deg,#d6e5d5,#f9fbf7 62%)}
+.ascEditorialPage .ascPlatformPanel1 .ascPlatformCopy{grid-column:2;grid-row:1;padding-left:22px;border-left:1px solid #18201935}
+.ascEditorialPage .ascPlatformPanel1 .ascPlatformArt{grid-column:1;grid-row:1}
+.ascPlatformCopy{min-width:0;position:relative;z-index:1}
+.ascPlatformIndex{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.14em;color:#34553b;margin-bottom:12px}
+.ascPlatformCopy .ascOverline{display:block;margin:0 0 8px}
+.ascEditorialPage .ascPlatformCopy h2,.ascEditorialPage .ascPlatformCopy h3{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(30px,4.6vw,58px);letter-spacing:-.045em;line-height:1.07;margin:0 0 12px;color:#101710}
+.ascEditorialPage .ascPlatformCopy p{font-size:clamp(15px,1.7vw,19px);line-height:1.55;margin:0;color:#27352b!important;max-width:530px}
+.ascPlatformAction,.ascEditorialPage .ascPlatformCopy .ascTextLink{display:inline-flex;align-items:center;gap:8px;color:#244a30!important;font-size:13px;font-weight:650;margin-top:20px;padding:0 0 7px;border-bottom:1px solid #34553b}
+.ascPlatformArt{display:block;width:100%;max-width:260px;justify-self:center;color:#23392a;overflow:visible;transition:scale .5s}
+.ascPlatformOrbit{transform-origin:120px 120px;animation:ascAboutRotate 65s linear infinite}
+.ascPlatformPanel1 .ascPlatformOrbit{animation-direction:reverse;animation-duration:80s}
+.ascPlatformPanel2 .ascPlatformOrbit{animation-duration:95s}
+.ascPlatformInside:hover .ascPlatformArt,.ascPlatformInside:focus-visible .ascPlatformArt{scale:1.05}
+.ascPlatformInside:focus-visible{outline:3px solid #2a7848;outline-offset:-5px}
+.ascEditorialPage .ascEditorialSplit{position:relative;isolation:isolate;border-top:1px solid #354c3a30;overflow:hidden;padding-block:clamp(52px,8vw,100px)}
+.ascEditorialPage .ascEditorialSplit:after{content:"";position:absolute;z-index:-1;width:390px;aspect-ratio:1;left:-175px;bottom:-240px;border:1px solid #496d4c55;border-radius:50%;box-shadow:0 0 0 28px #87a98a12,0 0 0 60px #87a98a0c;pointer-events:none}
+.ascEditorialPage .ascEditorialSplit h2,.ascEditorialPage .ascPlatformSection>h2,.ascEditorialPage .ascHeading h2,.ascEditorialPage .ascClosing h2{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.05em}
+.ascEditorialPage .ascPlatformSection{border-top:1px solid #354c3a30;padding-block:clamp(48px,7vw,90px)}
+.ascEditorialPage .ascClosing{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 100%,#c9ddca,transparent 70%),#eef1ec!important}
+.ascEditorialPage .ascClosing:after{content:"";position:absolute;z-index:-1;left:10%;right:10%;height:160px;bottom:-105px;border:1px solid #466c4b66;border-radius:50%;box-shadow:0 -14px #7ea68117,0 -28px #7ea68112,0 -45px #7ea6810b;pointer-events:none;animation:ascEditorialDrift 20s ease-in-out infinite alternate}
+.ascEditorialHome .ascAlt.ascSection{background:radial-gradient(ellipse at 95% 10%,#d9e5d7,transparent 55%),#e8ede5!important}
+.ascEditorialPage .ascStoryHero h1{font-family:Georgia,"Times New Roman",serif;font-weight:400}
+.ascEditorialPage .ascStoryHero .ascStoryGeometry{opacity:.4}
+.ascEditorialHome .ascPerceptionStage{border-radius:0;background:linear-gradient(125deg,#f8faf5,#dce8d9)!important}
+.ascEditorialHome .ascPerceptionStage::after{background:linear-gradient(90deg,#f8faf5 5%,#f8faf5ed 35%,#f8faf51a 100%)}
+@media(max-width:600px){.ascEditorialPage .ascPlatformPanels{gap:12px;margin-top:24px}.ascEditorialPage .ascPlatformPanel{margin:0;clip-path:polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px)}.ascEditorialPage .ascPlatformPanel1{clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px))}.ascEditorialPage .ascPlatformInside{grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);padding:21px 15px;gap:8px;min-height:185px}.ascEditorialPage .ascPlatformPanel1 .ascPlatformInside{grid-template-columns:minmax(0,1fr) minmax(0,1.65fr)}.ascEditorialPage .ascPlatformPanel1 .ascPlatformCopy{padding-left:10px}.ascEditorialPage .ascPlatformCopy h2,.ascEditorialPage .ascPlatformCopy h3{font-size:clamp(24px,6.7vw,36px)}.ascEditorialPage .ascPlatformCopy p{font-size:14px;line-height:1.5}.ascPlatformIndex{font-size:10px;margin-bottom:8px}.ascPlatformCopy .ascOverline{font-size:9px}.ascPlatformAction,.ascEditorialPage .ascPlatformCopy .ascTextLink{font-size:12px;margin-top:13px}.ascEditorialPage .ascStoryHero .ascStoryGeometry{opacity:.19}.ascEditorialHome .ascPerceptionStage::after{background:linear-gradient(0deg,#f8faf5 7%,#f8faf5ed 44%,#f8faf533 100%)}}
+@media(prefers-reduced-motion:reduce){.ascPlatformOrbit,.ascEditorialPage .ascPlatformInside:before,.ascEditorialPage .ascPlatformInside:after,.ascEditorialPage .ascClosing:after{animation:none!important}.ascPlatformArt{transition:none}}
