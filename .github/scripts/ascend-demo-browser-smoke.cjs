@@ -23,11 +23,14 @@ async function run(){
  await page.locator('#submitQuiz').waitFor();
  if(errors.length)throw Error("Academy JS errors: "+errors.join(","));
  console.log("PASS Academy: distinct classroom, choose listening and practice, graded quiz, retry");
- await page.goto(BASE+"media/",{waitUntil:"domcontentloaded",timeout:45000});
+ for(let i=0;i<30;i++){await page.goto(BASE+"media/?revision=vector-controls-02&attempt="+i,{waitUntil:"domcontentloaded",timeout:45000});if(await page.locator('meta[name="ascenders-release"][content="vector-controls-02"]').count())break;await page.waitForTimeout(5000);}
+ if(!await page.locator('meta[name="ascenders-release"][content="vector-controls-02"]').count())throw Error("Updated Media release not live");
+ for(const id of ["btnPrev","btnToggle","btnNext","btnExpand","panelPrev","panelToggle","panelNext"]){if(await page.locator("#"+id+" svg.transportIcon").count()!==1)throw Error("Missing vector control "+id);if((await page.locator("#"+id).textContent()).trim())throw Error("Unexpected text/glyph in "+id);}
  await page.locator('[data-playlist="demo-collection"]').waitFor({timeout:35000});
  await page.locator('[data-playlist="demo-collection"]').click();
  await page.locator('#playerbar.active').waitFor();
  await page.locator('#fullPlayer.active').waitFor();
+ for(const id of ["panelPrev","panelToggle","panelNext"]){if(await page.locator("#"+id+" svg.transportIcon").count()!==1)throw Error("Playback replaced SVG "+id);}
  const first=await page.locator('#playerTitle').innerText();
  await page.locator('#panelNext').click();
  const second=await page.locator('#playerTitle').innerText();
