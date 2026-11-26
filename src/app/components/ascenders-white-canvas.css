@@ -265,3 +265,40 @@
 @keyframes ascAboutRotate{to{transform:rotate(360deg)}}
 @media(max-width:760px){.ascStoryHero .ascStoryGeometry{width:90vw;opacity:.12;right:-28%;bottom:-20%}.ascPhilosophyGeometry{width:80vw;opacity:.12;right:-22%}}
 @media(prefers-reduced-motion:reduce){.ascStoryGeometry .ascOrbitA,.ascStoryGeometry .ascOrbitB,.ascStoryGeometry .ascOrbitC,.ascPhilosophyGeometry{animation:none!important}}
+
+/* Approved editorial philosophy concept, rendered as responsive live HTML and animated SVG. */
+.ascEditorialPhilosophy{position:relative;overflow:hidden;background:radial-gradient(ellipse at 92% 8%,#dce8da 0,transparent 40%),radial-gradient(ellipse at 0% 72%,#d4e4d5 0,transparent 38%),#f4f6f1!important;padding:70px 0 64px}
+.ascEditorialPhilosophy>.ascWrap{position:relative;max-width:1120px}
+.ascEditorialPhilosophy:before{content:"";position:absolute;width:680px;height:680px;right:-340px;top:-400px;border:1px solid #718b7266;border-radius:50%;box-shadow:0 0 0 32px #9cbd9d15,0 0 0 85px #9cbd9d12;pointer-events:none}
+.ascPhilosophyIntro{text-align:center;max-width:780px;margin:0 auto 46px}
+.ascEditorialMark{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:18px;color:#182019}
+.ascEditorialMark span{width:65px;height:1px;background:linear-gradient(90deg,transparent,#151b16)}
+.ascEditorialMark span:last-child{transform:rotate(180deg)}
+.ascEditorialMark svg{width:25px;height:25px}
+.ascPhilosophyIntro h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(38px,6vw,78px);font-weight:400;letter-spacing:-.055em;line-height:1.04;margin:0 0 18px;color:#080b08}
+.ascPhilosophyIntro p{font-size:clamp(16px,2vw,22px);line-height:1.55;color:#202820;margin:0 auto;max-width:650px}
+.ascPhilosophyIntro .ascPhilosophyOriginal{font-size:15px;line-height:1.7;margin-top:18px;max-width:620px}
+.ascPrinciplePanels{display:grid;gap:18px}
+.ascPrinciplePanel{position:relative;padding:1px;background:#344138;clip-path:polygon(36px 0,100% 0,100% calc(100% - 36px),calc(100% - 36px) 100%,0 100%,0 36px);isolation:isolate}
+.ascPrinciplePanel1{margin-left:5%;clip-path:polygon(0 0,calc(100% - 36px) 0,100% 36px,100% 100%,36px 100%,0 calc(100% - 36px))}
+.ascPrinciplePanel0,.ascPrinciplePanel2{margin-right:5%}
+.ascPrincipleInside{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:center;min-height:248px;padding:26px 38px;clip-path:inherit;background:linear-gradient(125deg,#fcfdf9 12%,#f3f6f0 58%,#dbe8d9);isolation:isolate}
+.ascPrincipleInside:before,.ascPrincipleInside:after{content:"";position:absolute;z-index:-1;width:115%;height:95%;left:20%;bottom:-78%;border:1px solid #648b6966;border-radius:50%;box-shadow:0 -9px 0 #9cbd9d1a,0 -19px 0 #9cbd9d14,0 -30px 0 #9cbd9d10;transform:rotate(-17deg);animation:ascEditorialDrift 15s ease-in-out infinite alternate;pointer-events:none}
+.ascPrincipleInside:after{left:-30%;bottom:-82%;transform:rotate(22deg);animation-direction:alternate-reverse}
+.ascPrinciplePanel1 .ascPrincipleInside{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);background:linear-gradient(35deg,#dbe8d9,#f9fbf7 60%)}
+.ascPrinciplePanel1 .ascPrincipleCopy{grid-column:2;grid-row:1;padding-left:22px;border-left:1px solid #18201935}
+.ascPrinciplePanel1 .ascPrincipleArt{grid-column:1;grid-row:1}
+.ascPrincipleCopy{position:relative;z-index:1;min-width:0}
+.ascPrincipleNumber{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.1em;color:#27382b}
+.ascPrincipleNumber span{height:1px;width:48px;background:linear-gradient(90deg,#344138,transparent)}
+.ascPrincipleCopy h3{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.055em;font-size:clamp(29px,4.6vw,61px);line-height:1.05;color:#090d09;margin:9px 0 13px;overflow-wrap:normal}
+.ascPrincipleCopy p{font-size:clamp(15px,1.8vw,21px);line-height:1.45;color:#202820;margin:0;max-width:430px}
+.ascPrincipleArt{width:100%;max-width:270px;justify-self:center;overflow:visible;position:relative;z-index:0}
+.ascPrincipleSpin{transform-origin:120px 120px;animation:ascAboutRotate 55s linear infinite}
+.ascPrinciplePanel1 .ascPrincipleSpin{animation-direction:reverse;animation-duration:68s}
+.ascPrinciplePanel2 .ascPrincipleSpin{animation-duration:90s}
+.ascPhilosophyManifesto{text-align:center;padding:52px 0 12px;position:relative}
+.ascPhilosophyManifesto p{font-family:Georgia,"Times New Roman",serif;font-size:clamp(26px,4.4vw,48px);font-style:italic;letter-spacing:-.035em;line-height:1.15;max-width:740px;margin:0 auto 26px;color:#111a12}
+@keyframes ascEditorialDrift{to{translate:4% -7%;rotate:7deg}}
+@media(max-width:600px){.ascEditorialPhilosophy{padding:42px 0 44px}.ascPhilosophyIntro{margin-bottom:27px}.ascPhilosophyIntro .ascPhilosophyOriginal{font-size:14px}.ascPrinciplePanels{gap:12px}.ascPrinciplePanel{clip-path:polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px)}.ascPrinciplePanel1{clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));margin-left:0}.ascPrinciplePanel0,.ascPrinciplePanel2{margin-right:0}.ascPrincipleInside{padding:18px 15px;min-height:170px;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:7px}.ascPrinciplePanel1 .ascPrincipleInside{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}.ascPrinciplePanel1 .ascPrincipleCopy{padding-left:9px}.ascPrincipleCopy h3{font-size:clamp(23px,6.3vw,37px)}.ascPrincipleCopy p{font-size:14px;line-height:1.4}.ascPrincipleArt{min-width:0}.ascPrincipleNumber{font-size:11px}.ascPrincipleNumber span{width:30px}.ascPhilosophyManifesto{padding-top:36px}}
+@media(prefers-reduced-motion:reduce){.ascPrincipleSpin,.ascPrincipleInside:before,.ascPrincipleInside:after{animation:none!important}}
