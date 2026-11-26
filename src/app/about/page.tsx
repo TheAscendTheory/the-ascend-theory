@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import PlatformArt from "../components/PlatformArt";
 export const metadata: Metadata = {title:"Our Story & Philosophy",description:"The story and philosophy behind The Ascenders Club."};
 function SacredGeometry(){
  return <div className="ascGeometry ascStoryGeometry" aria-hidden="true"><svg viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,23 +27,23 @@ function PrincipleArt({kind}:{kind:number}){
 }
 const principles=[{title:"Connection",text:"We see shared purpose across disciplines, communities and borders."},{title:"Collaboration",text:"We encourage new partnerships between established and emerging changemakers."},{title:"Regeneration",text:"We value flourishing social and ecological systems, informed by practice and evidence."}];
 
-export default function About(){return <main className="ascSite ascCombinedAbout"><nav className="ascWrap ascAboutSections" aria-label="About sections"><a href="#our-story">Our Story</a><a href="#our-philosophy">Our Philosophy</a></nav><div id="our-story" className="ascAboutChapter">
+export default function About(){return <main className="ascSite ascCombinedAbout ascEditorialPage"><nav className="ascWrap ascAboutSections" aria-label="About sections"><a href="#our-story">Our Story</a><a href="#our-philosophy">Our Philosophy</a></nav><div id="our-story" className="ascAboutChapter">
     <section className="ascInnerHero ascWrap ascStoryHero"><SacredGeometry/>
       <p className="ascOverline">THE ASCENDERS CLUB / OUR STORY</p>
       <h1>We are <em>Ascenders.</em></h1>
       <p>The Ascenders Club began with a question: what could we accomplish if the people working to create meaningful change were connected rather than working in isolation?</p>
     </section>
-    <section className="ascWrap ascSection ascSplit">
+    <section className="ascWrap ascSection ascSplit ascEditorialSplit">
       <div><p className="ascOverline">THE BEGINNING</p><h2>From individual purpose to <em>collective action.</em></h2></div>
       <div><p>Our vision grew from an interest in the relationship between humanity and nature, the way we cultivate our food, care for our environment and share knowledge. It developed into a broader ambition: to bring together people whose work contributes to the world around them.</p><p>From those regenerating the land to those educating young people, serving their communities or creating new possibilities through art and innovation, meaningful change takes many forms. We believe these efforts deserve to be seen, understood and connected, regardless of their scale or recognition.</p></div>
     </section>
-    <section className="ascWrap ascSection">
+    <section className="ascWrap ascSection ascPlatformSection">
       <p className="ascOverline">BUILDING THE COLLECTIVE</p>
       <h2>Three platforms. <em>One purpose.</em></h2>
-      <div className="ascFeatureGrid">
-        <article><h2>Ascend Hub</h2><p>A global network connecting changemakers, organizations, initiatives and opportunities for collaboration.</p><Link className="ascTextLink" href="/hub" target="_blank" rel="noopener noreferrer">Explore Ascend Hub</Link></article>
-        <article><h2>Ascend Academy</h2><p>A place to exchange knowledge, develop practical skills and learn from people putting ideas into practice.</p><Link className="ascTextLink" href="/academy" target="_blank" rel="noopener noreferrer">Explore Ascend Academy</Link></article>
-        <article><h2>Ascend Media</h2><p>A platform dedicated to documenting meaningful work and sharing the stories of the people behind it.</p><Link className="ascTextLink" href="/media" target="_blank" rel="noopener noreferrer">Explore Ascend Media</Link></article>
+      <div className="ascPlatformPanels">
+        <article className="ascPlatformPanel ascPlatformPanel0"><div className="ascPlatformInside"><div className="ascPlatformCopy"><span className="ascPlatformIndex">01 / 03</span><h2>Ascend Hub</h2><p>A global network connecting changemakers, organizations, initiatives and opportunities for collaboration.</p><Link className="ascTextLink" href="/hub" target="_blank" rel="noopener noreferrer">Explore Ascend Hub</Link></div><PlatformArt kind={0}/></div></article>
+        <article className="ascPlatformPanel ascPlatformPanel1"><div className="ascPlatformInside"><div className="ascPlatformCopy"><span className="ascPlatformIndex">02 / 03</span><h2>Ascend Academy</h2><p>A place to exchange knowledge, develop practical skills and learn from people putting ideas into practice.</p><Link className="ascTextLink" href="/academy" target="_blank" rel="noopener noreferrer">Explore Ascend Academy</Link></div><PlatformArt kind={1}/></div></article>
+        <article className="ascPlatformPanel ascPlatformPanel2"><div className="ascPlatformInside"><div className="ascPlatformCopy"><span className="ascPlatformIndex">03 / 03</span><h2>Ascend Media</h2><p>A platform dedicated to documenting meaningful work and sharing the stories of the people behind it.</p><Link className="ascTextLink" href="/media" target="_blank" rel="noopener noreferrer">Explore Ascend Media</Link></div><PlatformArt kind={2}/></div></article>
       </div>
     </section>
     <section className="ascClosing"><div className="ascWrap"><p className="ascOverline">OUR NEXT CHAPTER</p><h2>The story is still <em>being written.</em></h2><p>We are building an international collective shaped by the people who participate in it. Our ambition is to turn connections into collaborations, knowledge into action and individual contributions into lasting collective impact.</p><Link className="ascButton" href="/contact">Connect with us</Link></div></section>
